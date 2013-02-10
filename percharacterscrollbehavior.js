@@ -23,3 +23,13 @@ PerCharacterScrollBehavior.prototype.length = function(value) {
 PerCharacterScrollBehavior.prototype.slice = function(value, start, stop) {
   return value.slice(start, stop);
 };
+
+
+PerCharacterScrollBehavior.prototype.indexInto = function(line, cursor) {
+  for (var i = 0; i < line.gameStates.length; ++i) {
+    cursor -= this.length(line.gameStates[i].description);
+    if (cursor < 0) {
+      return i;
+    }
+  }
+};

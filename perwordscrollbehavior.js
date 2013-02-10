@@ -23,3 +23,13 @@ PerWordScrollBehavior.prototype.length = function(value) {
 PerWordScrollBehavior.prototype.slice = function(value, start, stop) {
   return value.split(' ').slice(start, stop).join(' ');
 };
+
+
+PerWordScrollBehavior.prototype.indexInto = function(line, cursor) {
+  for (var i = 0; i < line.gameStates.length; ++i) {
+    cursor -= this.length(line.gameStates[i].description);
+    if (cursor < 0) {
+      return i;
+    }
+  }
+};

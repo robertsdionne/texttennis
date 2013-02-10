@@ -1,4 +1,4 @@
-var LINE_COUNT = 25;
+var LINE_COUNT = 15;
 var SCROLL_DELAY = 80;
 var CHARACTER_CURSOR_INCREMENT = 1;
 
@@ -8,6 +8,7 @@ var lineCursor = 0;
 var characterCursor = lines[0] ? lines[0].description.length : 0;
 var container;
 var commandline;
+var cursor;
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
@@ -15,7 +16,12 @@ var load = function() {
   document.addEventListener('keydown', backspace, false);
   container = document.getElementById('container');
   commandline = document.getElementById('commandline');
+  cursor = document.getElementById('cursor');
   display();
+  window.setInterval(blinkCursor, 1000);
+};
+var blinkCursor = function() {
+  cursor.textContent = cursor.textContent ? '' : '\u2588';
 };
 var scrollDown = function() {
   if (lineCursor >= 0 && characterCursor < scrollBehavior.length(lines[lineCursor].description)) {
@@ -25,14 +31,13 @@ var scrollDown = function() {
     lines.push(new Line([
         makeClockState(t += 1),
         makeClockState(t += 1),
-        makeClockState(t += 1),
         makeClockState(t += 1)
     ]));
     lineCursor += 1;
   }
   display();
 };
-var makeClockState = function(time) {
+var makeClockState = function(time, prefix) {
   var choice = Math.random() * 8;
   var description;
   if (0 <= choice && choice < 1) {
@@ -55,10 +60,7 @@ var makeClockState = function(time) {
   return new GameState(time, description + makeTime(time) + '.')
 };
 var makeTime = function(time) {
-  var second = time % 60;
-  var minute = Math.floor(time / 60) % 60;
-  var hour = Math.floor(time / 3600) % 12;
-  return hour + ':' + minute + ':' + second;
+  return new Date(5*3600*1000+1000 * time).toTimeString().split(' ')[0];
 };
 var scrollUp = function() {
   if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
@@ -96,9 +98,9 @@ var backspace = function(e) {
 var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
     if (commandline.textContent) {
-      var line = new Line([new GameState(t += 1, 'You did "' + commandline.textContent + '."')]);
-      characterCursor = scrollBehavior.length(line.description);
-      lines[lineCursor] = line;
+      var index = scrollBehavior.indexInto(lines[lineCursor], characterCursor);
+      lines[lineCursor].gameStates[index] = new GameState(
+          t += 1, 'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
       commandline.textContent = '';
       display();
     }
@@ -106,21 +108,24 @@ var command = function(e) {
     commandline.textContent = commandline.textContent + String.fromCharCode(e.keyCode);
   }
 };
+var lowerCaseFirstLetter = function(value) {
+  return value.slice(0, 1).toLowerCase() + value.slice(1);
+};
 var display = function () {
   while (container.childNodes.length) {
     container.removeChild(container.childNodes[0]);
   }
   var startIndex = lineCursor - LINE_COUNT >= 0 ? lineCursor - LINE_COUNT : 0;
-  lines.slice(startIndex, lineCursor).forEach(function(line) {
-    var content = document.createTextNode();
-    content.textContent = line.description;
+  lines.slice(startIndex, lineCursor).forEach(function(line, index) {
+    var prefix = (startIndex + index) % 4 == 1 ? '\u00A0\u00A0' : '';
+    var content = line.toDomNode(prefix, line.description.length, scrollBehavior);
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);
   });
   if (lineCursor >= 0 && lines.length > lineCursor) {
-    var content = document.createTextNode();
-    content.textContent = scrollBehavior.slice(lines[lineCursor].description, 0, characterCursor);
+    var prefix = lineCursor % 4 == 1 ? '\u00A0\u00A0' : '';
+    var content = lines[lineCursor].toDomNode(prefix, characterCursor, scrollBehavior);
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);

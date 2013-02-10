@@ -21,3 +21,15 @@ Object.defineProperties(Line.prototype, {
     }
   }
 });
+
+
+Line.prototype.toDomNode = function(prefix, cursor, scrollBehavior) {
+  var index = scrollBehavior.indexInto(this, cursor);
+  var element = document.createElement('p');
+  element.appendChild(document.createTextNode(prefix));
+  this.gameStates.forEach(function(state) {
+    element.appendChild(state.toDomNode(cursor, scrollBehavior));
+    cursor -= scrollBehavior.length(state.description);
+  });
+  return element;
+};
