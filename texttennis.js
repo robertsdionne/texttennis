@@ -1,13 +1,13 @@
 var LINE_COUNT = 25;
 var SCROLL_DELAY = 80;
+var CHARACTER_CURSOR_INCREMENT = 5;
 
 var t = 0.0;
-var stack = [new GameState(t, "Text Tennis")];
+var stack = [new GameState(t, 'Text Tennis')];
 var lineCursor = 0;
-var characterCursor = 0;
+var characterCursor = 'Text Tennis'.length;
 var container;
 var commandline;
-var lastScrollTime = new Date().getTime();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
   document.addEventListener('keypress', command, false);
@@ -16,29 +16,37 @@ var load = function() {
   commandline = document.getElementById('commandline');
 };
 var scrollDown = function() {
-  stack.push(new GameState(t += 1, "The time is " + t + "."));
-  while (lineCursor < stack.length - LINE_COUNT) {
-    lineCursor += 1;
+  if (stack.length && characterCursor < stack[stack.length - 1].description.length) {
+    characterCursor += CHARACTER_CURSOR_INCREMENT;
+  } else {
+    characterCursor = CHARACTER_CURSOR_INCREMENT;
+    stack.push(new GameState(t += 1, "The time is " + t + "."));
+    while (lineCursor < stack.length - LINE_COUNT) {
+      lineCursor += 1;
+    }
   }
   display();
 };
 var scrollUp = function() {
-  var state = stack.pop();
-  t = state.timestamp - 1;
-  if (lineCursor > 0) {
-    lineCursor -= 1;
+  if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
+    characterCursor -= CHARACTER_CURSOR_INCREMENT;
+  } else {
+    var state = stack.pop();
+    if (state) {
+      characterCursor = state.description.length;
+      t = state.timestamp - 1;
+      if (lineCursor > 0) {
+        lineCursor -= 1;
+      }
+    }
   }
   display();
 };
 var mousewheel = function(e) {
-  var time = new Date().getTime();
-  if (time - lastScrollTime > SCROLL_DELAY) {
-    if (e.wheelDelta < 0) {
-      scrollDown();
-    } else if (e.wheelDelta > 0) {
-      scrollUp();
-    }
-    lastScrollTime = time;
+  if (e.wheelDelta < 0) {
+    scrollDown();
+  } else if (e.wheelDelta > 0) {
+    scrollUp();
   }
   e.preventDefault();
 };
@@ -69,12 +77,21 @@ var display = function () {
   while (container.childNodes.length) {
     container.removeChild(container.childNodes[0]);
   }
-  stack.slice(lineCursor).forEach(function(state) {
+  stack.slice(lineCursor, stack.length - 1).forEach(function(state) {
     var content = document.createTextNode();
     content.textContent = state.description;
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);
   });
+  if (stack.length) {
+    var content = document.createTextNode();
+    content.textContent = stack[stack.length - 1].description.slice(0, characterCursor);
+    var newline = document.createElement('br');
+    container.appendChild(content);
+    container.appendChild(newline);
+    console.log('lineCursor ' + lineCursor);
+    console.log('characterCursor ' + characterCursor);
+  }
 };
 window.addEventListener('load', load, false);
