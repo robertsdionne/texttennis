@@ -1,6 +1,6 @@
 var LINE_COUNT = 25;
 var SCROLL_DELAY = 80;
-var CHARACTER_CURSOR_INCREMENT = 5;
+var CHARACTER_CURSOR_INCREMENT = 1;
 
 var t = 0.0;
 var stack = [new GameState(t, 'Text Tennis')];
@@ -8,6 +8,7 @@ var lineCursor = 0;
 var characterCursor = 'Text Tennis'.length;
 var container;
 var commandline;
+var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
   document.addEventListener('keypress', command, false);
@@ -16,7 +17,7 @@ var load = function() {
   commandline = document.getElementById('commandline');
 };
 var scrollDown = function() {
-  if (stack.length && characterCursor < stack[stack.length - 1].description.length) {
+  if (stack.length && characterCursor < scrollBehavior.length(stack[stack.length - 1].description)) {
     characterCursor += CHARACTER_CURSOR_INCREMENT;
   } else {
     characterCursor = CHARACTER_CURSOR_INCREMENT;
@@ -33,7 +34,7 @@ var scrollUp = function() {
   } else {
     var state = stack.pop();
     if (state) {
-      characterCursor = state.description.length;
+      characterCursor = scrollBehavior.length(state.description);
       t = state.timestamp - 1;
       if (lineCursor > 0) {
         lineCursor -= 1;
@@ -54,8 +55,6 @@ var backspace = function(e) {
   if (e.keyCode == KeyCode.BACKSPACE) {
     commandline.textContent = commandline.textContent.slice(0, -1);
     e.preventDefault();
-  } else if (e.keyCode == KeyCode.LEFT) {
-    commandline.textContent = commandline.textContent.slice(0, -1);
   } else if (e.keyCode == KeyCode.UP) {
     scrollUp();
   } else if (e.keyCode == KeyCode.DOWN) {
@@ -86,12 +85,10 @@ var display = function () {
   });
   if (stack.length) {
     var content = document.createTextNode();
-    content.textContent = stack[stack.length - 1].description.slice(0, characterCursor);
+    content.textContent = scrollBehavior.slice(stack[stack.length - 1].description, 0, characterCursor);
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);
-    console.log('lineCursor ' + lineCursor);
-    console.log('characterCursor ' + characterCursor);
   }
 };
 window.addEventListener('load', load, false);

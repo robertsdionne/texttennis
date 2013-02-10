@@ -1,3 +1,6 @@
+/**
+ * @enum {string}
+ */
 var KeyCode = {
   BACKSPACE: 8,
   DOWN: 40,
