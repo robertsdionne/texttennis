@@ -1,4 +1,4 @@
-var LINE_COUNT = 15;
+var LINE_COUNT = 8;
 var SCROLL_DELAY = 80;
 var CHARACTER_CURSOR_INCREMENT = 1;
 
@@ -29,9 +29,9 @@ var scrollDown = function() {
   } else {
     characterCursor = CHARACTER_CURSOR_INCREMENT;
     lines.push(new Line([
-        makeClockState(t += 1),
-        makeClockState(t += 1),
-        makeClockState(t += 1)
+        makeClockState(t += Math.random() * 1000),
+        makeClockState(t += Math.random() * 10),
+        makeClockState(t += Math.random() * 100)
     ]));
     lineCursor += 1;
   }
@@ -60,7 +60,7 @@ var makeClockState = function(time, prefix) {
   return new GameState(time, description + makeTime(time) + '.')
 };
 var makeTime = function(time) {
-  return new Date(5*3600*1000+1000 * time).toTimeString().split(' ')[0];
+  return new Date(5*3600*1000+1000 * Math.floor(time)).toTimeString().split(' ')[0];
 };
 var scrollUp = function() {
   if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
@@ -99,8 +99,8 @@ var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
     if (commandline.textContent) {
       var index = scrollBehavior.indexInto(lines[lineCursor], characterCursor);
-      lines[lineCursor].gameStates[index] = new GameState(
-          t += 1, 'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
+      lines[lineCursor].gameStates[index] = new GameState(t += Math.random() * 10,
+          'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
       commandline.textContent = '';
       display();
     }
