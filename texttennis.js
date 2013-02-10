@@ -1,3 +1,4 @@
+var LINE_COUNT = 25;
 var SCROLL_DELAY = 80;
 
 var t = 0.0;
@@ -16,11 +17,17 @@ var load = function() {
 };
 var scrollDown = function() {
   stack.push(new GameState(t += 1, "The time is " + t + "."));
+  while (lineCursor < stack.length - LINE_COUNT) {
+    lineCursor += 1;
+  }
   display();
 };
 var scrollUp = function() {
   var state = stack.pop();
   t = state.timestamp - 1;
+  if (lineCursor > 0) {
+    lineCursor -= 1;
+  }
   display();
 };
 var mousewheel = function(e) {
@@ -36,31 +43,30 @@ var mousewheel = function(e) {
   e.preventDefault();
 };
 var backspace = function(e) {
-  if (e.keyCode == 8) {
+  if (e.keyCode == KeyCode.BACKSPACE) {
     commandline.textContent = commandline.textContent.slice(0, -1);
     e.preventDefault();
-  } else if (e.keyCode == 37) {
+  } else if (e.keyCode == KeyCode.LEFT) {
     commandline.textContent = commandline.textContent.slice(0, -1);
-  } else if (e.keyCode == 38) {
+  } else if (e.keyCode == KeyCode.UP) {
     scrollUp();
-  } else if (e.keyCode == 40) {
+  } else if (e.keyCode == KeyCode.DOWN) {
     scrollDown();
   }
 };
 var command = function(e) {
-  if (e.keyCode == 13) {
-    var content = document.createElement('p');
-    content.textContent = 'You did "' + commandline.textContent + '."';
-    commandline.textContent = "";
-    var newline = document.createElement('br');
-    container.appendChild(content);
-    container.appendChild(newline);
+  if (e.keyCode == KeyCode.RETURN) {
+    if (commandline.textContent) {
+      stack.push(new GameState(t += 1, 'You did "' + commandline.textContent + '."'));
+      commandline.textContent = '';
+      display();
+    }
   } else {
     commandline.textContent = commandline.textContent + String.fromCharCode(e.keyCode);
   }
 };
 var display = function () {
-  while (container.childNodes.length > 0) {
+  while (container.childNodes.length) {
     container.removeChild(container.childNodes[0]);
   }
   stack.slice(lineCursor).forEach(function(state) {
