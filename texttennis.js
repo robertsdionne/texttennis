@@ -64,7 +64,9 @@ var backspace = function(e) {
 var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
     if (commandline.textContent) {
-      stack.push(new GameState(t += 1, 'You did "' + commandline.textContent + '."'));
+      var state = new GameState(t += 1, 'You did "' + commandline.textContent + '."');
+      characterCursor = scrollBehavior.length(state.description);
+      stack.push(state);
       commandline.textContent = '';
       display();
     }
