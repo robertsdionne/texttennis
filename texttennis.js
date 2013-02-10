@@ -44,7 +44,7 @@ var scrollDown = function() {
 };
 var maybeDie = function(time) {
   if (Math.random() < 0.1) {
-    return new GameState(time, 'You died! . . .', false, true);
+    return new GameState(time, 'You died! . . .', true, true);
   } else {
     return new GameState(time, '');
   }
@@ -113,8 +113,13 @@ var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
     if (commandline.textContent) {
       var index = scrollBehavior.indexInto(lines[lineCursor], characterCursor);
-      lines[lineCursor].gameStates[index] = new GameState(t += Math.random() * 10,
-          'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
+      if (commandline.textContent == 'die') {
+        lines[lineCursor].gameStates[index] = new GameState(
+            t += Math.random() * 10, 'You died! . . .', true, true);
+      } else {
+        lines[lineCursor].gameStates[index] = new GameState(t += Math.random() * 10,
+            'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
+       }
       commandline.textContent = '';
       display();
     }
