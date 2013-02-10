@@ -9,6 +9,8 @@ var characterCursor = lines[0] ? lines[0].description.length : 0;
 var container;
 var commandline;
 var cursor;
+var scheme;
+var isDark = true;
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
@@ -17,6 +19,7 @@ var load = function() {
   container = document.getElementById('container');
   commandline = document.getElementById('commandline');
   cursor = document.getElementById('cursor');
+  scheme = document.getElementById('scheme');
   display();
   window.setInterval(blinkCursor, 1000);
 };
@@ -43,6 +46,20 @@ var scrollDown = function() {
     }
   }
   display();
+};
+var toggleScheme = function() {
+  if (isDark) {
+    scheme.innerHTML = 'body {' +
+        'background: white;' +
+        'color: black;' +
+      '}';
+  } else {
+    scheme.innerHTML = 'body {' +
+        'background: black;' +
+        'color: white;' +
+      '}';
+  }
+  isDark = !isDark;
 };
 var maybeDie = function(time) {
   if (Math.random() < 0.1) {
@@ -125,6 +142,8 @@ var command = function(e) {
       commandline.textContent = '';
       display();
     }
+  } else if (e.keyCode == KeyCode.TILDE) {
+    toggleScheme();
   } else {
     commandline.textContent = commandline.textContent + String.fromCharCode(e.keyCode);
   }
