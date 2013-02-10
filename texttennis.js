@@ -27,17 +27,19 @@ var scrollDown = function() {
   if (lineCursor >= 0 && characterCursor < scrollBehavior.length(lines[lineCursor].description)) {
     characterCursor += CHARACTER_CURSOR_INCREMENT;
   } else {
-    if (!lines[lineCursor].isDeath) {
+    if (!lines[lineCursor] || !lines[lineCursor].isDeath) {
       characterCursor = CHARACTER_CURSOR_INCREMENT;
-    }
-    lines.push(new Line([
-        makeClockState(t += Math.random() * 1000),
-        makeClockState(t += Math.random() * 10),
-        makeClockState(t += Math.random() * 100),
-        maybeDie(t += Math.random() * 10)
-    ]));
-    if (!lines[lineCursor].isDeath) {
       lineCursor += 1;
+    }
+    if (lineCursor < 1) {
+      lines.push(new Line([new GameState(t, 'Text Tennis')]));
+    } else {
+      lines.push(new Line([
+          makeClockState(t += Math.random() * 1000),
+          makeClockState(t += Math.random() * 10),
+          makeClockState(t += Math.random() * 100),
+          maybeDie(t += Math.random() * 10)
+      ]));
     }
   }
   display();
@@ -78,7 +80,7 @@ var scrollUp = function() {
   if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
     characterCursor -= CHARACTER_CURSOR_INCREMENT;
   } else {
-    while (lines.length > lineCursor) {
+    while (lineCursor >= 0 && lines.length > lineCursor) {
       lines.pop();
     }
     if (lineCursor >= 0) {
@@ -115,7 +117,7 @@ var command = function(e) {
       var index = scrollBehavior.indexInto(lines[lineCursor], characterCursor);
       if (commandline.textContent == 'die') {
         lines[lineCursor].gameStates[index] = new GameState(
-            t += Math.random() * 10, 'You died! . . .', true, true);
+            t += Math.random() * 10, 'You died! . . . ', true, true);
       } else {
         lines[lineCursor].gameStates[index] = new GameState(t += Math.random() * 10,
             'You ' + lowerCaseFirstLetter(commandline.textContent) + '. ', true);
