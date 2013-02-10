@@ -3,9 +3,9 @@ var SCROLL_DELAY = 80;
 var CHARACTER_CURSOR_INCREMENT = 1;
 
 var t = 0.0;
-var stack = [new GameState(t, 'Text Tennis')];
+var lines = [new Line([new GameState(t, 'Text Tennis')])];
 var lineCursor = 0;
-var characterCursor = 'Text Tennis'.length;
+var characterCursor = lines[0].description.length;
 var container;
 var commandline;
 var scrollBehavior = new PerWordScrollBehavior();
@@ -17,12 +17,12 @@ var load = function() {
   commandline = document.getElementById('commandline');
 };
 var scrollDown = function() {
-  if (stack.length && characterCursor < scrollBehavior.length(stack[stack.length - 1].description)) {
+  if (lines.length && characterCursor < scrollBehavior.length(lines[lines.length - 1].description)) {
     characterCursor += CHARACTER_CURSOR_INCREMENT;
   } else {
     characterCursor = CHARACTER_CURSOR_INCREMENT;
-    stack.push(new GameState(t += 1, "The time is " + t + "."));
-    while (lineCursor < stack.length - LINE_COUNT) {
+    lines.push(new Line([new GameState(t += 1, "The time is " + t + "."), new GameState(t += 1, "The time is " + t + ".")]));
+    while (lineCursor < lines.length - LINE_COUNT) {
       lineCursor += 1;
     }
   }
@@ -32,10 +32,10 @@ var scrollUp = function() {
   if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
     characterCursor -= CHARACTER_CURSOR_INCREMENT;
   } else {
-    var state = stack.pop();
-    if (state) {
-      characterCursor = scrollBehavior.length(state.description);
-      t = state.timestamp - 1;
+    var line = lines.pop();
+    if (line) {
+      characterCursor = scrollBehavior.length(line.description);
+      t = line.timestamp - 1;
       if (lineCursor > 0) {
         lineCursor -= 1;
       }
@@ -64,9 +64,9 @@ var backspace = function(e) {
 var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
     if (commandline.textContent) {
-      var state = new GameState(t += 1, 'You did "' + commandline.textContent + '."');
-      characterCursor = scrollBehavior.length(state.description);
-      stack.push(state);
+      var line = new Line([new GameState(t += 1, 'You did "' + commandline.textContent + '."')]);
+      characterCursor = scrollBehavior.length(line.description);
+      lines.push(line);
       commandline.textContent = '';
       display();
     }
@@ -78,16 +78,16 @@ var display = function () {
   while (container.childNodes.length) {
     container.removeChild(container.childNodes[0]);
   }
-  stack.slice(lineCursor, stack.length - 1).forEach(function(state) {
+  lines.slice(lineCursor, lines.length - 1).forEach(function(line) {
     var content = document.createTextNode();
-    content.textContent = state.description;
+    content.textContent = line.description;
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);
   });
-  if (stack.length) {
+  if (lines.length) {
     var content = document.createTextNode();
-    content.textContent = scrollBehavior.slice(stack[stack.length - 1].description, 0, characterCursor);
+    content.textContent = scrollBehavior.slice(lines[lines.length - 1].description, 0, characterCursor);
     var newline = document.createElement('br');
     container.appendChild(content);
     container.appendChild(newline);
