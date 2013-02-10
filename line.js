@@ -19,6 +19,15 @@ Object.defineProperties(Line.prototype, {
         return state.description;
       }).join(' ');
     }
+  },
+  "isDeath": {
+    get: function() {
+      return this.gameStates.map(function(state) {
+        return state.isDeath;
+      }).reduce(function(isDeath0, isDeath1) {
+        return isDeath0 || isDeath1;
+      });
+    }
   }
 });
 

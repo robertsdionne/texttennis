@@ -4,11 +4,13 @@
  * @param {number} timestamp
  * @param {string} description
  * @param {boolean=} opt_isCommand
+ * @param {boolean=} opt_isDeath
  */
-var GameState = function(timestamp, description, opt_isCommand) {
+var GameState = function(timestamp, description, opt_isCommand, opt_isDeath) {
   this.timestamp = timestamp;
   this.description = description;
   this.isCommand = opt_isCommand;
+  this.isDeath = opt_isDeath;
 };
 
 

@@ -27,17 +27,29 @@ var scrollDown = function() {
   if (lineCursor >= 0 && characterCursor < scrollBehavior.length(lines[lineCursor].description)) {
     characterCursor += CHARACTER_CURSOR_INCREMENT;
   } else {
-    characterCursor = CHARACTER_CURSOR_INCREMENT;
+    if (!lines[lineCursor].isDeath) {
+      characterCursor = CHARACTER_CURSOR_INCREMENT;
+    }
     lines.push(new Line([
         makeClockState(t += Math.random() * 1000),
         makeClockState(t += Math.random() * 10),
-        makeClockState(t += Math.random() * 100)
+        makeClockState(t += Math.random() * 100),
+        maybeDie(t += Math.random() * 10)
     ]));
-    lineCursor += 1;
+    if (!lines[lineCursor].isDeath) {
+      lineCursor += 1;
+    }
   }
   display();
 };
-var makeClockState = function(time, prefix) {
+var maybeDie = function(time) {
+  if (Math.random() < 0.1) {
+    return new GameState(time, 'You died! . . .', false, true);
+  } else {
+    return new GameState(time, '');
+  }
+};
+var makeClockState = function(time) {
   var choice = Math.random() * 8;
   var description;
   if (0 <= choice && choice < 1) {
@@ -66,13 +78,15 @@ var scrollUp = function() {
   if (characterCursor > CHARACTER_CURSOR_INCREMENT) {
     characterCursor -= CHARACTER_CURSOR_INCREMENT;
   } else {
-    var line = lines.pop();
-    if (lines[lines.length - 1]) {
-      characterCursor = scrollBehavior.length(lines[lines.length - 1].description);
-      t = lines[lines.length - 1].timestamp - 1;
+    while (lines.length > lineCursor) {
+      lines.pop();
     }
     if (lineCursor >= 0) {
       lineCursor -= 1;
+    }
+    if (lines[lineCursor]) {
+      characterCursor = scrollBehavior.length(lines[lineCursor].description);
+      t = lines[lineCursor].timestamp - 1;
     }
   }
   display();
