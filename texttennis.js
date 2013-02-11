@@ -14,6 +14,7 @@ var isDark = true;
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
+  document.addEventListener('touchmove', touchmove, false);
   document.addEventListener('keypress', command, false);
   document.addEventListener('keydown', backspace, false);
   container = document.getElementById('container');
@@ -115,6 +116,12 @@ var mousewheel = function(e) {
     scrollDown();
   } else if (e.wheelDelta > 0) {
     scrollUp();
+  }
+  e.preventDefault();
+};
+var touchmove = function(e) {
+  for (var i = 0; i < e.touches.length; ++i) {
+    document.appendChild(document.createTextNode(e.touches[i].pageX + '/' + e.touches[i].pageY));
   }
   e.preventDefault();
 };
