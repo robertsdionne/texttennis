@@ -119,8 +119,8 @@ var mousewheel = function(e) {
   }
   e.preventDefault();
 };
+var lastTouch;
 var touchmove = function(e) {
-  var lastTouch;
   for (var i = 0; i < e.touches.length; ++i) {
     var touch = e.touches[i];
     if (lastTouch) {
