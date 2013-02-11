@@ -7,7 +7,7 @@ var GameObject = function(opt_mass, opt_position, opt_velocity) {
 
 
 Object.defineProperties(GameObject.prototype, {
-  "velocity": {
+  velocity: {
     get: function() {
       return this.momentum.over(this.mass);
     },
@@ -15,7 +15,7 @@ Object.defineProperties(GameObject.prototype, {
       this.momentum = velocity.times(this.mass);
     }
   },
-  "acceleration": {
+  acceleration: {
     get: function() {
       return this.force.over(this.mass);
     },

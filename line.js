@@ -4,7 +4,7 @@ var Line = function(gameStates) {
 
 
 Object.defineProperties(Line.prototype, {
-  "timestamp": {
+  timestamp: {
     get: function() {
       return this.gameStates.map(function(state) {
         return state.timestamp;
@@ -13,14 +13,14 @@ Object.defineProperties(Line.prototype, {
       });
     }
   },
-  "description": {
+  description: {
     get: function() {
       return this.gameStates.map(function(state) {
         return state.description;
       }).join(' ');
     }
   },
-  "isDeath": {
+  isDeath: {
     get: function() {
       return this.gameStates.map(function(state) {
         return state.isDeath;
