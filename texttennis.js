@@ -120,9 +120,17 @@ var mousewheel = function(e) {
   e.preventDefault();
 };
 var touchmove = function(e) {
+  var lastTouch;
   for (var i = 0; i < e.touches.length; ++i) {
-    document.body.appendChild(document.createTextNode(e.touches[i].pageX + '/' + e.touches[i].pageY));
-    document.body.appendChild(document.createElement('br'));
+    var touch = e.touches[i];
+    if (lastTouch) {
+      if (touch.pageY - lastTouch.pageY > 0) {
+        scrollDown();
+      } else if (touch.pageY - lastTouch.pageY < 0) {
+        scrollUp();
+      }
+    }
+    lastTouch = touch;
   }
   e.preventDefault();
 };
