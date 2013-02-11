@@ -121,7 +121,7 @@ var mousewheel = function(e) {
 };
 var touchmove = function(e) {
   for (var i = 0; i < e.touches.length; ++i) {
-    document.appendChild(document.createTextNode(e.touches[i].pageX + '/' + e.touches[i].pageY));
+    document.body.appendChild(document.createTextNode(e.touches[i].pageX + '/' + e.touches[i].pageY));
   }
   e.preventDefault();
 };
