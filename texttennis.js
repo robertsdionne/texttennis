@@ -9,7 +9,6 @@ var characterCursor = lines[0] ? lines[0].description.length : 0;
 var container;
 var commandline;
 var cursor;
-var scheme;
 var isDark = true;
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
@@ -20,7 +19,6 @@ var load = function() {
   container = document.getElementById('container');
   commandline = document.getElementById('commandline');
   cursor = document.getElementById('cursor');
-  scheme = document.getElementById('scheme');
   display();
   window.setInterval(blinkCursor, 1000);
 };
@@ -50,15 +48,11 @@ var scrollDown = function() {
 };
 var toggleScheme = function() {
   if (isDark) {
-    scheme.innerHTML = 'body {' +
-        'background: white;' +
-        'color: black;' +
-      '}';
+    document.body.style.background = 'white';
+    document.body.style.color = 'black';
   } else {
-    scheme.innerHTML = 'body {' +
-        'background: black;' +
-        'color: white;' +
-      '}';
+    document.body.style.background = 'black';
+    document.body.style.color = 'white';
   }
   isDark = !isDark;
 };
