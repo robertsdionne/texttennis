@@ -9,7 +9,8 @@ var characterCursor = lines[0] ? lines[0].description.length : 0;
 var container;
 var commandline;
 var cursor;
-var isDark = true;
+var isDark = false;
+var gl;
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
@@ -21,6 +22,8 @@ var load = function() {
   cursor = document.getElementById('cursor');
   display();
   window.setInterval(blinkCursor, 1000);
+  setup();
+  requestAnimationFrame(animate);
 };
 var blinkCursor = function() {
   cursor.textContent = cursor.textContent ? '' : '\u2588';
@@ -35,7 +38,7 @@ var scrollDown = function() {
     }
     if (lineCursor < 1) {
       lines.push(new Line([new GameState(t, 'Text Tennis')]));
-    } else {
+    } else if (!lines[lineCursor] || !lines[lineCursor].isDeath) {
       lines.push(new Line([
           makeClockState(t += Math.random() * 1000),
           makeClockState(t += Math.random() * 10),
@@ -48,11 +51,11 @@ var scrollDown = function() {
 };
 var toggleScheme = function() {
   if (isDark) {
-    document.body.style.background = 'white';
-    document.body.style.color = 'black';
+    // document.body.style.background = 'white';
+    // document.body.style.color = 'black';
   } else {
-    document.body.style.background = 'black';
-    document.body.style.color = 'white';
+    // document.body.style.background = 'black';
+    // document.body.style.color = 'white';
   }
   isDark = !isDark;
 };
@@ -180,5 +183,110 @@ var display = function () {
     container.appendChild(content);
     container.appendChild(newline);
   }
+};
+var animate = function() {
+  update();
+  draw();
+  requestAnimationFrame(animate);
+};
+var createShader = function(type, source) {
+  var shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    var log = gl.getShaderInfoLog(shader);
+    gl.deleteShader(shader);
+    throw new Error(log);
+  }
+  return shader;
+};
+var createProgram = function(shaders) {
+  var program = gl.createProgram();
+  shaders.forEach(function(shader) {
+    gl.attachShader(program, shader);
+  });
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    var log = gl.getProgramInfoLog(program);
+    gl.deleteProgram(program);
+    throw new Error(log);
+  }
+  return program;
+};
+var createVisual = function(program, geometry, count) {
+  var buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometry), gl.STATIC_DRAW);
+  return new Visual(program, buffer, count);
+};
+var ortho = function(left, right, bottom, top, near, far) {
+  return new Float32Array([
+      2.0 / (right - left), 0.0, 0.0, 0.0,
+      0.0, 2.0 / (top - bottom), 0.0, 0.0,
+      0.0, 0.0, -2.0 / (far - near), 0.0,
+      -(right + left) / (right - left), -(top + bottom) / (top - bottom),
+          -(far + near) / (far - near), 1.0
+  ]);
+};
+var vertexShaderSource =
+    'uniform mat4 uniform_projection;' +
+    'uniform vec3 uniform_position;' +
+    'uniform float uniform_scale;' +
+    'attribute vec3 attribute_position;' +
+    'void main() {' +
+      'gl_Position = uniform_projection * vec4(' +
+          'uniform_scale * attribute_position + uniform_position, 1.0);' +
+    '}';
+var fragmentShaderSource =
+    'void main() {' +
+      'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);' +
+    '}';
+var vertexShader, fragmentShader, program;
+var courtVisual, boxVisual;
+var projection;
+var objects;
+var setup = function() {
+  gl = document.getCSSCanvasContext(
+      'experimental-webgl', 'c', window.innerWidth, window.innerHeight);
+  gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+  var inverseAspectRatio = window.innerHeight / window.innerWidth;
+  projection = ortho(-1.0, 1.0, -inverseAspectRatio, inverseAspectRatio, -10.0, 1000.0);
+  gl.clearColor(0.9, 0.9, 0.9, 1.0);
+  gl.enable(gl.DEPTH_TEST);
+  vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+  fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+  program = createProgram([vertexShader, fragmentShader]);
+  courtVisual = createVisual(program, [
+      -0.5, -0.5, 0.0,
+       0.5, -0.5, 0.0,
+       0.5,  0.5, 0.0,
+      -0.5, -0.5, 0.0,
+       0.5,  0.5, 0.0,
+      -0.5,  0.5, 0.0
+  ], 6);
+  boxVisual = createVisual(program, [
+      -0.5, -0.5, 1.0,
+       0.5, -0.5, 1.0,
+       0.5,  0.5, 1.0,
+      -0.5, -0.5, 1.0,
+       0.5,  0.5, 1.0,
+      -0.5,  0.5, 1.0
+  ], 6);
+  objects = [
+      //new GameObject(courtVisual, 1, Vector.ZERO, Vector.ZERO, 0.5),
+      new GameObject(boxVisual, 1, Vector.Zero, Vector.Zero, 0.1)
+  ];
+};
+var update = function() {
+  objects.forEach(function(object) {
+    object.position.x = 0.0001* t;
+    object.update(1.0 / 60.0);
+  });
+};
+var draw = function() {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  objects.forEach(function(object) {
+    object.draw(gl, projection);
+  });
 };
 window.addEventListener('load', load, false);
