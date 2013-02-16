@@ -282,15 +282,42 @@ var setup = function() {
       -0.5,  0.5, 0.0
   ], 6, new Vector(208/255, 229/255, 19/255));
   objects = [
-      new GameObject(courtVisual, 1, Vector.K.times(-10), Vector.ZERO, 10.0),
-      new GameObject(boxVisual, 1, Vector.K.times(-9), Vector.Zero, 1)
+      new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
+      new GameObject(boxVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.5).times(10.0), 1)
   ];
 };
 var update = function() {
-  objects[1].position.x = 0.0001 * t;
+  var ball = objects[1];
+  ball.force = ball.force.plus(Vector.K.times(-9.81 * ball.mass));
+  ball.force = ball.force.plus(ball.velocity.times(-0.2));
   objects.forEach(function(object) {
     object.update(1.0 / 60.0);
   });
+  if (ball.position.x < -5) {
+    ball.position.x = -5;
+    ball.momentum.x *= -1;
+    ball.momentum = ball.momentum.times(0.95);
+  }
+  if (5 < ball.position.x) {
+    ball.position.x = 5;
+    ball.momentum.x *= -1;
+    ball.momentum = ball.momentum.times(0.95);
+  }
+  if (ball.position.y < -5) {
+    ball.position.y = -5;
+    ball.momentum.y *= -1;
+    ball.momentum = ball.momentum.times(0.95);
+  }
+  if (5 < ball.position.y) {
+    ball.position.y = 5;
+    ball.momentum.y *= -1;
+    ball.momentum = ball.momentum.times(0.95);
+  }
+  if (ball.position.z < -22) {
+    ball.position.z = -22;
+    ball.momentum.z *= -1;
+    ball.momentum = ball.momentum.times(0.95);
+  }
 };
 var draw = function() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
