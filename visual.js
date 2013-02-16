@@ -1,11 +1,14 @@
 /**
  * @param {WebGLProgram} program
  * @param {WebGLBuffer} buffer
+ * @param {number} count
+ * @param {Vector=} color
  */
-var Visual = function(program, buffer, count) {
+var Visual = function(program, buffer, count, opt_color) {
   this.program = program;
   this.buffer = buffer;
   this.count = count;
+  this.color = opt_color || new Vector(1, 1, 1);
 };
 
 
@@ -25,6 +28,8 @@ Visual.prototype.draw = function(gl, projection, position, scale) {
   gl.uniform3f(
       gl.getUniformLocation(program, 'uniform_position'), position.x, position.y, position.z);
   gl.uniform1f(gl.getUniformLocation(program, 'uniform_scale'), scale);
+  gl.uniform3f(
+      gl.getUniformLocation(program, 'uniform_color'), this.color.x, this.color.y, this.color.z);
   gl.drawArrays(gl.TRIANGLES, 0, this.count);
 };
 

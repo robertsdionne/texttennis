@@ -212,11 +212,11 @@ var createProgram = function(shaders) {
   }
   return program;
 };
-var createVisual = function(program, geometry, count) {
+var createVisual = function(program, geometry, count, opt_color) {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometry), gl.STATIC_DRAW);
-  return new Visual(program, buffer, count);
+  return new Visual(program, buffer, count, opt_color);
 };
 var ortho = function(left, right, bottom, top, near, far) {
   return new Float32Array([
@@ -225,6 +225,14 @@ var ortho = function(left, right, bottom, top, near, far) {
       0.0, 0.0, -2.0 / (far - near), 0.0,
       -(right + left) / (right - left), -(top + bottom) / (top - bottom),
           -(far + near) / (far - near), 1.0
+  ]);
+};
+var perspective = function(left, right, bottom, top, near, far) {
+  return new Float32Array([
+      2.0 * near / (right - left), 0, 0, 0,
+      0, 2 * near / (top - bottom), 0, 0,
+      (right + left) / (right - left), (top + bottom) / (top - bottom), -(far + near) / (far - near), -1,
+      0, 0, -(2 * far * near) / (far - near), 0
   ]);
 };
 var vertexShaderSource =
@@ -237,8 +245,10 @@ var vertexShaderSource =
           'uniform_scale * attribute_position + uniform_position, 1.0);' +
     '}';
 var fragmentShaderSource =
+    'precision highp float;' +
+    'uniform vec3 uniform_color;' +
     'void main() {' +
-      'gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);' +
+      'gl_FragColor = vec4(uniform_color, 1.0);' +
     '}';
 var vertexShader, fragmentShader, program;
 var courtVisual, boxVisual;
@@ -249,7 +259,7 @@ var setup = function() {
       'experimental-webgl', 'c', window.innerWidth, window.innerHeight);
   gl.viewport(0, 0, window.innerWidth, window.innerHeight);
   var inverseAspectRatio = window.innerHeight / window.innerWidth;
-  projection = ortho(-1.0, 1.0, -inverseAspectRatio, inverseAspectRatio, -10.0, 1000.0);
+  projection = perspective(-1.0, 1.0, -inverseAspectRatio, inverseAspectRatio, 1.0, 1000.0);
   gl.clearColor(0.9, 0.9, 0.9, 1.0);
   gl.enable(gl.DEPTH_TEST);
   vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
@@ -262,23 +272,23 @@ var setup = function() {
       -0.5, -0.5, 0.0,
        0.5,  0.5, 0.0,
       -0.5,  0.5, 0.0
-  ], 6);
+  ], 6, new Vector(1, 1, 1));
   boxVisual = createVisual(program, [
-      -0.5, -0.5, 1.0,
-       0.5, -0.5, 1.0,
-       0.5,  0.5, 1.0,
-      -0.5, -0.5, 1.0,
-       0.5,  0.5, 1.0,
-      -0.5,  0.5, 1.0
-  ], 6);
+      -0.5, -0.5, 0.0,
+       0.5, -0.5, 0.0,
+       0.5,  0.5, 0.0,
+      -0.5, -0.5, 0.0,
+       0.5,  0.5, 0.0,
+      -0.5,  0.5, 0.0
+  ], 6, new Vector(208/255, 229/255, 19/255));
   objects = [
-      //new GameObject(courtVisual, 1, Vector.ZERO, Vector.ZERO, 0.5),
-      new GameObject(boxVisual, 1, Vector.Zero, Vector.Zero, 0.1)
+      new GameObject(courtVisual, 1, Vector.K.times(-10), Vector.ZERO, 10.0),
+      new GameObject(boxVisual, 1, Vector.K.times(-9), Vector.Zero, 1)
   ];
 };
 var update = function() {
+  objects[1].position.x = 0.0001 * t;
   objects.forEach(function(object) {
-    object.position.x = 0.0001* t;
     object.update(1.0 / 60.0);
   });
 };
