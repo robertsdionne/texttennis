@@ -1,5 +1,4 @@
 var LINE_COUNT = 4;
-var SCROLL_DELAY = 80;
 var CHARACTER_CURSOR_INCREMENT = 1;
 
 var t = 0.0;
