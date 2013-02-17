@@ -252,7 +252,7 @@ var fragmentShaderSource =
       'gl_FragColor = vec4(uniform_color, 1.0);' +
     '}';
 var vertexShader, fragmentShader, program;
-var courtVisual, boxVisual;
+var courtVisual, ballVisual;
 var projection;
 var objects;
 var setup = function() {
@@ -274,7 +274,7 @@ var setup = function() {
        0.5,  0.5, 0.0,
       -0.5,  0.5, 0.0
   ], 6, new Vector(1, 1, 1));
-  boxVisual = createVisual(program, [
+  ballVisual = createVisual(program, [
       -0.5, -0.5, 0.0,
        0.5, -0.5, 0.0,
        0.5,  0.5, 0.0,
@@ -284,7 +284,7 @@ var setup = function() {
   ], 6, new Vector(208/255, 229/255, 19/255), Vector.K);
   objects = [
       new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
-      new GameObject(boxVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.5).times(10.0), 1)
+      new GameObject(ballVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.5).times(10.0), 1)
   ];
 };
 var update = function() {
