@@ -2,13 +2,15 @@
  * @param {WebGLProgram} program
  * @param {WebGLBuffer} buffer
  * @param {number} count
- * @param {Vector=} color
+ * @param {Vector=} opt_color
+ * @param {Vector=} opt_offset
  */
-var Visual = function(program, buffer, count, opt_color) {
+var Visual = function(program, buffer, count, opt_color, opt_offset) {
   this.program = program;
   this.buffer = buffer;
   this.count = count;
   this.color = opt_color || new Vector(1, 1, 1);
+  this.offset = opt_offset || Vector.ZERO;
 };
 
 
@@ -27,6 +29,8 @@ Visual.prototype.draw = function(gl, projection, position, scale) {
   gl.uniformMatrix4fv(gl.getUniformLocation(program, 'uniform_projection'), false, projection);
   gl.uniform3f(
       gl.getUniformLocation(program, 'uniform_position'), position.x, position.y, position.z);
+  gl.uniform3f(gl.getUniformLocation(program, 'uniform_position_offset'),
+      this.offset.x, this.offset.y, this.offset.z);
   gl.uniform1f(gl.getUniformLocation(program, 'uniform_scale'), scale);
   gl.uniform3f(
       gl.getUniformLocation(program, 'uniform_color'), this.color.x, this.color.y, this.color.z);

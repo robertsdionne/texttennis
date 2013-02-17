@@ -212,11 +212,11 @@ var createProgram = function(shaders) {
   }
   return program;
 };
-var createVisual = function(program, geometry, count, opt_color) {
+var createVisual = function(program, geometry, count, opt_color, opt_offset) {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometry), gl.STATIC_DRAW);
-  return new Visual(program, buffer, count, opt_color);
+  return new Visual(program, buffer, count, opt_color, opt_offset);
 };
 var ortho = function(left, right, bottom, top, near, far) {
   return new Float32Array([
@@ -238,11 +238,12 @@ var perspective = function(left, right, bottom, top, near, far) {
 var vertexShaderSource =
     'uniform mat4 uniform_projection;' +
     'uniform vec3 uniform_position;' +
+    'uniform vec3 uniform_position_offset;' +
     'uniform float uniform_scale;' +
     'attribute vec3 attribute_position;' +
     'void main() {' +
       'gl_Position = uniform_projection * vec4(' +
-          'uniform_scale * attribute_position + uniform_position, 1.0);' +
+          'uniform_scale * attribute_position + uniform_position + uniform_position_offset, 1.0);' +
     '}';
 var fragmentShaderSource =
     'precision highp float;' +
@@ -280,7 +281,7 @@ var setup = function() {
       -0.5, -0.5, 0.0,
        0.5,  0.5, 0.0,
       -0.5,  0.5, 0.0
-  ], 6, new Vector(208/255, 229/255, 19/255));
+  ], 6, new Vector(208/255, 229/255, 19/255), Vector.K);
   objects = [
       new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
       new GameObject(boxVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.5).times(10.0), 1)
