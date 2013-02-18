@@ -20,38 +20,51 @@ var GameObject = function(visual, opt_mass, opt_position, opt_velocity, opt_scal
   /**
    * @type {!Vector}
    */
-  this.position = opt_position || Vector.ZERO;
+  this.position = opt_position || new Vector();
 
   /**
    * @type {!Vector}
    */
-  this.momentum = opt_velocity ? opt_velocity.times(this.mass) : Vector.ZERO;
+  this.oldPosition = this.position.minus((opt_velocity || new Vector()).times(1 / 60));
 
   /**
    * @type {number}
    */
-   this.scale = opt_scale || 1;
+  this.scale = opt_scale || 1;
 
   /**
    * @type {!Vector}
    */
-  this.force = Vector.ZERO;
+  this.force = new Vector();
+
+  /**
+   * @type {Array.<Event>}
+   */
+  this.eventLog = [];
 };
 
 
+/**
+ * @type {number}
+ */
+GameObject.EPSILON = 1e-1;
+
+
 Object.defineProperties(GameObject.prototype, {
-  velocity: {
+  momentum: {
     /**
-     * @return {!Vector} The velocity, derived from momentum.
+     * @return {!Vector} The momentum, derived from velocity and mass.
      */
     get: function() {
-      return this.momentum.over(this.mass);
-    },
+      return this.velocity.times(this.mass);
+    }
+  },
+  velocity: {
     /**
-     * @param {!Vector} velocity The new velocity.
+     * @return {!Vector} The velocity, derived position and frame rate.
      */
-    set: function(velocity) {
-      this.momentum = velocity.times(this.mass);
+    get: function() {
+      return this.position.minus(this.oldPosition).times(60);
     }
   },
   acceleration: {
@@ -60,12 +73,6 @@ Object.defineProperties(GameObject.prototype, {
      */
     get: function() {
       return this.force.over(this.mass);
-    },
-    /**
-     * @param {!Vector} acceleration The new acceleration.
-     */
-    set: function(acceleration) {
-      this.force = acceleration.times(this.mass);
     }
   }
 });
@@ -82,11 +89,26 @@ GameObject.prototype.draw = function(gl, projection) {
 };
 
 
+GameObject.prototype.calculateForces = function(dt) {
+  this.position = this.position.plus(this.force.over(this.mass).times(dt*dt));
+};
+
+
 /**
  * @param {number} dt
+ * @param {boolean=} opt_debug
  */
-GameObject.prototype.update = function(dt) {
-  this.position = this.position.plus(this.velocity.times(dt));
-  this.momentum = this.momentum.plus(this.force.times(dt));
-  this.force = Vector.ZERO;
+GameObject.prototype.update = function(dt, opt_debug) {
+  var newPosition = this.position.times(2).minus(this.oldPosition);
+  this.oldPosition = this.position;
+  this.position = newPosition;
+  if (opt_debug) {
+    var ids = ['oldPositionX', 'oldPositionY', 'oldPositionZ', 'oldVelocityX', 'oldVelocityY', 'oldVelocityZ'];
+    var data = [this.position.x, this.position.y, this.position.z, this.velocity.x, this.velocity.y, this.velocity.z];
+    for (var i = 0; i < ids.length; ++i) {
+      var value = Math.round(data[i] * 1000) / 1000;
+      var prefix = value > 0 ? '\u00A0' : '';
+      document.getElementById(ids[i]).textContent = prefix + value;
+    }
+  }
 };

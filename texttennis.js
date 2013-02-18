@@ -284,41 +284,45 @@ var setup = function() {
   ], 6, new Vector(208/255, 229/255, 19/255), Vector.K);
   objects = [
       new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
-      new GameObject(ballVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.5).times(10.0), 1)
+      new GameObject(ballVisual, 0.5, Vector.K.times(-10), new Vector(1, 0.5).times(10.0), 1)
   ];
 };
+var savedEventLog;
 var update = function() {
   var ball = objects[1];
+  if (!savedEventLog && ball.velocity.magnitude() < GameObject.EPSILON) {
+    savedEventLog = ball.eventLog;
+    ball.eventLog = [];
+    console.log(savedEventLog);
+  }
   ball.force = ball.force.plus(Vector.K.times(-9.81 * ball.mass));
   ball.force = ball.force.plus(ball.velocity.times(-0.2));
   objects.forEach(function(object) {
-    object.update(1.0 / 60.0);
+    var dt = 1 / 60 / 2;
+    object.calculateForces(dt);
   });
   if (ball.position.x < -5) {
     ball.position.x = -5;
-    ball.momentum.x *= -1;
-    ball.momentum = ball.momentum.times(0.95);
   }
   if (5 < ball.position.x) {
     ball.position.x = 5;
-    ball.momentum.x *= -1;
-    ball.momentum = ball.momentum.times(0.95);
   }
   if (ball.position.y < -5) {
     ball.position.y = -5;
-    ball.momentum.y *= -1;
-    ball.momentum = ball.momentum.times(0.95);
   }
   if (5 < ball.position.y) {
     ball.position.y = 5;
-    ball.momentum.y *= -1;
-    ball.momentum = ball.momentum.times(0.95);
   }
   if (ball.position.z < -22) {
     ball.position.z = -22;
-    ball.momentum.z *= -1;
-    ball.momentum = ball.momentum.times(0.95);
   }
+  objects.forEach(function(object) {
+    var dt = 1 / 60 / 2;
+    object.update(dt, true);
+    object.calculateForces(dt);
+    object.update(dt, false);
+    object.force = new Vector();
+  });
 };
 var draw = function() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
