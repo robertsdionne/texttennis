@@ -73,11 +73,14 @@
       p {
         margin: 0px 0px 0px 0px;
       }
-      b {
+      b#commandline {
         color: teal;
       }
       div#container {
         margin-left: 30px;
+      }
+      div.info {
+        display: inline;
       }
       b#commandline {
         margin-left: 20px;
@@ -85,28 +88,23 @@
   </style>
 </head>
 <body>
-  <div>
-    <div><b>Old Position:</b>
-      <b>x:</b><div id="oldPositionX"></div>
-      <b>y:</b><div id="oldPositionY"></div>
-      <b>z:</b><div id="oldPositionZ"></div>
-    </div>
-    <div><b>Old Velocity:</b>
-      <b>x:</b><div id="oldVelocityX"></div>
-      <b>y:</b><div id="oldVelocityY"></div>
-      <b>z:</b><div id="oldVelocityZ"></div>
-    </div>
-    <div><b>New Velocity:</b>
-      <b>x:</b><div id="newVelocityX"></div>
-      <b>y:</b><div id="newVelocityY"></div>
-      <b>z:</b><div id="newVelocityZ"></div>
-    </div>
-    <div><b>Event log:</b> <div id="eventLog"></div></div>
-  </div>
   <div id="container"></div>
   <br />
   &gt;<b id="commandline"></b><cursor id="cursor"></cursor>
   <br />
-  <canvas id="c" width="640" height="480"></canvas>
+  <br />
+  <div>
+    <div><b>Position:</b>
+      <b>x:</b><div id="positionX" class="info"></div>
+      <b>y:</b><div id="positionY" class="info"></div>
+      <b>z:</b><div id="positionZ" class="info"></div>
+    </div>
+    <div><b>Velocity:</b>
+      <b>x:</b><div id="velocityX" class="info"></div>
+      <b>y:</b><div id="velocityY" class="info"></div>
+      <b>z:</b><div id="velocityZ" class="info"></div>
+    </div>
+    <div><b>Event log:</b> <div id="eventLog" class="info"></div></div>
+  </div>
 </body>
 </html>

@@ -284,12 +284,13 @@ var setup = function() {
   ], 6, new Vector(208/255, 229/255, 19/255), Vector.K);
   objects = [
       new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
-      new GameObject(ballVisual, 0.5, Vector.K.times(-10), new Vector(1, 0.5).times(10.0), 1)
+      new GameObject(ballVisual, 0.5, Vector.K.times(-10), new Vector(1, 0.5).times(20.0), 1)
   ];
 };
 var savedEventLog;
 var update = function() {
   var ball = objects[1];
+  ball.saveEvent0();
   if (!savedEventLog && ball.velocity.magnitude() < GameObject.EPSILON) {
     savedEventLog = ball.eventLog;
     ball.eventLog = [];
@@ -323,6 +324,8 @@ var update = function() {
     object.update(dt, false);
     object.force = new Vector();
   });
+  ball.saveEvent1();
+  ball.updateEventLog();
 };
 var draw = function() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

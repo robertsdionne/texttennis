@@ -22,6 +22,14 @@ var GameObject = function(visual, opt_mass, opt_position, opt_velocity, opt_scal
    */
   this.position = opt_position || new Vector();
 
+  this.position0 = new Vector();
+
+  this.position1 = new Vector();
+
+  this.velocity0 = new Vector();
+
+  this.velocity1 = new Vector();
+
   /**
    * @type {!Vector}
    */
@@ -94,6 +102,41 @@ GameObject.prototype.calculateForces = function(dt) {
 };
 
 
+GameObject.prototype.saveEvent0 = function() {
+  this.position0 = this.position.times(1);
+  this.velocity0 = this.velocity.times(1);
+};
+
+
+GameObject.prototype.saveEvent1 = function() {
+  this.position1 = this.position.times(1);
+  this.velocity1 = this.velocity.times(1);
+};
+
+
+GameObject.prototype.updateEventLog = function() {
+  if (this.velocity0.x < 0 && this.velocity1.x > 0) {
+    this.eventLog.push('right');
+  }
+  if (this.velocity1.x < 0 && this.velocity0.x > 0) {
+    this.eventLog.push('left');
+  }
+  if (this.velocity0.y < 0 && this.velocity1.y > 0) {
+    this.eventLog.push('forward');
+  }
+  if (this.velocity1.y < 0 && this.velocity0.y > 0) {
+    this.eventLog.push('backward');
+  }
+  if (this.velocity0.z < 0 && this.velocity1.z > 0) {
+    this.eventLog.push('bounce');
+  }
+  if (this.velocity1.z < 0 && this.velocity0.z > 0) {
+    this.eventLog.push('fall');
+  }
+  document.getElementById('eventLog').textContent = this.eventLog.join();
+};
+
+
 /**
  * @param {number} dt
  * @param {boolean=} opt_debug
@@ -103,7 +146,7 @@ GameObject.prototype.update = function(dt, opt_debug) {
   this.oldPosition = this.position;
   this.position = newPosition;
   if (opt_debug) {
-    var ids = ['oldPositionX', 'oldPositionY', 'oldPositionZ', 'oldVelocityX', 'oldVelocityY', 'oldVelocityZ'];
+    var ids = ['positionX', 'positionY', 'positionZ', 'velocityX', 'velocityY', 'velocityZ'];
     var data = [this.position.x, this.position.y, this.position.z, this.velocity.x, this.velocity.y, this.velocity.z];
     for (var i = 0; i < ids.length; ++i) {
       var value = Math.round(data[i] * 1000) / 1000;
