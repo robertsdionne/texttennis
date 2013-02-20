@@ -115,25 +115,25 @@ GameObject.prototype.saveEvent1 = function() {
 
 
 GameObject.prototype.updateEventLog = function() {
-  if (this.velocity0.x < 0 && this.velocity1.x > 0) {
-    this.eventLog.push('right');
-  }
-  if (this.velocity1.x < 0 && this.velocity0.x > 0) {
-    this.eventLog.push('left');
-  }
-  if (this.velocity0.y < 0 && this.velocity1.y > 0) {
-    this.eventLog.push('forward');
-  }
-  if (this.velocity1.y < 0 && this.velocity0.y > 0) {
-    this.eventLog.push('backward');
-  }
-  if (this.velocity0.z < 0 && this.velocity1.z > 0) {
-    this.eventLog.push('bounce');
-  }
-  if (this.velocity1.z < 0 && this.velocity0.z > 0) {
-    this.eventLog.push('fall');
-  }
-  document.getElementById('eventLog').textContent = this.eventLog.join();
+  // if (this.velocity0.x < 0 && this.velocity1.x > 0) {
+  //   this.eventLog.push('right');
+  // }
+  // if (this.velocity1.x < 0 && this.velocity0.x > 0) {
+  //   this.eventLog.push('left');
+  // }
+  // if (this.velocity0.y < 0 && this.velocity1.y > 0) {
+  //   this.eventLog.push('forward');
+  // }
+  // if (this.velocity1.y < 0 && this.velocity0.y > 0) {
+  //   this.eventLog.push('backward');
+  // }
+  // if (this.velocity0.z < 0 && this.velocity1.z > 0) {
+  //   this.eventLog.push('bounce');
+  // }
+  // if (this.velocity1.z < 0 && this.velocity0.z > 0) {
+  //   this.eventLog.push('fall');
+  // }
+  // document.getElementById('eventLog').textContent = this.eventLog.join();
 };
 
 

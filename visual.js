@@ -5,10 +5,11 @@
  * @param {Vector=} opt_color
  * @param {Vector=} opt_offset
  */
-var Visual = function(program, buffer, count, opt_color, opt_offset) {
+var Visual = function(program, buffer, count, mode, opt_color, opt_offset) {
   this.program = program;
   this.buffer = buffer;
   this.count = count;
+  this.mode = mode;
   this.color = opt_color || new Vector(1, 1, 1);
   this.offset = opt_offset || Vector.ZERO;
 };
@@ -34,7 +35,7 @@ Visual.prototype.draw = function(gl, projection, position, scale) {
   gl.uniform1f(gl.getUniformLocation(program, 'uniform_scale'), scale);
   gl.uniform3f(
       gl.getUniformLocation(program, 'uniform_color'), this.color.x, this.color.y, this.color.z);
-  gl.drawArrays(gl.TRIANGLES, 0, this.count);
+  gl.drawArrays(this.mode, 0, this.count);
 };
 
 
