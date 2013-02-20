@@ -10,12 +10,15 @@ var commandline;
 var cursor;
 var isDark = false;
 var gl;
+var oldKeys = [];
+var keys = [];
 var scrollBehavior = new PerWordScrollBehavior();
 var load = function() {
   document.addEventListener('mousewheel', mousewheel, false);
   document.addEventListener('touchmove', touchmove, false);
   document.addEventListener('keypress', command, false);
   document.addEventListener('keydown', backspace, false);
+  document.addEventListener('keyup', release, false);
   container = document.getElementById('container');
   commandline = document.getElementById('commandline');
   cursor = document.getElementById('cursor');
@@ -139,6 +142,10 @@ var backspace = function(e) {
   } else if (e.keyCode == KeyCode.DOWN || e.keyCode == KeyCode.RIGHT) {
     scrollDown();
   }
+  keys[e.keyCode] = true;
+};
+var release = function(e) {
+  keys[e.keyCode] = false;
 };
 var command = function(e) {
   if (e.keyCode == KeyCode.RETURN) {
@@ -212,11 +219,11 @@ var createProgram = function(shaders) {
   }
   return program;
 };
-var createVisual = function(program, geometry, count, opt_color, opt_offset) {
+var createVisual = function(program, geometry, count, mode, opt_color, opt_offset) {
   var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(geometry), gl.STATIC_DRAW);
-  return new Visual(program, buffer, count, opt_color, opt_offset);
+  return new Visual(program, buffer, count, mode, opt_color, opt_offset);
 };
 var ortho = function(left, right, bottom, top, near, far) {
   return new Float32Array([
@@ -255,6 +262,9 @@ var vertexShader, fragmentShader, program;
 var courtVisual, ballVisual;
 var projection;
 var objects;
+var trail = [];
+var trailBuffer;
+var trailVisual;
 var setup = function() {
   gl = document.getCSSCanvasContext(
       'experimental-webgl', 'c', window.innerWidth, window.innerHeight);
@@ -273,7 +283,7 @@ var setup = function() {
       -0.5, -0.5, 0.0,
        0.5,  0.5, 0.0,
       -0.5,  0.5, 0.0
-  ], 6, new Vector(1, 1, 1));
+  ], 6, gl.TRIANGLES, new Vector(1, 1, 1));
   ballVisual = createVisual(program, [
       -0.5, -0.5, 0.0,
        0.5, -0.5, 0.0,
@@ -281,39 +291,53 @@ var setup = function() {
       -0.5, -0.5, 0.0,
        0.5,  0.5, 0.0,
       -0.5,  0.5, 0.0
-  ], 6, new Vector(208/255, 229/255, 19/255), Vector.K);
+  ], 6, gl.TRIANGLES, new Vector(208/255, 229/255, 19/255), Vector.K);
+  trailBuffer = gl.createBuffer();
+  trailVisual = new Visual(program, trailBuffer, trail.length, gl.LINE_STRIP, new Vector(), Vector.K.times(0.9));
   objects = [
-      new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
-      new GameObject(ballVisual, 0.5, Vector.K.times(-10), new Vector(1, 0.5).times(20.0), 1)
+      //new GameObject(courtVisual, Infinity, Vector.K.times(-22), Vector.ZERO, 10.0),
+      new GameObject(ballVisual, 0.5, Vector.K.times(-20), new Vector(1, 0.01).times(20.0), 1)
   ];
 };
 var savedEventLog;
+var t2 = 0;
+var frame = 0;
+var WIDTH = 18;
 var update = function() {
-  var ball = objects[1];
+  var ball = objects[0];
   ball.saveEvent0();
   if (!savedEventLog && ball.velocity.magnitude() < GameObject.EPSILON) {
     savedEventLog = ball.eventLog;
     ball.eventLog = [];
     console.log(savedEventLog);
   }
-  ball.force = ball.force.plus(Vector.K.times(-9.81 * ball.mass));
-  ball.force = ball.force.plus(ball.velocity.times(-0.2));
+  ball.force = ball.force.plus(Vector.J.times(-9.81 * ball.mass));
+  ball.force = ball.force.plus(ball.velocity.times(-0.05));
+  if (keys[KeyCode.UP]) {
+    ball.force = ball.force.plus(Vector.J.times(50.0));
+  }
+  if (keys[KeyCode.LEFT]) {
+    ball.force = ball.force.plus(Vector.I.times(-100.0));
+  }
+  if (keys[KeyCode.RIGHT]) {
+    ball.force = ball.force.plus(Vector.I.times(100.0));
+  }
   objects.forEach(function(object) {
     var dt = 1 / 60 / 2;
     object.calculateForces(dt);
   });
-  if (ball.position.x < -5) {
-    ball.position.x = -5;
+  if (ball.position.x < -WIDTH) {
+    ball.position.x = -WIDTH;
   }
-  if (5 < ball.position.x) {
-    ball.position.x = 5;
+  if (WIDTH < ball.position.x) {
+    ball.position.x = WIDTH;
   }
   if (ball.position.y < -5) {
     ball.position.y = -5;
   }
-  if (5 < ball.position.y) {
-    ball.position.y = 5;
-  }
+  // if (5 < ball.position.y) {
+  //   ball.position.y = 5;
+  // }
   if (ball.position.z < -22) {
     ball.position.z = -22;
   }
@@ -326,9 +350,36 @@ var update = function() {
   });
   ball.saveEvent1();
   ball.updateEventLog();
+  if (frame % 2 == 0) {
+    trail.push({
+      position: new Vector(ball.position.x, ball.position.y, ball.position.z),
+      time: t2
+    });
+    if (trail.length > 1000) {
+      trail.shift();
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, trailBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(toFloatArray(trail, ball.position)), gl.DYNAMIC_DRAW);
+    trailVisual.count = trail.length;
+  }
+  t2 += 1 / 60;
+  frame += 1;
+  oldKeys = keys.slice();
+};
+var toFloatArray = function(trail, position) {
+  var result = [];
+  trail.forEach(function(entry) {
+    result.push(entry.position.x, entry.position.y + 3 * (t2 - entry.time), entry.position.z);
+  });
+  return result;
 };
 var draw = function() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  if (trail.length) {
+    trailVisual.enable(gl);
+    trailVisual.draw(gl, projection, new Vector(), 1);
+    trailVisual.disable(gl);
+  }
   objects.forEach(function(object) {
     object.draw(gl, projection);
   });
