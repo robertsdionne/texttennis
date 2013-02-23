@@ -1,8 +1,6 @@
 <html>
 <head>
   <title>Text Tennis</title>
-  <script type="application/javascript" src="event.js"></script>
-  <script type="application/javascript" src="pattern.js"></script>
   <script type="application/javascript" src="gamestate.js"></script>
   <script type="application/javascript" src="line.js"></script>
   <script type="application/javascript" src="keycode.js"></script>
@@ -13,57 +11,6 @@
   <script type="application/javascript" src="visual.js"></script>
   <script type="application/javascript" src="gameobject.js"></script>
   <script type="application/javascript" src="texttennis.js"></script>
-  <script id="patterns" type="text/json">
-    [
-      {
-        "pattern": [
-          "(", "bounce", "fall", ")", "{1}", "roll", "stop"
-        ],
-        "description": [
-          "The ball bounces one time before it rolls to a stop.",
-          "The ball bounces once before it rolls to a stop.",
-          "The ball bounces before it rolls to a stop."
-        ]
-      },
-      {
-        "pattern": [
-          "(", "bounce", "fall", ")", "{2}", "roll", "stop"
-        ],
-        "description": [
-          "The ball bounces two times before it rolls to a stop.",
-          "The ball bounces twice before it rolls to a stop.",
-          "The ball bounces a couple times before it rolls to a stop."
-        ]
-      },
-      {
-        "pattern": [
-          "(", "bounce", "fall", ")", "{3}", "roll", "stop"
-        ],
-        "description": [
-          "The ball bounces three times before it rolls to a stop.",
-          "The ball bounces thrice before it rolls to a stop.",
-          "The ball bounces a few times before it rolls to a stop."
-        ]
-      },
-      {
-        "pattern": [
-          "(", "bounce", "fall", ")", "{4}", "roll", "stop"
-        ],
-        "description": [
-          "The ball bounces four times before it rolls to a stop.",
-          "The ball bounces several times before it rolls to a stop."
-        ]
-      },
-      {
-        "pattern": [
-          "(", "bounce", "fall", ")", "{5}", "roll", "stop"
-        ],
-        "description": [
-          "The ball bounces many times before it rolls to a stop."
-        ]
-      }
-    ]
-  </script>
   <style type="text/css">
       body {
         background: -webkit-canvas(c);
