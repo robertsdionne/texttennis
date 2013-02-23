@@ -17,10 +17,10 @@ RectangleBuilder.prototype.build = function(gl, program) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
       p0.x, p0.y, p0.z,
       p1.x, p1.y, p1.z,
-      p2.x, p2.y, p2.z,
-      p3.x, p3.y, p3.z
+      p3.x, p3.y, p3.z,
+      p2.x, p2.y, p2.z
   ]), gl.STATIC_DRAW);
-  return new Visual(program, buffer, 6, gl.TRIANGLE_STRIP, this.color);
+  return new Visual(program, buffer, 4, gl.TRIANGLE_STRIP, this.color);
 };
 
 

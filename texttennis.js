@@ -5,8 +5,19 @@ var TextTennis = function() {
   this.objects = [];
   this.projection = null;
   this.program = null;
-  this.courtVisual
+  this.ballVisual = null;
+  this.courtVisual = null;
 };
+
+
+TextTennis.BALL_RADIUS = 0.03429;
+
+
+TextTennis.COURT_LENGTH = 23.78;
+
+
+TextTennis.COURT_THICKNESS = 0.5;
+
 
 TextTennis.DAMPING = 0.98;
 
@@ -56,8 +67,8 @@ TextTennis.prototype.setup = function() {
   document.addEventListener('keydown', this.handleKeyDown.bind(this), false);
   document.addEventListener('keyup', this.handleKeyUp.bind(this), false);
   this.court = new GameObject(1, 1, new Vector(0, -4));
-  this.objects.push(new GameObject(1, 1, new Vector(), new Vector(10)));
-  this.gl.clearColor(1.0, 0.0, 0.0, 1.0);
+  this.objects.push(new GameObject(TextTennis.BALL_RADIUS, 1, new Vector(), new Vector(10)));
+  this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
   this.gl.viewport(0, 0, window.innerWidth, window.innerHeight);
   var inverseAspectRatio = window.innerHeight / window.innerWidth;
   this.leftX = -12.0;
@@ -70,11 +81,14 @@ TextTennis.prototype.setup = function() {
       this.createShader(this.gl.VERTEX_SHADER, TextTennis.VERTEX_SHADER_SOURCE),
       this.createShader(this.gl.FRAGMENT_SHADER, TextTennis.FRAGMENT_SHADER_SOURCE)
   ]);
-  this.courtVisual = new RectangleBuilder()
-      .setColor(new Vector(0, 1, 0))
-      .setWidth(11.89)
+  this.ballVisual = new CircleBuilder()
+      .setRadius(TextTennis.BALL_RADIUS)
       .build(this.gl, this.program);
-  this.ballVisual = new CircleBuilder().build(this.gl, this.program);
+  this.courtVisual = new RectangleBuilder()
+      .setCenter(new Vector(0, this.floorY))
+      .setHeight(2.0 * TextTennis.COURT_THICKNESS)
+      .setWidth(TextTennis.COURT_LENGTH)
+      .build(this.gl, this.program);
 };
 
 
@@ -103,8 +117,8 @@ TextTennis.prototype.accelerate = function(dt) {
 
 TextTennis.prototype.borderCollide = function() {
   var ball = this.objects[0];
-  if (ball.position.y - ball.radius < this.floorY) {
-    ball.position.y = ball.radius + this.floorY;
+  if (ball.position.y - ball.radius - TextTennis.COURT_THICKNESS < this.floorY) {
+    ball.position.y = ball.radius + TextTennis.COURT_THICKNESS + this.floorY;
   }
   if (ball.position.x - ball.radius < this.leftX) {
     ball.position.x = ball.radius + this.leftX;
@@ -123,9 +137,9 @@ TextTennis.prototype.inertia = function(dt) {
 
 TextTennis.prototype.borderCollidePreserveImpulse = function() {
   var ball = this.objects[0];
-  if (ball.position.y - ball.radius < this.floorY) {
+  if (ball.position.y - ball.radius - TextTennis.COURT_THICKNESS < this.floorY) {
     var vy = (ball.previousPosition.y - ball.position.y) * TextTennis.DAMPING;
-    ball.position.y = ball.radius + this.floorY;
+    ball.position.y = ball.radius + TextTennis.COURT_THICKNESS + this.floorY;
     ball.previousPosition.y = ball.position.y - vy;
   }
   if (ball.position.x - ball.radius < this.leftX) {
@@ -144,11 +158,11 @@ TextTennis.prototype.draw = function() {
   this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
   var textTennis = this;
   this.courtVisual.enable(this.gl);
-  this.courtVisual.draw(this.gl, this.projection, this.court);
+  this.courtVisual.draw(this.gl, this.projection, Vector.ZERO);
   this.courtVisual.disable(this.gl);
   this.ballVisual.enable(this.gl);
   this.objects.forEach(function(object) {
-    textTennis.ballVisual.draw(textTennis.gl, textTennis.projection, object);
+    textTennis.ballVisual.draw(textTennis.gl, textTennis.projection, object.position);
   });
   this.ballVisual.disable(this.gl);
 };

@@ -24,10 +24,10 @@ Visual.prototype.disable = function(gl) {
 /**
  * @param {WebGLRenderingContext} gl
  */
-Visual.prototype.draw = function(gl, projection, object) {
+Visual.prototype.draw = function(gl, projection, position) {
   gl.uniformMatrix4fv(gl.getUniformLocation(this.program, 'uniform_projection'), false, projection);
-  gl.uniform3f(gl.getUniformLocation(this.program, 'uniform_position'),
-      object.position.x, object.position.y, object.position.z);
+  gl.uniform3f(
+      gl.getUniformLocation(this.program, 'uniform_position'), position.x, position.y, position.z);
   gl.uniform3f(
       gl.getUniformLocation(this.program, 'uniform_color'), this.color.x, this.color.y, this.color.z);
   gl.drawArrays(this.mode, 0, this.count);
