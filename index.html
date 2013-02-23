@@ -1,12 +1,7 @@
 <html>
 <head>
   <title>Text Tennis</title>
-  <script type="application/javascript" src="gamestate.js"></script>
-  <script type="application/javascript" src="line.js"></script>
   <script type="application/javascript" src="keycode.js"></script>
-  <script type="application/javascript" src="scrollbehavior.js"></script>
-  <script type="application/javascript" src="percharacterscrollbehavior.js"></script>
-  <script type="application/javascript" src="perwordscrollbehavior.js"></script>
   <script type="application/javascript" src="vector.js"></script>
   <script type="application/javascript" src="visual.js"></script>
   <script type="application/javascript" src="gameobject.js"></script>
@@ -17,41 +12,8 @@
         color: black;
         font-family: "Courier New";
       }
-      p {
-        margin: 0px 0px 0px 0px;
-      }
-      b#commandline {
-        color: teal;
-      }
-      div#container {
-        margin-left: 30px;
-      }
-      div.info {
-        display: inline;
-      }
-      b#commandline {
-        margin-left: 20px;
-      }
   </style>
 </head>
 <body>
-  <div id="container"></div>
-  <br />
-  &gt;<b id="commandline"></b><cursor id="cursor"></cursor>
-  <br />
-  <br />
-  <div>
-    <div><b>Position:</b>
-      <b>x:</b><div id="positionX" class="info"></div>
-      <b>y:</b><div id="positionY" class="info"></div>
-      <b>z:</b><div id="positionZ" class="info"></div>
-    </div>
-    <div><b>Velocity:</b>
-      <b>x:</b><div id="velocityX" class="info"></div>
-      <b>y:</b><div id="velocityY" class="info"></div>
-      <b>z:</b><div id="velocityZ" class="info"></div>
-    </div>
-    <div><b>Event log:</b> <div id="eventLog" class="info"></div></div>
-  </div>
 </body>
 </html>
