@@ -17,6 +17,11 @@ Vector.J = new Vector(0, 1);
 Vector.K = new Vector(0, 0, 1);
 
 
+Vector.prototype.copy = function() {
+  return new Vector(this.x, this.y, this.z);
+};
+
+
 Vector.prototype.magnitude = function() {
   return Math.sqrt(this.dot(this));
 };

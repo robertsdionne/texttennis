@@ -9,7 +9,7 @@ var Visual = function(program, buffer, count, mode, opt_color) {
   this.buffer = buffer;
   this.count = count;
   this.mode = mode;
-  this.color = opt_color || new Vector(1, 1, 1);
+  this.color = opt_color || new Vector();
 };
 
 
