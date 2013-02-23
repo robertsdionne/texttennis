@@ -10,7 +10,7 @@ var TextTennis = function() {
 };
 
 
-TextTennis.BALL_RADIUS = 0.03429;
+TextTennis.BALL_RADIUS = 2.0 * 0.03429;
 
 
 TextTennis.COURT_LENGTH = 23.78;
@@ -19,7 +19,7 @@ TextTennis.COURT_LENGTH = 23.78;
 TextTennis.COURT_THICKNESS = 0.5;
 
 
-TextTennis.DAMPING = 0.98;
+TextTennis.DAMPING = 0.9;
 
 
 TextTennis.DT  = 1.0 / 60.0;
@@ -71,10 +71,10 @@ TextTennis.prototype.setup = function() {
   this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
   this.gl.viewport(0, 0, window.innerWidth, window.innerHeight);
   var inverseAspectRatio = window.innerHeight / window.innerWidth;
-  this.leftX = -12.0;
-  this.rightX = 12.0;
-  this.floorY = -12.0 * inverseAspectRatio;
-  this.ceilingY = 12.0 * inverseAspectRatio;
+  this.leftX = -TextTennis.COURT_LENGTH / 2.0;
+  this.rightX = TextTennis.COURT_LENGTH / 2.0;
+  this.floorY = -TextTennis.COURT_LENGTH / 2.0 * inverseAspectRatio;
+  this.ceilingY = TextTennis.COURT_LENGTH / 2.0 * inverseAspectRatio;
   this.projection = this.ortho(this.leftX, this.rightX, this.floorY, this.ceilingY, -5.0, 5.0);
   this.gl.enable(this.gl.DEPTH_TEST);
   this.program = this.createProgram([
