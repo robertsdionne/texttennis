@@ -60,6 +60,11 @@ Object.defineProperties(GameObject.prototype, {
 });
 
 
+GameObject.prototype.addForce = function(force) {
+  this.force = this.force.plus(force);
+};
+
+
 GameObject.prototype.accelerate = function(dt) {
   this.position = this.position.plus(this.force.over(this.mass).times(dt*dt));
   this.force = new Vector();
@@ -68,9 +73,8 @@ GameObject.prototype.accelerate = function(dt) {
 
 /**
  * @param {number} dt
- * @param {boolean=} opt_debug
  */
-GameObject.prototype.inertia = function(dt, opt_debug) {
+GameObject.prototype.inertia = function(dt) {
   var position = this.position.times(2).minus(this.previousPosition);
   this.previousPosition = this.position;
   this.position = position;
