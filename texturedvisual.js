@@ -2,41 +2,42 @@
  * @param {WebGLProgram} program
  * @param {WebGLBuffer} buffer
  * @param {number} count
- * @param {Vector=} opt_color
+ * @param {WebGLTexture} texture
  */
-var Visual = function(program, buffer, count, mode, opt_color) {
+var TexturedVisual = function(program, buffer, count, mode, texture) {
   this.program = program;
   this.buffer = buffer;
   this.count = count;
   this.mode = mode;
-  this.color = opt_color || new Vector();
+  this.texture = texture;
 };
 
 
-Visual.FRAGMENT_SHADER_SOURCE =
+TexturedVisual.FRAGMENT_SHADER_SOURCE =
     'precision highp float;' +
-    'varying vec3 varying_position;' +
     'uniform vec3 uniform_color;' +
+    'uniform sampler2D uniform_texture;' +
+    'varying vec2 varying_texture_coordinate;' +
     'void main() {' +
-      'gl_FragColor = vec4(vec3(varying_position.z), 1.0);' +
+      'gl_FragColor = vec4(uniform_color, 1.0);' +
     '}';
 
 
-Visual.VERTEX_SHADER_SOURCE =
+TexturedVisual.VERTEX_SHADER_SOURCE =
     'uniform mat4 uniform_projection;' +
     'uniform vec3 uniform_position;' +
-    'varying vec3 varying_position;' +
     'attribute vec3 attribute_position;' +
+    'attribute vec2 attribute_texture_coordinate;' +
+    'varying vec2 varying_texture_coordinate;' +
     'void main() {' +
       'gl_Position = uniform_projection * vec4(attribute_position + uniform_position, 1.0);' +
-      'varying_position = gl_Position.xyz;' +
     '}';
 
 
 /**
  * @param {WebGLRenderingContext} gl
  */
-Visual.prototype.disable = function(gl) {
+TexturedVisual.prototype.disable = function(gl) {
   gl.disableVertexAttribArray(gl.getAttribLocation(this.program, 'attribute_position'));
 };
 
@@ -44,7 +45,7 @@ Visual.prototype.disable = function(gl) {
 /**
  * @param {WebGLRenderingContext} gl
  */
-Visual.prototype.draw = function(gl, projection, position) {
+TexturedVisual.prototype.draw = function(gl, projection, position) {
   gl.uniformMatrix4fv(gl.getUniformLocation(this.program, 'uniform_projection'), false, projection);
   gl.uniform3f(
       gl.getUniformLocation(this.program, 'uniform_position'), position.x, position.y, position.z);
@@ -59,7 +60,7 @@ Visual.prototype.draw = function(gl, projection, position) {
  * @param {Float32Array} projection
  * @param {Vector} position
  */
-Visual.prototype.enable = function(gl) {
+TexturedVisual.prototype.enable = function(gl) {
   gl.useProgram(this.program);
   gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
   var attributePosition = gl.getAttribLocation(this.program, 'attribute_position');

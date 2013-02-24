@@ -9,6 +9,8 @@ var TextTennis = function() {
   this.ballVisual = null;
   this.courtVisual = null;
   this.trailVisual = null;
+  this.hitRacket1 = false;
+  this.hitRacket2 = false;
   this.time = 0.0;
 };
 
@@ -22,33 +24,25 @@ TextTennis.COURT_LENGTH = 23.78;
 TextTennis.COURT_THICKNESS = 0.5;
 
 
-TextTennis.DAMPING = 0.9;
+TextTennis.DAMPING = 0.5;
 
 
 TextTennis.DT  = 1.0 / 60.0;
 
 
-TextTennis.FRAGMENT_SHADER_SOURCE =
-    'precision highp float;' +
-    'uniform vec3 uniform_color;' +
-    'void main() {' +
-      'gl_FragColor = vec4(uniform_color, 1.0);' +
-    '}';
-
-
 TextTennis.GRAVITY = 9.81;
 
 
+TextTennis.NET_HEIGHT = 0.914;
+
+
+TextTennis.NET_THICKNESS = TextTennis.BALL_RADIUS;
+
+
+TextTennis.RACKET_RADIUS = 2.0 * 0.1155;
+
+
 TextTennis.TRAIL_LENGTH = 1000;
-
-
-TextTennis.VERTEX_SHADER_SOURCE =
-    'uniform mat4 uniform_projection;' +
-    'uniform vec3 uniform_position;' +
-    'attribute vec3 attribute_position;' +
-    'void main() {' +
-      'gl_Position = uniform_projection * vec4(attribute_position + uniform_position, 1.0);' +
-    '}';
 
 
 TextTennis.handleLoad = function() {
@@ -84,17 +78,27 @@ TextTennis.prototype.setup = function() {
   this.projection = this.ortho(this.leftX, this.rightX, this.floorY, this.ceilingY, -5.0, 5.0);
   this.gl.enable(this.gl.DEPTH_TEST);
   this.program = this.createProgram([
-      this.createShader(this.gl.VERTEX_SHADER, TextTennis.VERTEX_SHADER_SOURCE),
-      this.createShader(this.gl.FRAGMENT_SHADER, TextTennis.FRAGMENT_SHADER_SOURCE)
+      this.createShader(this.gl.VERTEX_SHADER, Visual.VERTEX_SHADER_SOURCE),
+      this.createShader(this.gl.FRAGMENT_SHADER, Visual.FRAGMENT_SHADER_SOURCE)
   ]);
   this.ballVisual = new CircleBuilder()
       .setRadius(TextTennis.BALL_RADIUS)
+      .build(this.gl, this.program);
+  this.racketVisual = new CircleBuilder()
+      .setRadius(TextTennis.RACKET_RADIUS)
       .build(this.gl, this.program);
   this.courtVisual = new RectangleBuilder()
       .setCenter(new Vector(0, this.floorY))
       .setHeight(2.0 * TextTennis.COURT_THICKNESS)
       .setWidth(TextTennis.COURT_LENGTH)
       .build(this.gl, this.program);
+  this.netVisual = new RectangleBuilder()
+      .setCenter(new Vector(0, this.floorY))
+      .setHeight(2.0 * (TextTennis.NET_HEIGHT + TextTennis.COURT_THICKNESS))
+      .setWidth(TextTennis.NET_THICKNESS)
+      .build(this.gl, this.program);
+  this.racket1 = new Vector(-8, this.floorY + 1.5);
+  this.racket2 = new Vector(8, this.floorY + 1.5);
   this.trail = [];
   this.trailVisual = new Visual(this.program, this.gl.createBuffer(), 0, this.gl.LINE_STRIP);
 };
@@ -103,20 +107,48 @@ TextTennis.prototype.setup = function() {
 TextTennis.prototype.update = function() {
   var ball = this.objects[0];
   this.gravity();
-  if (this.keys[KeyCode.LEFT] && !this.previousKeys[KeyCode.LEFT]) {
-    ball.previousPosition.x += 0.5;
-    ball.previousPosition.y -= 0.01;
+  this.drag();
+  if (this.keys[KeyCode.LEFT]) {
+    this.racket2 = this.racket2.plus(Vector.I.times(-0.1));
   }
-  if (this.keys[KeyCode.RIGHT] && !this.previousKeys[KeyCode.RIGHT]) {
-    ball.previousPosition.x -= 0.5;
-    ball.previousPosition.y -= 0.01;
+  if (this.keys[KeyCode.RIGHT]) {
+    this.racket2 = this.racket2.plus(Vector.I.times(0.1));
   }
-  if (this.keys[KeyCode.UP] && !this.previousKeys[KeyCode.UP]) {
-    ball.previousPosition.y -= 0.25;
+  if (this.keys[KeyCode.UP]) {
+    this.racket2 = this.racket2.plus(Vector.J.times(0.1));
+  }
+  if (this.keys[KeyCode.DOWN]) {
+    this.racket2 = this.racket2.plus(Vector.J.times(-0.1));
+  }
+  if (this.keys[KeyCode.A]) {
+    this.racket1 = this.racket1.plus(Vector.I.times(-0.1));
+  }
+  if (this.keys[KeyCode.D]) {
+    this.racket1 = this.racket1.plus(Vector.I.times(0.1));
+  }
+  if (this.keys[KeyCode.W]) {
+    this.racket1 = this.racket1.plus(Vector.J.times(0.1));
+  }
+  if (this.keys[KeyCode.S]) {
+    this.racket1 = this.racket1.plus(Vector.J.times(-0.1));
   }
   this.accelerate(TextTennis.DT);
   this.borderCollide();
   this.inertia(TextTennis.DT);
+  if (!this.hitRacket1 && ball.position.minus(this.racket1).magnitude() < TextTennis.BALL_RADIUS + TextTennis.RACKET_RADIUS) {
+    ball.previousPosition.x = ball.position.x - 0.2;
+    ball.previousPosition.y = ball.position.y - 0.1;
+    this.hitRacket1 = true;
+  } else if (this.hitRacket1 && ball.position.minus(this.racket1).magnitude() > TextTennis.BALL_RADIUS + TextTennis.RACKET_RADIUS) {
+    this.hitRacket1 = false;
+  }
+  if (!this.hitRacket2 && ball.position.minus(this.racket2).magnitude() < TextTennis.BALL_RADIUS + TextTennis.RACKET_RADIUS) {
+    ball.previousPosition.x = ball.position.x + 0.2;
+    ball.previousPosition.y = ball.position.y - 0.1;
+    this.hitRacket2 = true;
+  } else if (this.hitRacket2 && ball.position.minus(this.racket2).magnitude() > TextTennis.BALL_RADIUS + TextTennis.RACKET_RADIUS) {
+    this.hitRacket2 = false;
+  }
   this.borderCollidePreserveImpulse();
   this.updateTrail();
   this.time += TextTennis.DT;
@@ -126,6 +158,13 @@ TextTennis.prototype.update = function() {
 TextTennis.prototype.gravity = function() {
   this.objects.forEach(function(object) {
     object.addForce(Vector.J.times(-TextTennis.GRAVITY));
+  });
+};
+
+
+TextTennis.prototype.drag = function() {
+  this.objects.forEach(function(object) {
+    object.addForce(object.velocity.times(-0.2));
   });
 };
 
@@ -177,8 +216,9 @@ TextTennis.prototype.borderCollidePreserveImpulse = function() {
 
 
 TextTennis.prototype.updateTrail = function() {
+  var ball = this.objects[0];
   this.trail.push({
-    position: this.objects[0].position.copy(),
+    position: ball.position.copy(),
     time: this.time
   });
   if (this.trail.length > TextTennis.TRAIL_LENGTH) {
@@ -187,8 +227,8 @@ TextTennis.prototype.updateTrail = function() {
   this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.trailVisual.buffer);
   var geometry = [];
   var textTennis = this;
-  this.trail.forEach(function(entry) {
-    geometry.push(entry.position.x, entry.position.y + 3 * (textTennis.time - entry.time), entry.position.z);
+  this.trail.forEach(function(entry, index) {
+    geometry.push(entry.position.x, entry.position.y + Math.pow(textTennis.time - entry.time, 1), index / TextTennis.TRAIL_LENGTH);
   });
   this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(geometry), this.gl.DYNAMIC_DRAW);
   this.trailVisual.count = this.trail.length;
@@ -201,6 +241,13 @@ TextTennis.prototype.draw = function() {
   this.courtVisual.enable(this.gl);
   this.courtVisual.draw(this.gl, this.projection, Vector.ZERO);
   this.courtVisual.disable(this.gl);
+  this.netVisual.enable(this.gl);
+  this.netVisual.draw(this.gl, this.projection, Vector.ZERO);
+  this.netVisual.disable(this.gl);
+  this.racketVisual.enable(this.gl);
+  this.racketVisual.draw(this.gl, this.projection, this.racket1);
+  this.racketVisual.draw(this.gl, this.projection, this.racket2);
+  this.racketVisual.disable(this.gl);
   this.trailVisual.enable(this.gl);
   this.trailVisual.draw(this.gl, this.projection, Vector.ZERO);
   this.trailVisual.disable(this.gl);
@@ -278,12 +325,3 @@ TextTennis.prototype.perspective = function(left, right, bottom, top, near, far)
       0, 0, -(2 * far * near) / (far - near), 0
   ]);
 };
-
-
-// var toFloatArray = function(trail, position) {
-//   var result = [];
-//   trail.forEach(function(entry) {
-//     result.push(entry.position.x, entry.position.y + 3 * (t2 - entry.time), entry.position.z);
-//   });
-//   return result;
-// };
