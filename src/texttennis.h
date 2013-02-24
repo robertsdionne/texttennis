@@ -33,11 +33,15 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
+  static constexpr float kBallMass = 0.056;
+  static constexpr float kBallRadius = 2.0 * 0.03429;
   static constexpr float kCourtLength = 23.78;
-  static constexpr float kDamping = 0.9;
+  static constexpr float kCourtThickness = 0.5;
+  static constexpr float kDamping = 0.5;
+  static constexpr float kDrag = 0.2;
   static constexpr float kGravity = 9.81;
-  static constexpr float kTennisBallMass = 0.056;
-  static constexpr float kTennisBallRadius = 2.0 * 0.03429;
+  static constexpr float kNetHeight = 0.914;
+  static constexpr float kNetThickness = kBallRadius;
   
   void Accelerate(float dt);
   void BorderCollide();

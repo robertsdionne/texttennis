@@ -1,7 +1,7 @@
 #include "texttennis.h"
 
 void TextTennis::setup() {
-  ball = GameObject(kTennisBallRadius, kTennisBallMass, ofVec2f(0, 10), ofVec2f(100, 25));
+  ball = GameObject(kBallRadius, kBallMass, ofVec2f(0, 10), ofVec2f(100, 25));
   ofSetupScreenOrtho(kCourtLength, kCourtLength);
   ofSetFrameRate(30.0);
 }
@@ -21,7 +21,7 @@ void TextTennis::Gravity() {
 }
 
 void TextTennis::Damping() {
-  ball.force += -0.1 * ball.velocity();
+  ball.force += -kDrag * ball.velocity();
 }
 
 void TextTennis::Accelerate(float dt) {
@@ -29,8 +29,8 @@ void TextTennis::Accelerate(float dt) {
 }
 
 void TextTennis::BorderCollide() {
-  if (ball.position.y - ball.radius < 0) {
-    ball.position.y = ball.radius;
+  if (ball.position.y - ball.radius - kCourtThickness < 0) {
+    ball.position.y = ball.radius + kCourtThickness;
   }
   if (ball.position.x - ball.radius < -kCourtLength / 2.0) {
     ball.position.x = ball.radius - kCourtLength / 2.0;
@@ -44,9 +44,9 @@ void TextTennis::Inertia() {
 }
 
 void TextTennis::BorderCollidePreserveImpulse() {
-  if (ball.position.y - ball.radius < 0) {
+  if (ball.position.y - ball.radius - kCourtThickness < 0) {
     float vy = (ball.previous_position.y - ball.position.y) * kDamping;
-    ball.position.y = ball.radius;
+    ball.position.y = ball.radius + kCourtThickness;
     ball.previous_position.y = ball.position.y - vy;
   }
   if (ball.position.x - ball.radius < -kCourtLength / 2.0) {
@@ -64,6 +64,8 @@ void TextTennis::draw() {
   ofBackground(ofColor::white);
   ofSetColor(ofColor::black);
   ofCircle(TransformPosition(ball.position), TransformSize(ball.radius));
+  ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
+  ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {
