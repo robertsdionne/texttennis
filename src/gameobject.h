@@ -18,7 +18,10 @@ public:
   
   virtual ~GameObject();
   
+  ofVec2f velocity() const;
+  
   void Accelerate(float dt);
+  
   void Inertia();
   
   float radius;

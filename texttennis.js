@@ -11,6 +11,7 @@ var TextTennis = function() {
   this.trailVisual = null;
   this.hitRacket1 = false;
   this.hitRacket2 = false;
+  this.lastFrameTime = performance.now();
   this.time = 0.0;
 };
 
@@ -256,6 +257,9 @@ TextTennis.prototype.draw = function() {
     textTennis.ballVisual.draw(textTennis.gl, textTennis.projection, object.position);
   });
   this.ballVisual.disable(this.gl);
+  var time = performance.now();
+  console.log(1000.0 / (time - this.lastFrameTime));
+  this.lastFrameTime = time;
 };
 
 

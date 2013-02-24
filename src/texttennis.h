@@ -33,10 +33,21 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
-  void SetViewTransform();
-  
+  static constexpr float kCourtLength = 23.78;
+  static constexpr float kDamping = 0.9;
+  static constexpr float kGravity = 9.81;
   static constexpr float kTennisBallMass = 0.056;
-  static constexpr float kTennisBallRadius = 0.03429;
+  static constexpr float kTennisBallRadius = 2.0 * 0.03429;
+  
+  void Accelerate(float dt);
+  void BorderCollide();
+  void BorderCollidePreserveImpulse();
+  void Damping();
+  void Gravity();
+  void Inertia();
+  void SetViewTransform();
+  ofVec2f TransformPosition(ofVec2f position);
+  float TransformSize(float size);
   
   GameObject ball;
   std::map<int, bool> previous_keys;
