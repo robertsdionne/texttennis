@@ -42,6 +42,9 @@ private:
   static constexpr float kGravity = 9.81;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
+  static constexpr float kRacketRadius = 2.0 * 0.1155;
+  static constexpr float kRacketSpeed = 0.1;
+  static constexpr int kTrailSize = 1000;
   
   void Accelerate(float dt);
   void BorderCollide();
@@ -49,11 +52,17 @@ private:
   void Damping();
   void Gravity();
   void Inertia();
+  void RacketCollide();
+  void RacketCollidePreserveImpulse();
   void SetViewTransform();
   ofVec2f TransformPosition(ofVec2f position);
   float TransformSize(float size);
+  void UpdateRackets();
   
   GameObject ball;
+  ofVec2f racket1;
+  ofVec2f racket2;
+  std::list<ofVec2f> trail;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };

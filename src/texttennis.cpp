@@ -4,16 +4,54 @@ void TextTennis::setup() {
   ball = GameObject(kBallRadius, kBallMass, ofVec2f(0, 10), ofVec2f(100, 25));
   ofSetupScreenOrtho(kCourtLength, kCourtLength);
   ofSetFrameRate(30.0);
+  ofEnableAlphaBlending();
+  ofEnableSmoothing();
+  racket1 = ofVec2f(-8, 1.5);
+  racket2 = ofVec2f(8, 1.5);
 }
 
 void TextTennis::update() {
+  UpdateRackets();
   Gravity();
   Damping();
   Accelerate(1.0 / 60.0);
   BorderCollide();
+  RacketCollide();
   Inertia();
   BorderCollidePreserveImpulse();
+  RacketCollidePreserveImpulse();
+  trail.push_back(ball.position);
+  if (trail.size() > kTrailSize) {
+    trail.pop_front();
+  }
   previous_keys = keys;
+}
+
+void TextTennis::UpdateRackets() {
+  if (keys[OF_KEY_LEFT]) {
+    racket2.x -= kRacketSpeed;
+  }
+  if (keys[OF_KEY_RIGHT]) {
+    racket2.x += kRacketSpeed;
+  }
+  if (keys[OF_KEY_UP]) {
+    racket2.y += kRacketSpeed;
+  }
+  if (keys[OF_KEY_DOWN]) {
+    racket2.y -= kRacketSpeed;
+  }
+  if (keys['a']) {
+    racket1.x -= kRacketSpeed;
+  }
+  if (keys['d']) {
+    racket1.x += kRacketSpeed;
+  }
+  if (keys['w']) {
+    racket1.y += kRacketSpeed;
+  }
+  if (keys['s']) {
+    racket1.y -= kRacketSpeed;
+  }
 }
 
 void TextTennis::Gravity() {
@@ -39,6 +77,9 @@ void TextTennis::BorderCollide() {
   }
 }
 
+void TextTennis::RacketCollide() {
+}
+
 void TextTennis::Inertia() {
   ball.Inertia();
 }
@@ -60,12 +101,36 @@ void TextTennis::BorderCollidePreserveImpulse() {
   }
 }
 
+void TextTennis::RacketCollidePreserveImpulse() {
+  if ((ball.position - racket1).length() < kBallRadius + kRacketRadius) {
+    ball.previous_position.x = ball.position.x - 1.4;
+    ball.previous_position.y = ball.position.y - 0.7;
+  }
+  if ((ball.position - racket2).length() < kBallRadius + kRacketRadius) {
+    ball.previous_position.x = ball.position.x + 1.4;
+    ball.previous_position.y = ball.position.y - 0.7;
+  }
+}
+
 void TextTennis::draw() {
   ofBackground(ofColor::white);
   ofSetColor(ofColor::black);
-  ofCircle(TransformPosition(ball.position), TransformSize(ball.radius));
   ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
   ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
+  ofCircle(TransformPosition(racket1), TransformSize(kRacketRadius));
+  ofCircle(TransformPosition(racket2), TransformSize(kRacketRadius));
+  ofCircle(TransformPosition(ball.position), TransformSize(ball.radius));
+  ofVec2f *previous = nullptr;
+  float index = 0;
+  for (ofVec2f &next : trail) {
+    if (previous) {
+      const ofVec2f offset0 = ofVec2f(0, 2.0 * (trail.size() - index) / 30.0);
+      const ofVec2f offset1 = ofVec2f(0, 2.0 * (trail.size() - (index + 1)) / 30.0);
+      ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
+    }
+    index += 1;
+    previous = &next;
+  }
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {
