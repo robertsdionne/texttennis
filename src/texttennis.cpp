@@ -28,28 +28,28 @@ void TextTennis::update() {
 }
 
 void TextTennis::UpdateRackets() {
-  if (keys[OF_KEY_LEFT]) {
+  if (keys[OF_KEY_LEFT] && racket2.x > -kCourtLength / 2.0) {
     racket2.x -= kRacketSpeed;
   }
-  if (keys[OF_KEY_RIGHT]) {
+  if (keys[OF_KEY_RIGHT] && racket2.x < kCourtLength / 2.0) {
     racket2.x += kRacketSpeed;
   }
-  if (keys[OF_KEY_UP]) {
+  if (keys[OF_KEY_UP] && racket2.y < 2.0) {
     racket2.y += kRacketSpeed;
   }
-  if (keys[OF_KEY_DOWN]) {
+  if (keys[OF_KEY_DOWN] && racket2.y - kRacketRadius > kCourtThickness) {
     racket2.y -= kRacketSpeed;
   }
-  if (keys['a']) {
+  if (keys['a'] && racket1.x > -kCourtLength / 2.0) {
     racket1.x -= kRacketSpeed;
   }
-  if (keys['d']) {
+  if (keys['d'] && racket1.x < kCourtLength / 2.0) {
     racket1.x += kRacketSpeed;
   }
-  if (keys['w']) {
+  if (keys['w'] && racket1.y < 2.0) {
     racket1.y += kRacketSpeed;
   }
-  if (keys['s']) {
+  if (keys['s'] && racket1.y - kRacketRadius > kCourtThickness) {
     racket1.y -= kRacketSpeed;
   }
 }
@@ -124,13 +124,13 @@ void TextTennis::draw() {
   float index = 0;
   for (ofVec2f &next : trail) {
     if (previous) {
-      const ofVec2f offset0 = ofVec2f(0, 2.0 * (trail.size() - index) / 30.0);
-      const ofVec2f offset1 = ofVec2f(0, 2.0 * (trail.size() - (index + 1)) / 30.0);
+      const ofVec2f offset0 = ofVec2f(0, (trail.size() - index) / 30.0);
+      const ofVec2f offset1 = ofVec2f(0, (trail.size() - (index + 1)) / 30.0);
       ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
     }
     index += 1;
     previous = &next;
-  }
+  };
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {
