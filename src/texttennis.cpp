@@ -5,8 +5,8 @@ void TextTennis::setup() {
   ofSetFrameRate(GameObject::kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(7, 1)), false, ofVec2f(-8, 1.5), ofVec2f(8, 1.5),
-      std::list<ofVec2f>()));
+  states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(7, 1)), false,
+      ofVec2f(-8, kCourtThickness + kRacketRadius), ofVec2f(8, kCourtThickness + kRacketRadius), std::list<ofVec2f>()));
 }
 
 void TextTennis::update() {
@@ -47,7 +47,7 @@ void TextTennis::UpdateRackets() {
   if (keys[OF_KEY_UP] && states.back().racket2.y < 2.0) {
     states.back().racket2.y += kRacketSpeed;
   }
-  if (keys[OF_KEY_DOWN] && states.back().racket2.y - kRacketRadius > kCourtThickness) {
+  if (keys[OF_KEY_DOWN] && states.back().racket2.y - kRacketRadius > kCourtThickness + kRacketSpeed) {
     states.back().racket2.y -= kRacketSpeed;
   }
   if (keys['a'] && states.back().racket1.x > -kCourtLength / 2.0) {
@@ -59,7 +59,7 @@ void TextTennis::UpdateRackets() {
   if (keys['w'] && states.back().racket1.y < 2.0) {
     states.back().racket1.y += kRacketSpeed;
   }
-  if (keys['s'] && states.back().racket1.y - kRacketRadius > kCourtThickness) {
+  if (keys['s'] && states.back().racket1.y - kRacketRadius > kCourtThickness + kRacketSpeed) {
     states.back().racket1.y -= kRacketSpeed;
   }
 }
@@ -77,7 +77,7 @@ void TextTennis::Accelerate(float dt) {
 }
 
 void TextTennis::BorderCollide() {
-  if (states.back().ball.position.y - states.back().ball.radius - kCourtThickness < 0) {
+  if (states.back().ball.position.y - states.back().ball.radius < kCourtThickness) {
     states.back().ball.position.y = states.back().ball.radius + kCourtThickness;
   }
   if (states.back().ball.position.x - states.back().ball.radius < -kCourtLength / 2.0) {
@@ -116,7 +116,7 @@ void TextTennis::Inertia() {
 }
 
 void TextTennis::BorderCollidePreserveImpulse() {
-  if (states.back().ball.position.y - states.back().ball.radius - kCourtThickness < 0) {
+  if (states.back().ball.position.y - states.back().ball.radius < kCourtThickness) {
     float vy = (states.back().ball.previous_position.y - states.back().ball.position.y) * kDamping;
     states.back().ball.position.y = states.back().ball.radius + kCourtThickness;
     states.back().ball.previous_position.y = states.back().ball.position.y - vy;
