@@ -56,6 +56,8 @@ private:
   void DrawTrail(const std::list<ofVec2f> &trail);
   void Gravity();
   void Inertia();
+  void NetCollide();
+  void NetCollidePreserveImpulse();
   void RacketCollide();
   void RacketCollidePreserveImpulse();
   void SetViewTransform();

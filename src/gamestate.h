@@ -16,11 +16,12 @@
 
 class GameState {
 public:
-  GameState(GameObject ball, ofVec2f racket1, ofVec2f racket2, const std::list<ofVec2f> &trail);
+  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, ofVec2f racket2, const std::list<ofVec2f> &trail);
   
   virtual ~GameState();
   
   GameObject ball;
+  bool collided_with_net;
   ofVec2f racket1;
   ofVec2f racket2;
   std::list<ofVec2f> trail;
