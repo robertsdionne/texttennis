@@ -10,7 +10,8 @@ void TextTennis::setup() {
 
 void TextTennis::update() {
   if (keys['\t']) {
-    if (states.size() > 1) {
+    if (states.size() > 2) {
+      states.pop_back();
       states.pop_back();
     }
   } else {
@@ -119,9 +120,6 @@ void TextTennis::RacketCollidePreserveImpulse() {
 
 void TextTennis::draw() {
   ofBackground(ofColor::white);
-  ofSetColor(ofColor::black);
-  ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
-  ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
   ofVec2f *previous = nullptr;
   float index = 0;
   ofPushStyle();
@@ -129,8 +127,13 @@ void TextTennis::draw() {
     if (previous) {
       const ofVec2f offset0 = ofVec2f(0, (states.back().trail.size() - index) / 30.0);
       const ofVec2f offset1 = ofVec2f(0, (states.back().trail.size() - (index + 1)) / 30.0);
-      ofColor color = ofColor::white;
-      color.lerp(ofColor::black, (states.back().trail.size() - index) / kTrailSize);
+      ofColor color;
+      if (keys['\t']) {
+        color = ofColor::black;
+      } else {
+        color = ofColor::white;
+        color.lerp(ofColor::black, (states.back().trail.size() - index) / kTrailSize);
+      }
       ofSetColor(color);
       ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
     }
@@ -138,6 +141,9 @@ void TextTennis::draw() {
     previous = &next;
   };
   ofPopStyle();
+  ofSetColor(ofColor::black);
+  ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
+  ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
   ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
   ofCircle(TransformPosition(states.back().racket2), TransformSize(kRacketRadius));
   ofCircle(TransformPosition(states.back().ball.position), TransformSize(states.back().ball.radius));
