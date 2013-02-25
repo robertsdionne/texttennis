@@ -9,23 +9,25 @@ void TextTennis::setup() {
 }
 
 void TextTennis::update() {
-  if (!keys['q']) {
-    states.push_back(states.back());
+  if (keys['\t']) {
+    if (states.size() > 1) {
+      states.pop_back();
+    }
   } else {
-    states.pop_back();
-  }
-  UpdateRackets();
-  Gravity();
-  Damping();
-  Accelerate(1.0 / 60.0);
-  BorderCollide();
-  RacketCollide();
-  Inertia();
-  BorderCollidePreserveImpulse();
-  RacketCollidePreserveImpulse();
-  states.back().trail.push_back(states.back().ball.position);
-  if (states.back().trail.size() > kTrailSize) {
-    states.back().trail.pop_front();
+    states.push_back(states.back());
+    UpdateRackets();
+    Gravity();
+    Damping();
+    Accelerate(1.0 / 60.0);
+    BorderCollide();
+    RacketCollide();
+    Inertia();
+    BorderCollidePreserveImpulse();
+    RacketCollidePreserveImpulse();
+    states.back().trail.push_back(states.back().ball.position);
+    if (states.back().trail.size() > kTrailSize) {
+      states.back().trail.pop_front();
+    }
   }
   previous_keys = keys;
 }
