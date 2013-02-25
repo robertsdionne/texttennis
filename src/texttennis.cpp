@@ -122,20 +122,25 @@ void TextTennis::draw() {
   ofSetColor(ofColor::black);
   ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
   ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
-  ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
-  ofCircle(TransformPosition(states.back().racket2), TransformSize(kRacketRadius));
-  ofCircle(TransformPosition(states.back().ball.position), TransformSize(states.back().ball.radius));
   ofVec2f *previous = nullptr;
   float index = 0;
+  ofPushStyle();
   for (ofVec2f &next : states.back().trail) {
     if (previous) {
       const ofVec2f offset0 = ofVec2f(0, (states.back().trail.size() - index) / 30.0);
       const ofVec2f offset1 = ofVec2f(0, (states.back().trail.size() - (index + 1)) / 30.0);
+      ofColor color = ofColor::white;
+      color.lerp(ofColor::black, (states.back().trail.size() - index) / kTrailSize);
+      ofSetColor(color);
       ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
     }
     index += 1;
     previous = &next;
   };
+  ofPopStyle();
+  ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
+  ofCircle(TransformPosition(states.back().racket2), TransformSize(kRacketRadius));
+  ofCircle(TransformPosition(states.back().ball.position), TransformSize(states.back().ball.radius));
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {
