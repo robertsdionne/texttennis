@@ -4,6 +4,7 @@
 #include <map>
 
 #include "gameobject.h"
+#include "gamestate.h"
 #include "ofMain.h"
 
 class TextTennis : public ofBaseApp {
@@ -61,10 +62,7 @@ private:
   float TransformSize(float size);
   void UpdateRackets();
   
-  GameObject ball;
-  ofVec2f racket1;
-  ofVec2f racket2;
-  std::list<ofVec2f> trail;
+  std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };
