@@ -1,7 +1,7 @@
 #include "texttennis.h"
 
 void TextTennis::setup() {
-  ball = GameObject(kBallRadius, kBallMass, ofVec2f(0, 10), ofVec2f(100, 25));
+  ball = GameObject(kBallRadius, kBallMass, ofVec2f(7, 1));
   ofSetupScreenOrtho(kCourtLength, kCourtLength);
   ofSetFrameRate(30.0);
   ofEnableAlphaBlending();
