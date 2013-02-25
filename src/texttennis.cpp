@@ -89,7 +89,7 @@ void TextTennis::BorderCollide() {
 
 void TextTennis::NetCollide() {
   const ofVec2f net_top = ofVec2f(0, kCourtThickness + kNetHeight);
-  const ofVec2f net_bottom = ofVec2f(0, kCourtThickness);
+  const ofVec2f net_bottom = ofVec2f();
   const ofVec2f net_dir = net_top - net_bottom;
   const ofVec2f ball_dir = states.back().ball.position - states.back().ball.previous_position;
   const float t = ofVec3f(states.back().ball.previous_position - net_bottom).cross(ball_dir).z /
@@ -104,8 +104,6 @@ void TextTennis::NetCollide() {
     if (ball_dir.x > 0) {
       states.back().ball.position.x -= states.back().ball.radius;
     }
-  } else {
-    states.back().collided_with_net = false;
   }
 }
 
@@ -136,7 +134,7 @@ void TextTennis::BorderCollidePreserveImpulse() {
 
 void TextTennis::NetCollidePreserveImpulse() {
   const ofVec2f net_top = ofVec2f(0, kCourtThickness + kNetHeight);
-  const ofVec2f net_bottom = ofVec2f(0, kCourtThickness);
+  const ofVec2f net_bottom = ofVec2f();
   const ofVec2f net_dir = net_top - net_bottom;
   const ofVec2f ball_dir = states.back().ball.position - states.back().ball.previous_position;
   const float t = ofVec3f(states.back().ball.previous_position - net_bottom).cross(ball_dir).z /
@@ -147,10 +145,10 @@ void TextTennis::NetCollidePreserveImpulse() {
     float vx = (states.back().ball.previous_position.x - states.back().ball.position.x) * kDamping;
     states.back().ball.position = states.back().ball.previous_position + u * ball_dir;
     if (ball_dir.x <= 0) {
-      states.back().ball.position.x += 3 * states.back().ball.radius;
+      states.back().ball.position.x += states.back().ball.radius;
     }
     if (ball_dir.x > 0) {
-      states.back().ball.position.x -= 3 * states.back().ball.radius;
+      states.back().ball.position.x -= states.back().ball.radius;
     }
     states.back().ball.previous_position.x = states.back().ball.position.x - vx;
     states.back().collided_with_net = true;
