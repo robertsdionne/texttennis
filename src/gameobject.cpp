@@ -8,13 +8,16 @@
 
 #include "gameobject.h"
 
+constexpr float GameObject::kDeltaTime;
+constexpr float GameObject::kFrameRate;
+
 GameObject::GameObject(float radius, float mass, ofVec2f position, ofVec2f velocity)
-: radius(radius), mass(mass), position(position), previous_position(position - velocity / 60.0) {}
+: radius(radius), mass(mass), position(position), previous_position(position - velocity / kFrameRate) {}
 
 GameObject::~GameObject() {}
 
 ofVec2f GameObject::velocity() const {
-  return (position - previous_position) * 60.0;
+  return (position - previous_position) * kFrameRate;
 }
 
 void GameObject::Accelerate(float dt) {

@@ -2,7 +2,7 @@
 
 void TextTennis::setup() {
   ofSetupScreenOrtho(kCourtLength, kCourtLength);
-  ofSetFrameRate(30.0);
+  ofSetFrameRate(GameObject::kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(7, 1)), ofVec2f(-8, 1.5), ofVec2f(8, 1.5), std::list<ofVec2f>()));
@@ -10,16 +10,17 @@ void TextTennis::setup() {
 
 void TextTennis::update() {
   if (keys['\t']) {
-    if (states.size() > 2) {
-      states.pop_back();
+    if (states.size() > 1) {
       states.pop_back();
     }
   } else {
-    states.push_back(states.back());
+    if (ofGetFrameNum() % 2) {
+      states.push_back(states.back());
+    }
     UpdateRackets();
     Gravity();
     Damping();
-    Accelerate(1.0 / 60.0);
+    Accelerate(GameObject::kDeltaTime);
     BorderCollide();
     RacketCollide();
     Inertia();
@@ -125,8 +126,8 @@ void TextTennis::draw() {
   ofPushStyle();
   for (ofVec2f &next : states.back().trail) {
     if (previous) {
-      const ofVec2f offset0 = ofVec2f(0, (states.back().trail.size() - index) / 30.0);
-      const ofVec2f offset1 = ofVec2f(0, (states.back().trail.size() - (index + 1)) / 30.0);
+      const ofVec2f offset0 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (states.back().trail.size() - index));
+      const ofVec2f offset1 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (states.back().trail.size() - (index + 1)));
       ofColor color;
       if (keys['\t']) {
         color = ofColor::black;
@@ -147,6 +148,9 @@ void TextTennis::draw() {
   ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
   ofCircle(TransformPosition(states.back().racket2), TransformSize(kRacketRadius));
   ofCircle(TransformPosition(states.back().ball.position), TransformSize(states.back().ball.radius));
+  std::stringstream out;
+  out << ofGetFrameRate();
+  ofDrawBitmapString(out.str(), 10, 10);
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {

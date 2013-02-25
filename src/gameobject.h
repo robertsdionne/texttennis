@@ -24,6 +24,9 @@ public:
   
   void Inertia();
   
+  static constexpr float kFrameRate = 60.0;
+  static constexpr float kDeltaTime = 1.0 / kFrameRate;
+  
   float radius;
   float mass;
   ofVec2f position;
