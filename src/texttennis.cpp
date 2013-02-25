@@ -121,27 +121,7 @@ void TextTennis::RacketCollidePreserveImpulse() {
 
 void TextTennis::draw() {
   ofBackground(ofColor::white);
-  ofVec2f *previous = nullptr;
-  float index = 0;
-  ofPushStyle();
-  for (ofVec2f &next : states.back().trail) {
-    if (previous) {
-      const ofVec2f offset0 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (states.back().trail.size() - index));
-      const ofVec2f offset1 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (states.back().trail.size() - (index + 1)));
-      ofColor color;
-      if (keys['\t']) {
-        color = ofColor::black;
-      } else {
-        color = ofColor::white;
-        color.lerp(ofColor::black, (states.back().trail.size() - index) / kTrailSize);
-      }
-      ofSetColor(color);
-      ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
-    }
-    index += 1;
-    previous = &next;
-  };
-  ofPopStyle();
+  DrawTrail(states.back().trail);
   ofSetColor(ofColor::black);
   ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
   ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
@@ -151,6 +131,30 @@ void TextTennis::draw() {
   std::stringstream out;
   out << ofGetFrameRate();
   ofDrawBitmapString(out.str(), 10, 10);
+}
+
+void TextTennis::DrawTrail(const std::list<ofVec2f> &trail) {
+  const ofVec2f *previous = nullptr;
+  float index = 0;
+  ofPushStyle();
+  for (const ofVec2f &next : trail) {
+    if (previous) {
+      const ofVec2f offset0 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - index));
+      const ofVec2f offset1 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - (index + 1)));
+      ofColor color;
+      if (keys['\t']) {
+        color = ofColor::black;
+      } else {
+        color = ofColor::white;
+        color.lerp(ofColor::black, (trail.size() - index) / kTrailSize);
+      }
+      ofSetColor(color);
+      ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
+    }
+    index += 1;
+    previous = &next;
+  };
+  ofPopStyle();
 }
 
 ofVec2f TextTennis::TransformPosition(ofVec2f position) {
