@@ -47,7 +47,7 @@ private:
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
   static constexpr float kRacketSpeed = 0.2;
-  static constexpr int kTrailSize = 800;
+  static constexpr int kTrailSize = 700;
   
   void Accelerate(float dt);
   void BorderCollide();
