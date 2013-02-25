@@ -38,12 +38,14 @@ private:
   static constexpr float kCourtLength = 23.78;
   static constexpr float kCourtThickness = 0.5;
   static constexpr float kDamping = 0.5;
-  static constexpr float kDrag = 0.2;
+  static constexpr float kDrag = 0.1;
   static constexpr float kGravity = 9.81;
+  static constexpr float kHitMean = 1.0;
+  static constexpr float kHitVariance = 0.2;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
-  static constexpr float kRacketSpeed = 0.1;
+  static constexpr float kRacketSpeed = 0.2;
   static constexpr int kTrailSize = 1000;
   
   void Accelerate(float dt);

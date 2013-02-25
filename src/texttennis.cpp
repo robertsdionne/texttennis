@@ -103,12 +103,12 @@ void TextTennis::BorderCollidePreserveImpulse() {
 
 void TextTennis::RacketCollidePreserveImpulse() {
   if ((ball.position - racket1).length() < kBallRadius + kRacketRadius) {
-    ball.previous_position.x = ball.position.x - 1.4;
-    ball.previous_position.y = ball.position.y - 0.7;
+    ball.previous_position.x = ball.position.x - (kHitMean + ofRandomf() * kHitVariance);
+    ball.previous_position.y = ball.position.y - (kHitMean + ofRandomf() * kHitVariance) / 2.0;
   }
   if ((ball.position - racket2).length() < kBallRadius + kRacketRadius) {
-    ball.previous_position.x = ball.position.x + 1.4;
-    ball.previous_position.y = ball.position.y - 0.7;
+    ball.previous_position.x = ball.position.x + (kHitMean + ofRandomf() * kHitVariance);
+    ball.previous_position.y = ball.position.y - (kHitMean + ofRandomf() * kHitVariance) / 2.0;
   }
 }
 
