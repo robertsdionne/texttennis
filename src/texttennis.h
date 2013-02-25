@@ -43,6 +43,12 @@ private:
   static constexpr float kGravity = 9.81 / 2.0;
   static constexpr float kHitMean = 0.7;
   static constexpr float kHitVariance = 0.2;
+  static constexpr const char *kMessageBounce = "Bounce";
+  static constexpr const char *kMessageNet = "Net";
+  static constexpr const char *kMessageOut = "Out";
+  static constexpr const char *kMessageStrongVolley = "Strong Volley";
+  static constexpr const char *kMessageVolley = "Volley";
+  static constexpr const char *kMessageWeakVolley = "Weak Volley";
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
@@ -53,7 +59,7 @@ private:
   void BorderCollide();
   void BorderCollidePreserveImpulse();
   void Damping();
-  void DrawTrail(const std::list<ofVec2f> &trail);
+  void DrawTrail(const std::list<GameState::Trail> &trail);
   void Gravity();
   void Inertia();
   void NetCollide();
@@ -65,6 +71,7 @@ private:
   float TransformSize(float size);
   void UpdateRackets();
   
+  bool show_text;
   std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;

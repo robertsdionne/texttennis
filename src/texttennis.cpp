@@ -6,7 +6,8 @@ void TextTennis::setup() {
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(7, 1)), false,
-      ofVec2f(-8, kCourtThickness + kRacketRadius), ofVec2f(8, kCourtThickness + kRacketRadius), std::list<ofVec2f>()));
+                             ofVec2f(-8, kCourtThickness + kRacketRadius), ofVec2f(8, kCourtThickness + kRacketRadius), std::list<GameState::Trail>()));
+  show_text = false;
 }
 
 void TextTennis::update() {
@@ -18,6 +19,8 @@ void TextTennis::update() {
     if (ofGetFrameNum() % 2) {
       states.push_back(states.back());
     }
+    GameState::Trail trail;
+    states.back().trail.push_back(trail);
     UpdateRackets();
     Gravity();
     Damping();
@@ -29,7 +32,7 @@ void TextTennis::update() {
     BorderCollidePreserveImpulse();
     NetCollidePreserveImpulse();
     RacketCollidePreserveImpulse();
-    states.back().trail.push_back(states.back().ball.position);
+    states.back().trail.back().position = states.back().ball.position;
     if (states.back().trail.size() > kTrailSize) {
       states.back().trail.pop_front();
     }
@@ -61,6 +64,9 @@ void TextTennis::UpdateRackets() {
   }
   if (keys['s'] && states.back().racket1.y - kRacketRadius > kCourtThickness + kRacketSpeed) {
     states.back().racket1.y -= kRacketSpeed;
+  }
+  if (keys[' '] && !previous_keys[' ']) {
+    show_text = !show_text;
   }
 }
 
@@ -120,15 +126,18 @@ void TextTennis::BorderCollidePreserveImpulse() {
     float vy = (states.back().ball.previous_position.y - states.back().ball.position.y) * kDamping;
     states.back().ball.position.y = states.back().ball.radius + kCourtThickness;
     states.back().ball.previous_position.y = states.back().ball.position.y - vy;
+    states.back().trail.back().text = kMessageBounce;
   }
   if (states.back().ball.position.x - states.back().ball.radius < -kCourtLength / 2.0) {
     float vx = (states.back().ball.previous_position.x - states.back().ball.position.x) * kDamping;
     states.back().ball.position.x = states.back().ball.radius - kCourtLength / 2.0;
     states.back().ball.previous_position.x = states.back().ball.position.x - vx;
+    states.back().trail.back().text = kMessageOut;
   } else if (states.back().ball.position.x + states.back().ball.radius > kCourtLength / 2.0) {
     float vx = (states.back().ball.previous_position.x - states.back().ball.position.x) * kDamping;
     states.back().ball.position.x = kCourtLength / 2.0 - states.back().ball.radius;
     states.back().ball.previous_position.x = states.back().ball.position.x - vx;
+    states.back().trail.back().text = kMessageOut;
   }
 }
 
@@ -152,6 +161,7 @@ void TextTennis::NetCollidePreserveImpulse() {
     }
     states.back().ball.previous_position.x = states.back().ball.position.x - vx;
     states.back().collided_with_net = true;
+    states.back().trail.back().text = kMessageNet;
   } else {
     states.back().collided_with_net = false;
   }
@@ -163,10 +173,13 @@ void TextTennis::RacketCollidePreserveImpulse() {
     float skill = 0.0;
     if ((keys['a'] && dx < 0) || (keys['d'] && dx > 0)) {
       skill = -kHitVariance * ofRandomuf();
+      states.back().trail.back().text = kMessageWeakVolley;
     } else if ((keys['a'] && dx > 0) || (keys['d'] && dx < 0)) {
       skill = kHitVariance * ofRandomuf();
+      states.back().trail.back().text = kMessageStrongVolley;
     } else {
       skill = kHitVariance * ofRandomf();
+      states.back().trail.back().text = kMessageVolley;
     }
     states.back().ball.previous_position.x = states.back().ball.position.x - (kHitMean + skill);
     states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + skill) / 2.0;
@@ -176,10 +189,13 @@ void TextTennis::RacketCollidePreserveImpulse() {
     float skill = 0.0;
     if ((keys[OF_KEY_LEFT] && dx < 0) || (keys[OF_KEY_RIGHT] && dx > 0)) {
       skill = -kHitVariance * ofRandomuf();
+      states.back().trail.back().text = kMessageWeakVolley;
     } else if ((keys[OF_KEY_LEFT] && dx > 0) || (keys[OF_KEY_RIGHT] && dx < 0)) {
       skill = kHitVariance * ofRandomuf();
+      states.back().trail.back().text = kMessageStrongVolley;
     } else {
       skill = kHitVariance * ofRandomf();
+      states.back().trail.back().text = kMessageVolley;
     }
     states.back().ball.previous_position.x = states.back().ball.position.x + (kHitMean + skill);
     states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + skill) / 2.0;
@@ -200,11 +216,11 @@ void TextTennis::draw() {
   ofDrawBitmapString(out.str(), 10, 10);
 }
 
-void TextTennis::DrawTrail(const std::list<ofVec2f> &trail) {
-  const ofVec2f *previous = nullptr;
+void TextTennis::DrawTrail(const std::list<GameState::Trail> &trail) {
+  const GameState::Trail *previous = nullptr;
   float index = 0;
   ofPushStyle();
-  for (const ofVec2f &next : trail) {
+  for (const GameState::Trail &next : trail) {
     if (previous) {
       const ofVec2f offset0 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - index));
       const ofVec2f offset1 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - (index + 1)));
@@ -216,7 +232,10 @@ void TextTennis::DrawTrail(const std::list<ofVec2f> &trail) {
         color.lerp(ofColor::black, (trail.size() - index) / kTrailSize);
       }
       ofSetColor(color);
-      ofLine(TransformPosition(*previous + offset0), TransformPosition(next + offset1));
+      ofLine(TransformPosition(previous->position + offset0), TransformPosition(next.position + offset1));
+      if (show_text && next.text) {
+        ofDrawBitmapString(next.text, TransformPosition(next.position + offset1) + ofVec2f(0, 10));
+      }
     }
     index += 1;
     previous = &next;

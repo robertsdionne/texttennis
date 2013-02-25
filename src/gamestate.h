@@ -16,7 +16,13 @@
 
 class GameState {
 public:
-  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, ofVec2f racket2, const std::list<ofVec2f> &trail);
+  struct Trail {
+    Trail() : position(), text(nullptr) {}
+    ofVec2f position;
+    const char *text;
+  };
+  
+  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, ofVec2f racket2, const std::list<Trail> &trail);
   
   virtual ~GameState();
   
@@ -24,7 +30,7 @@ public:
   bool collided_with_net;
   ofVec2f racket1;
   ofVec2f racket2;
-  std::list<ofVec2f> trail;
+  std::list<Trail> trail;
 };
 
 #endif /* defined(__texttennis__gamestate__) */
