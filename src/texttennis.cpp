@@ -38,7 +38,7 @@ void TextTennis::update() {
 }
 
 void TextTennis::UpdateRackets() {
-  if (keys[OF_KEY_LEFT] && states.back().racket2.x > -kCourtLength / 2.0) {
+  if (keys[OF_KEY_LEFT] && states.back().racket2.x > kRacketSpeed + kRacketRadius) {
     states.back().racket2.x -= kRacketSpeed;
   }
   if (keys[OF_KEY_RIGHT] && states.back().racket2.x < kCourtLength / 2.0) {
@@ -53,7 +53,7 @@ void TextTennis::UpdateRackets() {
   if (keys['a'] && states.back().racket1.x > -kCourtLength / 2.0) {
     states.back().racket1.x -= kRacketSpeed;
   }
-  if (keys['d'] && states.back().racket1.x < kCourtLength / 2.0) {
+  if (keys['d'] && states.back().racket1.x < -kRacketSpeed - kRacketRadius) {
     states.back().racket1.x += kRacketSpeed;
   }
   if (keys['w'] && states.back().racket1.y < 2.0) {
@@ -159,12 +159,30 @@ void TextTennis::NetCollidePreserveImpulse() {
 
 void TextTennis::RacketCollidePreserveImpulse() {
   if ((states.back().ball.position - states.back().racket1).length() < kBallRadius + kRacketRadius) {
-    states.back().ball.previous_position.x = states.back().ball.position.x - (kHitMean + ofRandomf() * kHitVariance);
-    states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + ofRandomf() * kHitVariance) / 2.0;
+    const float dx = states.back().ball.position.x - states.back().ball.previous_position.x;
+    float skill = 0.0;
+    if ((keys['a'] && dx < 0) || (keys['d'] && dx > 0)) {
+      skill = -kHitVariance * ofRandomuf();
+    } else if ((keys['a'] && dx > 0) || (keys['d'] && dx < 0)) {
+      skill = kHitVariance * ofRandomuf();
+    } else {
+      skill = kHitVariance * ofRandomf();
+    }
+    states.back().ball.previous_position.x = states.back().ball.position.x - (kHitMean + skill);
+    states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + skill) / 2.0;
   }
   if ((states.back().ball.position - states.back().racket2).length() < kBallRadius + kRacketRadius) {
-    states.back().ball.previous_position.x = states.back().ball.position.x + (kHitMean + ofRandomf() * kHitVariance);
-    states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + ofRandomf() * kHitVariance) / 2.0;
+    const float dx = states.back().ball.position.x - states.back().ball.previous_position.x;
+    float skill = 0.0;
+    if ((keys[OF_KEY_LEFT] && dx < 0) || (keys[OF_KEY_RIGHT] && dx > 0)) {
+      skill = -kHitVariance * ofRandomuf();
+    } else if ((keys[OF_KEY_LEFT] && dx > 0) || (keys[OF_KEY_RIGHT] && dx < 0)) {
+      skill = kHitVariance * ofRandomuf();
+    } else {
+      skill = kHitVariance * ofRandomf();
+    }
+    states.back().ball.previous_position.x = states.back().ball.position.x + (kHitMean + skill);
+    states.back().ball.previous_position.y = states.back().ball.position.y - (kHitMean + skill) / 2.0;
   }
 }
 

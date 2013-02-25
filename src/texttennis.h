@@ -41,7 +41,7 @@ private:
   static constexpr float kDamping = 0.6;
   static constexpr float kDrag = 0.1;
   static constexpr float kGravity = 9.81 / 2.0;
-  static constexpr float kHitMean = 0.75;
+  static constexpr float kHitMean = 0.7;
   static constexpr float kHitVariance = 0.2;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
