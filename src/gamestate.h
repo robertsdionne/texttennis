@@ -27,7 +27,6 @@ public:
   virtual ~GameState();
   
   std::list<GameObject> balls;
-  bool collided_with_net;
   ofVec2f racket1;
   std::list<Trail> trail;
 };

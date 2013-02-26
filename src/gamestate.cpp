@@ -9,7 +9,7 @@
 #include "gamestate.h"
 
 GameState::GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, const std::list<Trail> &trail)
-: balls(), racket1(racket1), trail(trail), collided_with_net(collided_with_net) {
+: balls(), racket1(racket1), trail(trail) {
   balls.push_back(ball);
 }
 

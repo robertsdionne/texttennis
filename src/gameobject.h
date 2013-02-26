@@ -27,6 +27,7 @@ public:
   static constexpr float kFrameRate = 60.0;
   static constexpr float kDeltaTime = 1.0 / kFrameRate;
   
+  bool collided_with_net;
   float radius;
   float mass;
   ofVec2f position;

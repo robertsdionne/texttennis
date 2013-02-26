@@ -12,7 +12,7 @@ constexpr float GameObject::kDeltaTime;
 constexpr float GameObject::kFrameRate;
 
 GameObject::GameObject(float radius, float mass, ofVec2f position, ofVec2f velocity)
-: radius(radius), mass(mass), position(position), previous_position(position - velocity / kFrameRate) {}
+: radius(radius), mass(mass), position(position), previous_position(position - velocity / kFrameRate), collided_with_net(false) {}
 
 GameObject::~GameObject() {}
 

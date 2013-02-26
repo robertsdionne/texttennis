@@ -28,6 +28,8 @@ void TextTennis::update() {
       const Describer describer;
       std::string description = describer.Describe(states.back());
       console.Log(description);
+    }
+    if (use_ai && ofGetFrameNum() % 10 == 1) {
       states.back().balls.push_back(GameObject(kBallRadius, kBallMass, ofVec2f(kCourtLength / 2.0, 1)));
       float skill = kHitVariance * ofRandomf();
       states.back().balls.back().previous_position.x = states.back().balls.back().position.x - (2.5 * kHitMean + skill);
@@ -39,12 +41,14 @@ void TextTennis::update() {
     Gravity();
     Damping();
     Accelerate(GameObject::kDeltaTime);
-    BorderCollide();
     NetCollide();
+    Collide(false);
+    BorderCollide();
     RacketCollide();
     Inertia();
-    BorderCollidePreserveImpulse();
     NetCollidePreserveImpulse();
+    Collide(true);
+    BorderCollidePreserveImpulse();
     RacketCollidePreserveImpulse();
     states.back().trail.back().position = states.back().balls.front().position;
     if (states.back().trail.size() > kTrailSize) {
@@ -90,6 +94,34 @@ void TextTennis::Accelerate(float dt) {
   }
 }
 
+void TextTennis::Collide(bool preserve_impulse) {
+  for (auto i = states.back().balls.begin(); i != states.back().balls.end(); ++i) {
+    auto j = i;
+    for (std::advance(j, 1); j != states.back().balls.end(); ++j) {
+      Collide(preserve_impulse, *i, *j);
+    }
+  }
+}
+
+void TextTennis::Collide(bool preserve_impulse, GameObject &ball0, GameObject &ball1) {
+  const ofVec2f ds = ball0.position - ball1.position;
+  if (ds.length() < 2.0 * kBallRadius) {
+    const float factor = (ds.length() - 2.0 * kBallRadius) / ds.length();
+    ball0.position -= 0.5 * factor * ds;
+    ball1.position += 0.5 * factor * ds;
+    if (preserve_impulse) {
+      ofVec2f v0 = ball0.position - ball0.previous_position;
+      ofVec2f v1 = ball1.position - ball1.previous_position;
+      const float f0 = kDamping * ds.dot(v0) / ds.lengthSquared();
+      const float f1 = kDamping * ds.dot(v1) / ds.lengthSquared();
+      v0 += f1 * ds - f0 * ds;
+      v1 += f0 * ds - f1 * ds;
+      ball0.previous_position = ball0.position - v0;
+      ball1.previous_position = ball1.position - v1;
+    }
+  }
+}
+
 void TextTennis::BorderCollide() {
   for (auto &ball : states.back().balls) {
     if (ball.position.y - ball.radius < kCourtThickness) {
@@ -113,7 +145,7 @@ void TextTennis::NetCollide() {
     ofVec3f(net_dir).cross(ball_dir).z;
     const float u = ofVec3f(ball.previous_position - net_bottom).cross(net_dir).z /
     ofVec3f(net_dir).cross(ball_dir).z;
-    if (0 <= t && t <= 1 && 0 <= u && u <= 1 && !states.back().collided_with_net) {
+    if (0 <= t && t <= 1 && 0 <= u && u <= 1 && !ball.collided_with_net) {
       ball.position = ball.previous_position + u * ball_dir;
       if (ball_dir.x <= 0) {
         ball.position.x += ball.radius;
@@ -167,7 +199,7 @@ void TextTennis::NetCollidePreserveImpulse() {
     ofVec3f(net_dir).cross(ball_dir).z;
     const float u = ofVec3f(ball.previous_position - net_bottom).cross(net_dir).z /
     ofVec3f(net_dir).cross(ball_dir).z;
-    if (0 <= t && t <= 1 && 0 <= u && u <= 1 && !states.back().collided_with_net) {
+    if (0 <= t && t <= 1 && 0 <= u && u <= 1 && !ball.collided_with_net) {
       float vx = (ball.previous_position.x - ball.position.x) * kDamping;
       ball.position = ball.previous_position + u * ball_dir;
       if (ball_dir.x <= 0) {
@@ -177,10 +209,10 @@ void TextTennis::NetCollidePreserveImpulse() {
         ball.position.x -= ball.radius;
       }
       ball.previous_position.x = ball.position.x - vx;
-      states.back().collided_with_net = true;
+      ball.collided_with_net = true;
       states.back().trail.back().text = kMessageNet;
     } else {
-      states.back().collided_with_net = false;
+      ball.collided_with_net = false;
     }
   }
 }

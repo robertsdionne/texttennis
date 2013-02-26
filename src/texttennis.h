@@ -60,6 +60,8 @@ private:
   void Accelerate(float dt);
   void BorderCollide();
   void BorderCollidePreserveImpulse();
+  void Collide(bool preserve_impulse);
+  void Collide(bool preserve_impulse, GameObject &ball0, GameObject &ball1);
   void Damping();
   void DrawTrail(const std::list<GameState::Trail> &trail);
   void Gravity();
