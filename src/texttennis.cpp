@@ -10,6 +10,7 @@ void TextTennis::setup() {
   ofEnableSmoothing();
   states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(7, 1)), false,
                              ofVec2f(-8, kCourtThickness + kRacketRadius), ofVec2f(8, kCourtThickness + kRacketRadius), std::list<GameState::Trail>()));
+  show_console = false;
   show_text = false;
 }
 
@@ -75,6 +76,9 @@ void TextTennis::UpdateRackets() {
   }
   if (keys[' '] && !previous_keys[' ']) {
     show_text = !show_text;
+  }
+  if (keys['`'] && !previous_keys['`']) {
+    show_console = !show_console;
   }
 }
 
@@ -225,7 +229,9 @@ void TextTennis::draw() {
   ofSetColor(ofColor::white);
   ofDrawBitmapString(out.str(), 0, ofGetHeight());
   ofPopStyle();
-  console.Draw();
+  if (show_console) {
+    console.Draw();
+  }
 }
 
 void TextTennis::DrawTrail(const std::list<GameState::Trail> &trail) {

@@ -74,6 +74,7 @@ private:
   void UpdateRackets();
   
   Console console;
+  bool show_console;
   bool show_text;
   std::list<GameState> states;
   std::map<int, bool> previous_keys;
