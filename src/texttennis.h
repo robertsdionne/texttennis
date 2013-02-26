@@ -76,6 +76,7 @@ private:
   Console console;
   bool show_console;
   bool show_text;
+  bool use_ai;
   std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;

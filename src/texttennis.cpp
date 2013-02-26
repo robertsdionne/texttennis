@@ -12,6 +12,7 @@ void TextTennis::setup() {
                              ofVec2f(-8, kCourtThickness + kRacketRadius), ofVec2f(8, kCourtThickness + kRacketRadius), std::list<GameState::Trail>()));
   show_console = false;
   show_text = false;
+  use_ai = false;
 }
 
 void TextTennis::update() {
@@ -56,29 +57,20 @@ void TextTennis::UpdateRackets() {
   if (keys[OF_KEY_RIGHT] && states.back().racket2.x < kCourtLength / 2.0) {
     states.back().racket2.x += kRacketSpeed;
   }
-  if (keys[OF_KEY_UP] && states.back().racket2.y < 2.0) {
-    states.back().racket2.y += kRacketSpeed;
-  }
-  if (keys[OF_KEY_DOWN] && states.back().racket2.y - kRacketRadius > kCourtThickness + kRacketSpeed) {
-    states.back().racket2.y -= kRacketSpeed;
-  }
   if (keys['a'] && states.back().racket1.x > -kCourtLength / 2.0) {
     states.back().racket1.x -= kRacketSpeed;
   }
   if (keys['d'] && states.back().racket1.x < -kRacketSpeed - kRacketRadius) {
     states.back().racket1.x += kRacketSpeed;
   }
-  if (keys['w'] && states.back().racket1.y < 2.0) {
-    states.back().racket1.y += kRacketSpeed;
-  }
-  if (keys['s'] && states.back().racket1.y - kRacketRadius > kCourtThickness + kRacketSpeed) {
-    states.back().racket1.y -= kRacketSpeed;
-  }
   if (keys[' '] && !previous_keys[' ']) {
     show_text = !show_text;
   }
   if (keys['`'] && !previous_keys['`']) {
     show_console = !show_console;
+  }
+  if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
+    use_ai = !use_ai;
   }
 }
 
