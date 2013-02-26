@@ -69,10 +69,19 @@ void TextTennis::UpdateRackets() {
     } else {
       racket_delta = kRacketSpeed * ofSignedNoise(ofGetElapsedTimef());
     }
-    if (racket_delta > 0 && states.back().racket2.x > kRacketSpeed + kRacketRadius) {
+    keys[OF_KEY_LEFT] = keys[OF_KEY_RIGHT] = false;
+    if (racket_delta < 0) {
+      std::cout << "setting left" << std::endl;
+      keys[OF_KEY_LEFT] = true;
+    }
+    if (racket_delta > 0) {
+      std::cout << "setting right" << std::endl;
+      keys[OF_KEY_RIGHT] = true;
+    }
+    if (racket_delta < 0 && states.back().racket2.x > racket_delta + kRacketRadius) {
       states.back().racket2.x += racket_delta;
     }
-    if (racket_delta < 0 && states.back().racket2.x < kCourtLength / 2.0) {
+    if (racket_delta > 0 && states.back().racket2.x < kCourtLength / 2.0) {
       states.back().racket2.x += racket_delta;
     }
   }
