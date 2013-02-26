@@ -18,13 +18,13 @@ Describer::~Describer() {}
 std::string Describer::Describe(const GameState &state) const {
   std::stringstream out;
   out << "The ball is in your ";
-  if (state.ball.position.x > 0) {
+  if (state.balls.front().position.x > 0) {
     out << "opponent's ";
   }
   out << "side of the court. ";
   out << "The ball is moving ";
-  if ((state.ball.position - state.ball.previous_position).dot(
-      (state.ball.position - state.racket1)) < 0) {
+  if ((state.balls.front().position - state.balls.front().previous_position).dot(
+      (state.balls.front().position - state.racket1)) < 0) {
     out << "towards you. ";
   } else {
     out << "away from you. ";

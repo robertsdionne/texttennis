@@ -22,14 +22,13 @@ public:
     const char *text;
   };
   
-  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, ofVec2f racket2, const std::list<Trail> &trail);
+  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, const std::list<Trail> &trail);
   
   virtual ~GameState();
   
-  GameObject ball;
+  std::list<GameObject> balls;
   bool collided_with_net;
   ofVec2f racket1;
-  ofVec2f racket2;
   std::list<Trail> trail;
 };
 
