@@ -51,11 +51,30 @@ void TextTennis::update() {
 }
 
 void TextTennis::UpdateRackets() {
-  if (keys[OF_KEY_LEFT] && states.back().racket2.x > kRacketSpeed + kRacketRadius) {
-    states.back().racket2.x -= kRacketSpeed;
-  }
-  if (keys[OF_KEY_RIGHT] && states.back().racket2.x < kCourtLength / 2.0) {
-    states.back().racket2.x += kRacketSpeed;
+  if (!use_ai) {
+    if (keys[OF_KEY_LEFT] && states.back().racket2.x > kRacketSpeed + kRacketRadius) {
+      states.back().racket2.x -= kRacketSpeed;
+    }
+    if (keys[OF_KEY_RIGHT] && states.back().racket2.x < kCourtLength / 2.0) {
+      states.back().racket2.x += kRacketSpeed;
+    }
+  } else {
+    float racket_delta = 0;
+    if (states.back().ball.position.x > 0) {
+      if ((states.back().ball.position - states.back().racket2).x < 0) {
+        racket_delta = -kRacketSpeed * ofNoise(ofGetElapsedTimef());
+      } else {
+        racket_delta = kRacketSpeed * ofNoise(ofGetElapsedTimef());
+      }
+    } else {
+      racket_delta = kRacketSpeed * ofSignedNoise(ofGetElapsedTimef());
+    }
+    if (racket_delta > 0 && states.back().racket2.x > kRacketSpeed + kRacketRadius) {
+      states.back().racket2.x += racket_delta;
+    }
+    if (racket_delta < 0 && states.back().racket2.x < kCourtLength / 2.0) {
+      states.back().racket2.x += racket_delta;
+    }
   }
   if (keys['a'] && states.back().racket1.x > -kCourtLength / 2.0) {
     states.back().racket1.x -= kRacketSpeed;
