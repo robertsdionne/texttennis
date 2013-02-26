@@ -1,7 +1,10 @@
+#include "describer.h"
 #include "texttennis.h"
 
+constexpr const char *TextTennis::kMessageBounce;
+
 void TextTennis::setup() {
-  ofSetupScreenOrtho(kCourtLength, kCourtLength);
+  //ofSetupScreenOrtho(kCourtLength, kCourtLength);
   ofSetFrameRate(GameObject::kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
@@ -16,8 +19,13 @@ void TextTennis::update() {
       states.pop_back();
     }
   } else {
-    if (ofGetFrameNum() % 2) {
+    if (ofGetFrameNum() % 2 == 1) {
       states.push_back(states.back());
+    }
+    if (ofGetFrameNum() % 60 == 1) {
+      const Describer describer;
+      std::string description = describer.Describe(states.back());
+      console.Log(description);
     }
     GameState::Trail trail;
     states.back().trail.push_back(trail);
@@ -213,7 +221,11 @@ void TextTennis::draw() {
   ofCircle(TransformPosition(states.back().ball.position), TransformSize(states.back().ball.radius));
   std::stringstream out;
   out << ofGetFrameRate();
-  ofDrawBitmapString(out.str(), 10, 10);
+  ofPushStyle();
+  ofSetColor(ofColor::white);
+  ofDrawBitmapString(out.str(), 0, ofGetHeight());
+  ofPopStyle();
+  console.Draw();
 }
 
 void TextTennis::DrawTrail(const std::list<GameState::Trail> &trail) {

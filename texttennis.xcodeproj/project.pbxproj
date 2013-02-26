@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4619FE8F16DAB189006F45CF /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4619FE8D16DAB189006F45CF /* gameobject.cpp */; };
 		464C06A016DAE14C00D7D927 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 464C069E16DAE14C00D7D927 /* gamestate.cpp */; };
+		4676FB0E16DC498400948123 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676FB0C16DC498400948123 /* console.cpp */; };
+		46834FD316DC36E3006E5D60 /* describer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46834FD116DC36E3006E5D60 /* describer.cpp */; };
 		468A010C16DAABD800489431 /* texttennis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 468A010B16DAABD800489431 /* texttennis.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -66,6 +68,10 @@
 		4619FE8E16DAB189006F45CF /* gameobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gameobject.h; sourceTree = "<group>"; };
 		464C069E16DAE14C00D7D927 /* gamestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gamestate.cpp; sourceTree = "<group>"; };
 		464C069F16DAE14C00D7D927 /* gamestate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamestate.h; sourceTree = "<group>"; };
+		4676FB0C16DC498400948123 /* console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = console.cpp; sourceTree = "<group>"; };
+		4676FB0D16DC498400948123 /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = console.h; sourceTree = "<group>"; };
+		46834FD116DC36E3006E5D60 /* describer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = describer.cpp; sourceTree = "<group>"; };
+		46834FD216DC36E3006E5D60 /* describer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = describer.h; sourceTree = "<group>"; };
 		468A010A16DAABD800489431 /* texttennis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texttennis.h; sourceTree = "<group>"; };
 		468A010B16DAABD800489431 /* texttennis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texttennis.cpp; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../Documents/of_v0073_osx_release/libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
@@ -191,13 +197,17 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				468A010A16DAABD800489431 /* texttennis.h */,
-				468A010B16DAABD800489431 /* texttennis.cpp */,
-				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
+				4676FB0C16DC498400948123 /* console.cpp */,
+				4676FB0D16DC498400948123 /* console.h */,
+				46834FD116DC36E3006E5D60 /* describer.cpp */,
+				46834FD216DC36E3006E5D60 /* describer.h */,
 				4619FE8D16DAB189006F45CF /* gameobject.cpp */,
 				4619FE8E16DAB189006F45CF /* gameobject.h */,
 				464C069E16DAE14C00D7D927 /* gamestate.cpp */,
 				464C069F16DAE14C00D7D927 /* gamestate.h */,
+				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
+				468A010B16DAABD800489431 /* texttennis.cpp */,
+				468A010A16DAABD800489431 /* texttennis.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -299,6 +309,8 @@
 				468A010C16DAABD800489431 /* texttennis.cpp in Sources */,
 				4619FE8F16DAB189006F45CF /* gameobject.cpp in Sources */,
 				464C06A016DAE14C00D7D927 /* gamestate.cpp in Sources */,
+				46834FD316DC36E3006E5D60 /* describer.cpp in Sources */,
+				4676FB0E16DC498400948123 /* console.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
