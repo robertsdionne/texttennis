@@ -4,7 +4,6 @@
 constexpr const char *TextTennis::kMessageBounce;
 
 void TextTennis::setup() {
-  //ofSetupScreenOrtho(kCourtLength, kCourtLength);
   ofSetFrameRate(GameObject::kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
