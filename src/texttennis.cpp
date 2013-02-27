@@ -29,7 +29,7 @@ void TextTennis::update() {
       std::string description = describer.Describe(states.back());
       console.Log(description);
     }
-    if (use_ai && ofGetFrameNum() % 10 == 1) {
+    if (use_ai && ofGetFrameNum() % 2 == 1) {
       states.back().balls.push_back(GameObject(kBallRadius, kBallMass, ofVec2f(kCourtLength / 2.0, 1)));
       float skill = kHitVariance * ofRandomf();
       states.back().balls.back().previous_position.x = states.back().balls.back().position.x - (2.5 * kHitMean + skill);
