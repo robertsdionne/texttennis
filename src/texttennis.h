@@ -72,6 +72,7 @@ private:
   void RacketCollidePreserveImpulse();
   void SetViewTransform();
   ofVec2f TransformPosition(ofVec2f position);
+  ofVec2f TransformPositionInverse(ofVec2f position);
   float TransformSize(float size);
   void UpdateRackets();
   
@@ -79,6 +80,7 @@ private:
   bool show_console;
   bool show_text;
   bool use_ai;
+  ofVec2f mouse_position;
   std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;

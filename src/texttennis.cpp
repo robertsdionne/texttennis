@@ -29,11 +29,13 @@ void TextTennis::update() {
       std::string description = describer.Describe(states.back());
       console.Log(description);
     }
-    if (use_ai && ofGetFrameNum() % 2 == 1) {
-      states.back().balls.push_back(GameObject(kBallRadius, kBallMass, ofVec2f(kCourtLength / 2.0, 1)));
+    if (use_ai && ofGetFrameNum() % 1 == 0) {
+      const ofVec2f start = ofVec2f(kCourtLength / 2.0, 1);
+      const ofVec2f direction = (mouse_position - start).scale(1.5);
+      states.back().balls.push_back(GameObject(kBallRadius, kBallMass, start));
       float skill = kHitVariance * ofRandomf();
-      states.back().balls.back().previous_position.x = states.back().balls.back().position.x - (2.5 * kHitMean + skill);
-      states.back().balls.back().previous_position.y = states.back().balls.back().position.y - (kHitMean + skill) / 2.0;
+      states.back().balls.back().previous_position.x = states.back().balls.back().position.x - (direction.x * kHitMean + skill);
+      states.back().balls.back().previous_position.y = states.back().balls.back().position.y - (direction.y * kHitMean + skill);
     }
     GameState::Trail trail;
     states.back().trail.push_back(trail);
@@ -292,6 +294,13 @@ ofVec2f TextTennis::TransformPosition(ofVec2f position) {
   return new_position;
 }
 
+ofVec2f TextTennis::TransformPositionInverse(ofVec2f position) {
+  ofVec2f new_position = position;
+  new_position.y = ofGetHeight() - new_position.y;
+  new_position = new_position * kCourtLength / ofGetWidth() - ofVec2f(kCourtLength / 2.0, 0.0);
+  return new_position;
+}
+
 float TextTennis::TransformSize(float size) {
   return size * ofGetWidth() / kCourtLength;
 }
@@ -305,7 +314,7 @@ void TextTennis::keyReleased(int key) {
 }
 
 void TextTennis::mouseMoved(int x, int y) {
-
+  mouse_position = TransformPositionInverse(ofVec2f(x, y));
 }
 
 void TextTennis::mouseDragged(int x, int y, int button) {
