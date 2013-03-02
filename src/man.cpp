@@ -28,7 +28,7 @@ Man::Man(ofImage &image_man_left_0, ofImage &image_man_left_1, ofImage &image_ma
 void Man::Draw() const {
   ofSetColor(ofColor::white);
   ofImage *const image = (walking_right ? right : left)[index];
-  image->draw(position, 2 * image->getWidth(), 2 * image->getHeight());
+  image->draw(position);
 }
 
 void Man::Stop() {

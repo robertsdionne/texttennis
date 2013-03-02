@@ -11,7 +11,7 @@ void Vignettes::setup() {
   background = 0.0;
   text_cursor = 0;
   man = Man(image_man_left_0, image_man_left_1, image_man_left_2,
-            image_man_right_0, image_man_right_1, image_man_right_2, ofVec2f());
+            image_man_right_0, image_man_right_1, image_man_right_2, ofVec2f(ofGetWidth() / 2.0, ofGetHeight() / 2.0));
   if (!image_cliffside.loadImage(kCliffsideFilename)) {
     std::cout << "error loading " << kCliffsideFilename << std::endl;
   }
