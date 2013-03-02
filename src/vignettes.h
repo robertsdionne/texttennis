@@ -40,6 +40,17 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
+  static constexpr const char *kVignetteText = R"(It is an autumn morning and you awake. You are crazy.
+You look at the sky and the ground both. You're getting up.
+Walking.
+  
+Nothing is destroyed--things are gradually given shape--
+they are evolved and turned into other energy.
+  
+There is no logic of destination--predestination is a dump truck.
+  
+You are recycling.)";
+  
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };

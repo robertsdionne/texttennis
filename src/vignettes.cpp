@@ -1,6 +1,7 @@
 #include "vignettes.h"
 
 void Vignettes::setup() {
+  ofBackground(ofColor::white);
 }
 
 void Vignettes::update() {
@@ -8,6 +9,8 @@ void Vignettes::update() {
 }
 
 void Vignettes::draw() {
+  ofSetColor(ofColor::black);
+  ofDrawBitmapString(kVignetteText, 0, 15);
 }
 
 void Vignettes::keyPressed(int key) {
