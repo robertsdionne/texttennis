@@ -40,6 +40,22 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
+  static constexpr float kFadeInDuration = 40.0;
+  static constexpr int kFrameRate = 60;
+  static constexpr float kMaxAlpha = 255.0;
+  static constexpr float kAlphaDelta = kMaxAlpha / kFrameRate / kFadeInDuration;
+  
+  static constexpr const char *kCrossroadsFilename = "../../assets/crossroads.png";
+  static constexpr const char *kManLeft0Filename = "../../assets/man_0l.png";
+  static constexpr const char *kManLeft1Filename = "../../assets/man_1l.png";
+  static constexpr const char *kManLeft2Filename = "../../assets/man_2l.png";
+  static constexpr const char *kManRight0Filename = "../../assets/man_0r.png";
+  static constexpr const char *kManRight1Filename = "../../assets/man_1r.png";
+  static constexpr const char *kManRight2Filename = "../../assets/man_2r.png";
+  static constexpr const char *kSignpostFilename = "../../assets/signpost.png";
+  static constexpr const char *kUbuntuRegular = "../../assets/Ubuntu-R.ttf";
+  static constexpr const char *kUbuntuMonoRegular = "../../assets/UbuntuMono-R.ttf";
+  
   static constexpr const char *kVignetteText = R"(It is an autumn morning and you awake. You are crazy.
 You look at the sky and the ground both. You're getting up.
 Walking.
@@ -51,6 +67,17 @@ There is no logic of destination--predestination is a dump truck.
   
 You are recycling.)";
   
+  float background_alpha;
+  ofImage image_crossroads;
+  ofImage image_man_left_0;
+  ofImage image_man_left_1;
+  ofImage image_man_left_2;
+  ofImage image_man_right_0;
+  ofImage image_man_right_1;
+  ofImage image_man_right_2;
+  ofImage image_signpost;
+  ofTrueTypeFont font_ubuntu_regular;
+  ofTrueTypeFont font_ubuntu_mono_regular;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };
