@@ -40,12 +40,13 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
-  static constexpr float kFadeInDuration = 40.0;
+  static constexpr float kFadeInDuration = 50.0;
   static constexpr int kFrameRate = 60;
   static constexpr float kMaxAlpha = 255.0;
   static constexpr float kAlphaDelta = kMaxAlpha / kFrameRate / kFadeInDuration;
   
   static constexpr const char *kCrossroadsFilename = "../../assets/crossroads.png";
+  static constexpr const char *kInsanityMusicFilename = "../../assets/insanity_music.mp3";
   static constexpr const char *kManLeft0Filename = "../../assets/man_0l.png";
   static constexpr const char *kManLeft1Filename = "../../assets/man_1l.png";
   static constexpr const char *kManLeft2Filename = "../../assets/man_2l.png";
@@ -67,7 +68,10 @@ There is no logic of destination--predestination is a dump truck.
   
 You are recycling.)";
   
+  bool increase_background;
+  float background;
   float background_alpha;
+  long text_cursor;
   ofImage image_crossroads;
   ofImage image_man_left_0;
   ofImage image_man_left_1;
@@ -76,6 +80,7 @@ You are recycling.)";
   ofImage image_man_right_1;
   ofImage image_man_right_2;
   ofImage image_signpost;
+  ofSoundPlayer sound_insanity_music;
   ofTrueTypeFont font_ubuntu_regular;
   ofTrueTypeFont font_ubuntu_mono_regular;
   std::map<int, bool> previous_keys;

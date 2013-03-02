@@ -6,7 +6,10 @@ void Vignettes::setup() {
   ofSetFrameRate(kFrameRate);
   ofBackground(ofColor::black);
   ofEnableAlphaBlending();
+  increase_background = true;
   background_alpha = 0.0;
+  background = 0.0;
+  text_cursor = 0;
   if (!image_crossroads.loadImage(kCrossroadsFilename)) {
     std::cout << "error loading " << kCrossroadsFilename << std::endl;
   }
@@ -31,17 +34,34 @@ void Vignettes::setup() {
   if (!image_signpost.loadImage(kSignpostFilename)) {
     std::cout << "error loading " << kSignpostFilename << std::endl;
   }
+  if (!sound_insanity_music.loadSound(kInsanityMusicFilename, true)) {
+    std::cout << "error loading " << kInsanityMusicFilename << std::endl;
+  }
   if (!font_ubuntu_regular.loadFont(kUbuntuRegular, 18)) {
     std::cout << "error loading " << kUbuntuRegular << std::endl;
   }
   if (!font_ubuntu_mono_regular.loadFont(kUbuntuMonoRegular, 18)) {
     std::cout << "error loading " << kUbuntuMonoRegular << std::endl;
   }
+  sound_insanity_music.play();
 }
 
 void Vignettes::update() {
-  if (background_alpha < kMaxAlpha) {
+  if (background_alpha < kMaxAlpha && increase_background) {
     background_alpha += kAlphaDelta;
+    std::cout << "increasing alpha" << std::endl;
+  }
+  if (background_alpha >= kMaxAlpha && increase_background) {
+    increase_background = false;
+    std::cout << "stopping increasing alpha" << std::endl;
+  }
+  if (background_alpha > 0 && !increase_background) {
+    ofBackground(ofColor::white);
+    background_alpha -= 10.0 * kAlphaDelta;
+    std::cout << "decreasing alpha" << std::endl;
+  }
+  if (ofGetFrameNum() % 7 == 0) {
+    text_cursor += 1;
   }
   previous_keys = keys;
 }
@@ -50,7 +70,7 @@ void Vignettes::draw() {
   ofSetColor(ofColor::white, background_alpha);
   image_crossroads.draw(ofVec2f(), ofGetWidth(), ofGetHeight());
   ofSetColor(ofColor::white);
-  font_ubuntu_mono_regular.drawString(kVignetteText, 100, 15);
+  font_ubuntu_mono_regular.drawString(std::string(kVignetteText).substr(0, text_cursor), 150, 260);
 }
 
 void Vignettes::keyPressed(int key) {
