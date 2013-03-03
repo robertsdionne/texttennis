@@ -103,7 +103,7 @@ void TextTennis::UpdateRackets() {
 }
 
 void TextTennis::Gravity() {
-  states.back().ball.force += ofVec2f(0, -kGravity);
+  states.back().ball.force += ofVec2f(0, -kBallMass * kGravity);
 }
 
 void TextTennis::Damping() {
@@ -260,8 +260,8 @@ void TextTennis::DrawTrail(const std::list<GameState::Trail> &trail) {
   ofPushStyle();
   for (const GameState::Trail &next : trail) {
     if (previous) {
-      const ofVec2f offset0 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - index));
-      const ofVec2f offset1 = ofVec2f(0, 2.0  * GameObject::kDeltaTime * (trail.size() - (index + 1)));
+      const ofVec2f offset0 = ofVec2f(0, 2.0 * GameObject::kDeltaTime * (trail.size() - index));
+      const ofVec2f offset1 = ofVec2f(0, 2.0 * GameObject::kDeltaTime * (trail.size() - (index + 1)));
       ofColor color;
       if (keys['\t']) {
         color = ofColor::black;
