@@ -79,7 +79,7 @@ void TextTennis::UpdateRackets() {
 
 void TextTennis::Gravity() {
   for (auto &ball : states.back().balls) {
-    ball.force += ofVec2f(0, -kGravity);
+    ball.force += ofVec2f(0, -kBallMass * kGravity);
   }
 }
 

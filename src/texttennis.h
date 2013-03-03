@@ -47,10 +47,10 @@ private:
   static constexpr float kCourtLength = 23.78;
   static constexpr float kCourtThickness = 0.5;
   static constexpr float kDamping = 0.6;
-  static constexpr float kDrag = 0.1;
-  static constexpr float kGravity = 9.81 / 2.0;
-  static constexpr float kHitMean = 0.7;
-  static constexpr float kHitVariance = 0.2;
+  static constexpr float kDrag = 0.1 * kBallMass;
+  static constexpr float kGravity = 9.81;
+  static constexpr float kHitMean = 0.16;
+  static constexpr float kHitVariance = 0.08;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
