@@ -71,7 +71,7 @@ void TextTennis::UpdateRackets() {
 }
 
 void TextTennis::Gravity() {
-  states.back().ball.force += ofVec2f(0, -kGravity);
+  states.back().ball.force += ofVec2f(0, -kBallMass * kGravity);
 }
 
 void TextTennis::Damping() {
