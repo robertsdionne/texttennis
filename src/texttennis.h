@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Box2D/Box2D.h>
 #include <list>
 #include <map>
 
@@ -7,8 +8,6 @@
 #include "gameobject.h"
 #include "gamestate.h"
 #include "ofMain.h"
-
-#include "Box2D.h"
 
 class TextTennis : public ofBaseApp {
 public:
