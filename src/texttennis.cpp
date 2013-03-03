@@ -1,6 +1,5 @@
 #include <Box2D/Box2D.h>
 
-#include "describer.h"
 #include "texttennis.h"
 
 const b2Vec2 TextTennis::kGravityVector = b2Vec2(0.0, -9.81 / 2.0);
@@ -10,7 +9,7 @@ TextTennis::TextTennis()
 : world(kGravityVector) {}
 
 void TextTennis::setup() {
-  ofSetFrameRate(GameObject::kFrameRate);
+  ofSetFrameRate(kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   
@@ -56,14 +55,53 @@ void TextTennis::setup() {
   border_shape.CreateChain(vertices, 4);
   border_fixture_definition.shape = &border_shape;
   border_fixture = border_body->CreateFixture(&border_fixture_definition);
+  
+  states.push_back(GameState());
+  states.back().racket1 = racket1;
+  for (auto body : ball_body) {
+    states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+                                             ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
+                                             body->GetAngle(), body->GetAngularVelocity()));
+  }
 }
 
 void TextTennis::update() {
-  if (!keys['\t']) {
+  if (keys['\t']) {
+    if (states.size() > 1) {
+      states.pop_back();
+    }
+  } else {
+    if (!keys['\t'] && previous_keys['\t']) {
+      racket1 = states.back().racket1;
+      for (auto body : ball_body) {
+        body->DestroyFixture(body->GetFixtureList());
+        world.DestroyBody(body);
+      }
+      ball_body.clear();
+      for (auto ball : states.back().balls) {
+        ball_body_definition.position.Set(ball.position.x, ball.position.y);
+        ball_body_definition.linearVelocity.Set(ball.velocity.x, ball.velocity.y);
+        ball_body_definition.angle = ball.angle;
+        ball_body_definition.angularVelocity = ball.angular_velocity;
+        ball_body.push_back(world.CreateBody(&ball_body_definition));
+        ball_fixture = ball_body.back()->CreateFixture(&ball_fixture_definition);
+      }
+    }
     UpdateRackets();
     RacketCollide();
-    world.Step(GameObject::kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
-    if (use_ai && ofGetFrameNum() % 120 == 0) {
+    world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
+    if (ofGetFrameNum() % 2 == 0) {
+      states.push_back(states.back());
+      states.back().racket1 = racket1;
+      states.back().balls.clear();
+      for (auto body : ball_body) {
+        states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+                                                 ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
+                                                 body->GetAngle(), body->GetAngularVelocity()));
+      }
+    }
+    if (use_ai && ofGetFrameNum() % 2 == 0) {
+      ball_body_definition.position.Set(11, 1);
       ball_body.push_back(world.CreateBody(&ball_body_definition));
       b2Vec2 mouse = b2Vec2(mouse_position.x, mouse_position.y) - b2Vec2(11, 1);
       mouse.Normalize();
@@ -123,14 +161,24 @@ void TextTennis::draw() {
   ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
   ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
   ofCircle(TransformPosition(racket1), TransformSize(kRacketRadius));
-  for (auto ball : ball_body) {
-    const float angle = ball->GetAngle();
-    const b2Vec2 position = ball->GetPosition();
-    ofSetColor(ofColor::black);
-    ofCircle(TransformPosition(ofVec2f(position.x, position.y)), TransformSize(kBallRadius));
-    ofSetColor(ofColor::white);
-    ofLine(TransformPosition(ofVec2f(position.x, position.y)),
-           TransformPosition(ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle))));
+  if (keys['\t']) {
+    for (auto ball : states.back().balls) {
+      ofSetColor(ofColor::black);
+      ofCircle(TransformPosition(ball.position), TransformSize(kBallRadius));
+      ofSetColor(ofColor::white);
+      ofLine(TransformPosition(ball.position),
+             TransformPosition(ball.position) + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle)));
+    }
+  } else {
+    for (auto ball : ball_body) {
+      const float angle = ball->GetAngle();
+      const b2Vec2 position = ball->GetPosition();
+      ofSetColor(ofColor::black);
+      ofCircle(TransformPosition(ofVec2f(position.x, position.y)), TransformSize(kBallRadius));
+      ofSetColor(ofColor::white);
+      ofLine(TransformPosition(ofVec2f(position.x, position.y)),
+             TransformPosition(ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle))));
+    }
   }
   std::stringstream out;
   out << ofGetFrameRate();

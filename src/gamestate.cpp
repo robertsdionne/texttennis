@@ -6,11 +6,14 @@
 //
 //
 
+#include <list>
+
 #include "gamestate.h"
 
-GameState::GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, const std::list<Trail> &trail)
-: balls(), racket1(racket1), trail(trail) {
-  balls.push_back(ball);
-}
+GameState::GameState()
+: balls(), racket1() {}
+
+GameState::GameState(ofVec2f racket1)
+: balls(), racket1(racket1) {}
 
 GameState::~GameState() {}

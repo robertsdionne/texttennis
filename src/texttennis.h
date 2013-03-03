@@ -45,6 +45,8 @@ public:
   static constexpr const char *kMessageWeakVolley = "Weak Volley";
   
 private:
+  static constexpr float kFrameRate = 60.0;
+  static constexpr float kDeltaTime = 1.0 / kFrameRate;
   static const b2Vec2 kGravityVector;
   static constexpr int kBox2dVelocityIterations = 8;
   static constexpr int kBox2dPositionIterations = 3;
@@ -103,6 +105,7 @@ private:
   bool use_ai;
   ofVec2f racket1;
   ofVec2f mouse_position;
+  std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };

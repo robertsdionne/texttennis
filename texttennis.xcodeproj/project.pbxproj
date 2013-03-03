@@ -10,7 +10,6 @@
 		4619FE8F16DAB189006F45CF /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4619FE8D16DAB189006F45CF /* gameobject.cpp */; };
 		464C06A016DAE14C00D7D927 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 464C069E16DAE14C00D7D927 /* gamestate.cpp */; };
 		4676FB0E16DC498400948123 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676FB0C16DC498400948123 /* console.cpp */; };
-		46834FD316DC36E3006E5D60 /* describer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46834FD116DC36E3006E5D60 /* describer.cpp */; };
 		468A010C16DAABD800489431 /* texttennis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 468A010B16DAABD800489431 /* texttennis.cpp */; };
 		46C6ACA016E2E0A50054A6C9 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46C6AC4016E2E0A50054A6C9 /* b2BroadPhase.cpp */; };
 		46C6ACA116E2E0A50054A6C9 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46C6AC4216E2E0A50054A6C9 /* b2CollideCircle.cpp */; };
@@ -115,8 +114,6 @@
 		464C069F16DAE14C00D7D927 /* gamestate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamestate.h; sourceTree = "<group>"; };
 		4676FB0C16DC498400948123 /* console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = console.cpp; sourceTree = "<group>"; };
 		4676FB0D16DC498400948123 /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = console.h; sourceTree = "<group>"; };
-		46834FD116DC36E3006E5D60 /* describer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = describer.cpp; sourceTree = "<group>"; };
-		46834FD216DC36E3006E5D60 /* describer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = describer.h; sourceTree = "<group>"; };
 		468A010A16DAABD800489431 /* texttennis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texttennis.h; sourceTree = "<group>"; };
 		468A010B16DAABD800489431 /* texttennis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texttennis.cpp; sourceTree = "<group>"; };
 		46C6AC3C16E2E0A50054A6C9 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -502,8 +499,6 @@
 			children = (
 				4676FB0C16DC498400948123 /* console.cpp */,
 				4676FB0D16DC498400948123 /* console.h */,
-				46834FD116DC36E3006E5D60 /* describer.cpp */,
-				46834FD216DC36E3006E5D60 /* describer.h */,
 				4619FE8D16DAB189006F45CF /* gameobject.cpp */,
 				4619FE8E16DAB189006F45CF /* gameobject.h */,
 				464C069E16DAE14C00D7D927 /* gamestate.cpp */,
@@ -612,7 +607,6 @@
 				468A010C16DAABD800489431 /* texttennis.cpp in Sources */,
 				4619FE8F16DAB189006F45CF /* gameobject.cpp in Sources */,
 				464C06A016DAE14C00D7D927 /* gamestate.cpp in Sources */,
-				46834FD316DC36E3006E5D60 /* describer.cpp in Sources */,
 				4676FB0E16DC498400948123 /* console.cpp in Sources */,
 				46C6ACA016E2E0A50054A6C9 /* b2BroadPhase.cpp in Sources */,
 				46C6ACA116E2E0A50054A6C9 /* b2CollideCircle.cpp in Sources */,
