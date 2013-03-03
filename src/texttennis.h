@@ -57,25 +57,14 @@ private:
   static constexpr float kGravity = 9.81;
   static constexpr float kHitMean = 0.16;
   static constexpr float kHitVariance = 0.08;
+  static constexpr long kMaxBalls = 500;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
-  static constexpr float kRacketSpeed = 0.2;
+  static constexpr float kRacketSpeed = 0.1;
   static constexpr int kTrailSize = 700;
   
-  void Accelerate(float dt);
-  void BorderCollide();
-  void BorderCollidePreserveImpulse();
-  void Collide(bool preserve_impulse);
-  void Collide(bool preserve_impulse, GameObject &ball0, GameObject &ball1);
-  void Damping();
-  void DrawTrail(const std::list<GameState::Trail> &trail);
-  void Gravity();
-  void Inertia();
-  void NetCollide();
-  void NetCollidePreserveImpulse();
   void RacketCollide();
-  void RacketCollidePreserveImpulse();
   void SetViewTransform();
   ofVec2f TransformPosition(ofVec2f position);
   ofVec2f TransformPositionInverse(ofVec2f position);
@@ -83,17 +72,37 @@ private:
   void UpdateRackets();
   
   Console console;
+  
   b2World world;
   b2BodyDef ball_body_definition;
-  b2Body *ball_body;
+  std::list<b2Body *> ball_body;
   b2CircleShape ball_shape;
   b2FixtureDef ball_fixture_definition;
   b2Fixture *ball_fixture;
+  
+  b2BodyDef court_body_definition;
+  b2Body *court_body;
+  b2PolygonShape court_shape;
+  b2FixtureDef court_fixture_definition;
+  b2Fixture *court_fixture;
+  
+  b2BodyDef net_body_definition;
+  b2Body *net_body;
+  b2EdgeShape net_shape;
+  b2FixtureDef net_fixture_definition;
+  b2Fixture *net_fixture;
+  
+  b2BodyDef border_body_definition;
+  b2Body *border_body;
+  b2ChainShape border_shape;
+  b2FixtureDef border_fixture_definition;
+  b2Fixture *border_fixture;
+  
   bool show_console;
   bool show_text;
   bool use_ai;
+  ofVec2f racket1;
   ofVec2f mouse_position;
-  std::list<GameState> states;
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };
