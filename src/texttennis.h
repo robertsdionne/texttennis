@@ -8,6 +8,8 @@
 #include "gamestate.h"
 #include "ofMain.h"
 
+#include "Box2D.h"
+
 class TextTennis : public ofBaseApp {
 public:
   void setup();
