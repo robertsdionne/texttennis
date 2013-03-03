@@ -160,16 +160,17 @@ void TextTennis::draw() {
   ofSetColor(ofColor::black);
   ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
   ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
-  ofCircle(TransformPosition(racket1), TransformSize(kRacketRadius));
   if (keys['\t']) {
+    ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
     for (auto ball : states.back().balls) {
       ofSetColor(ofColor::black);
       ofCircle(TransformPosition(ball.position), TransformSize(kBallRadius));
       ofSetColor(ofColor::white);
       ofLine(TransformPosition(ball.position),
-             TransformPosition(ball.position) + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle)));
+             TransformPosition(ball.position + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle))));
     }
   } else {
+    ofCircle(TransformPosition(racket1), TransformSize(kRacketRadius));
     for (auto ball : ball_body) {
       const float angle = ball->GetAngle();
       const b2Vec2 position = ball->GetPosition();
