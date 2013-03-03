@@ -10,6 +10,7 @@ TextTennis::TextTennis()
 
 void TextTennis::setup() {
   ofSetFrameRate(kFrameRate);
+  ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   
