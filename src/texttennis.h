@@ -11,6 +11,8 @@
 
 class TextTennis : public ofBaseApp {
 public:
+  TextTennis();
+  
   void setup();
   
   void update();
@@ -43,15 +45,18 @@ public:
   static constexpr const char *kMessageWeakVolley = "Weak Volley";
   
 private:
+  static const b2Vec2 kGravityVector;
+  static constexpr int kBox2dVelocityIterations = 8;
+  static constexpr int kBox2dPositionIterations = 3;
   static constexpr float kBallMass = 0.056;
   static constexpr float kBallRadius = 2.0 * 0.03429;
   static constexpr float kCourtLength = 23.78;
   static constexpr float kCourtThickness = 0.5;
   static constexpr float kDamping = 0.6;
-  static constexpr float kDrag = 0.1;
-  static constexpr float kGravity = 9.81 / 2.0;
-  static constexpr float kHitMean = 0.7;
-  static constexpr float kHitVariance = 0.2;
+  static constexpr float kDrag = 0.1 * kBallMass;
+  static constexpr float kGravity = 9.81;
+  static constexpr float kHitMean = 0.16;
+  static constexpr float kHitVariance = 0.08;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
   static constexpr float kRacketRadius = 2.0 * 0.1155;
@@ -78,6 +83,12 @@ private:
   void UpdateRackets();
   
   Console console;
+  b2World world;
+  b2BodyDef ball_body_definition;
+  b2Body *ball_body;
+  b2CircleShape ball_shape;
+  b2FixtureDef ball_fixture_definition;
+  b2Fixture *ball_fixture;
   bool show_console;
   bool show_text;
   bool use_ai;

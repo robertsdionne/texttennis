@@ -1,20 +1,39 @@
+#include <Box2D/Box2D.h>
+
 #include "describer.h"
 #include "texttennis.h"
 
+const b2Vec2 TextTennis::kGravityVector = b2Vec2(0.0, -9.81 / 2.0);
 constexpr const char *TextTennis::kMessageBounce;
+
+TextTennis::TextTennis()
+: world(kGravityVector) {}
 
 void TextTennis::setup() {
   ofSetFrameRate(GameObject::kFrameRate);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(-7, 1)), false,
+  states.push_back(GameState(GameObject(kBallRadius, kBallMass, ofVec2f(-7, 10)), false,
                              ofVec2f(-8, kCourtThickness + kRacketRadius), std::list<GameState::Trail>()));
   show_console = false;
   show_text = false;
   use_ai = false;
+  
+  // Box2D
+  ball_body_definition.type = b2_dynamicBody;
+  ball_body_definition.position.Set(0, 10);
+  ball_body_definition.gravityScale = 1.0;
+  ball_body_definition.linearDamping = 0;
+  ball_body = world.CreateBody(&ball_body_definition);
+  ball_shape.m_radius = kBallRadius;
+  ball_fixture_definition.shape = &ball_shape;
+  ball_fixture_definition.density = 1.0;
+  ball_fixture_definition.friction = 0.;
+  ball_fixture = ball_body->CreateFixture(&ball_fixture_definition);
 }
 
 void TextTennis::update() {
+  world.Step(GameObject::kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
   if (keys['\t']) {
     if (states.size() > 1) {
       states.pop_back();
@@ -79,7 +98,7 @@ void TextTennis::UpdateRackets() {
 
 void TextTennis::Gravity() {
   for (auto &ball : states.back().balls) {
-    ball.force += ofVec2f(0, -kGravity);
+    ball.force += ofVec2f(0, -kBallMass * kGravity);
   }
 }
 
@@ -249,6 +268,8 @@ void TextTennis::draw() {
   for (auto &ball : states.back().balls) {
     ofCircle(TransformPosition(ball.position), TransformSize(ball.radius));
   }
+  b2Vec2 position = ball_body->GetPosition();
+  ofCircle(TransformPosition(ofVec2f(position.x, position.y)), TransformSize(kBallRadius));
   std::stringstream out;
   out << ofGetFrameRate();
   ofPushStyle();
