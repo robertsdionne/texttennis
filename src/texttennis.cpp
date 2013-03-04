@@ -3,6 +3,10 @@
 #include "texttennis.h"
 
 const b2Vec2 TextTennis::kGravityVector = b2Vec2(0.0, -kGravity);
+const ofMatrix4x4 TextTennis::kViewMatrix = ofMatrix4x4::newScaleMatrix(kWindowWidth / kCourtLength, -kWindowWidth / kCourtLength, 1) * ofMatrix4x4::newTranslationMatrix(kWindowWidth / 2.0, kWindowHeight, 0.0);
+const ofMatrix4x4 TextTennis::kViewMatrixInverse = ofMatrix4x4::getInverseOf(kViewMatrix);
+constexpr int TextTennis::kWindowWidth;
+constexpr int TextTennis::kWindowHeight;
 
 TextTennis::TextTennis()
 : console(), world(kGravityVector), ball_body(), ball_shape(), ball_fixture(nullptr),
@@ -17,7 +21,7 @@ void TextTennis::setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  
+
   // Box2D
   CreateBall(ofVec2f(11, 1), ofVec2f(-15, 7.5));
   CreateBorder();
@@ -170,29 +174,30 @@ void TextTennis::RacketCollide() {
 }
 
 void TextTennis::draw() {
+  ofMultMatrix(kViewMatrix);
   ofBackground(ofColor::white);
   ofSetColor(ofColor::black);
-  ofRect(TransformPosition(ofVec2f(-kCourtLength / 2.0, kCourtThickness)), TransformSize(kCourtLength), TransformSize(kCourtThickness));
-  ofRect(TransformPosition(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness)), TransformSize(kNetThickness), TransformSize(kNetHeight));
+  ofRect(ofVec2f(-kCourtLength / 2.0, kCourtThickness), kCourtLength, -kCourtThickness);
+  ofRect(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
   if (keys['\t']) {
-    ofCircle(TransformPosition(states.back().racket1), TransformSize(kRacketRadius));
+    ofCircle(states.back().racket1, kRacketRadius);
     for (auto ball : states.back().balls) {
       ofSetColor(ofColor::black);
-      ofCircle(TransformPosition(ball.position), TransformSize(kBallRadius));
+      ofCircle(ball.position, kBallRadius);
       ofSetColor(ofColor::white);
-      ofLine(TransformPosition(ball.position),
-             TransformPosition(ball.position + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle))));
+      ofLine(ball.position,
+             ball.position + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle)));
     }
   } else {
-    ofCircle(TransformPosition(racket1), TransformSize(kRacketRadius));
+    ofCircle(racket1, kRacketRadius);
     for (auto ball : ball_body) {
       const float angle = ball->GetAngle();
       const b2Vec2 position = ball->GetPosition();
       ofSetColor(ofColor::black);
-      ofCircle(TransformPosition(ofVec2f(position.x, position.y)), TransformSize(kBallRadius));
+      ofCircle(ofVec2f(position.x, position.y), kBallRadius);
       ofSetColor(ofColor::white);
-      ofLine(TransformPosition(ofVec2f(position.x, position.y)),
-             TransformPosition(ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle))));
+      ofLine(ofVec2f(position.x, position.y),
+             ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle)));
     }
   }
   std::stringstream out;
@@ -206,23 +211,6 @@ void TextTennis::draw() {
   }
 }
 
-ofVec2f TextTennis::TransformPosition(ofVec2f position) {
-  ofVec2f new_position = (position + ofVec2f(kCourtLength / 2.0, 0.0)) * ofGetWidth() / kCourtLength;
-  new_position.y = ofGetHeight() - new_position.y;
-  return new_position;
-}
-
-ofVec2f TextTennis::TransformPositionInverse(ofVec2f position) {
-  ofVec2f new_position = position;
-  new_position.y = ofGetHeight() - new_position.y;
-  new_position = new_position * kCourtLength / ofGetWidth() - ofVec2f(kCourtLength / 2.0, 0.0);
-  return new_position;
-}
-
-float TextTennis::TransformSize(float size) {
-  return size * ofGetWidth() / kCourtLength;
-}
-
 void TextTennis::keyPressed(int key) {
   keys[key] = true;
 }
@@ -232,7 +220,7 @@ void TextTennis::keyReleased(int key) {
 }
 
 void TextTennis::mouseMoved(int x, int y) {
-  mouse_position = TransformPositionInverse(ofVec2f(x, y));
+  mouse_position = ofVec3f(x, y) * kViewMatrixInverse;
 }
 
 void TextTennis::mouseDragged(int x, int y, int button) {

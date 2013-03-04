@@ -37,6 +37,9 @@ public:
   
   void gotMessage(ofMessage msg);
   
+  static constexpr int kWindowWidth = 1024;
+  static constexpr int kWindowHeight = 768;
+  
 private:
   static constexpr float kFrameRate = 60.0;
   static constexpr float kDeltaTime = 1.0 / kFrameRate;
@@ -60,6 +63,8 @@ private:
   static constexpr float kRacketRadius = 2.0 * 0.1155;
   static constexpr float kRacketSpeed = 0.1;
   static constexpr int kTrailSize = 700;
+  static const ofMatrix4x4 kViewMatrix;
+  static const ofMatrix4x4 kViewMatrixInverse;
   
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
                   float angle = 0.0, float angular_velocity = 0.0);
@@ -67,10 +72,6 @@ private:
   void CreateCourt();
   void CreateNet();
   void RacketCollide();
-  void SetViewTransform();
-  ofVec2f TransformPosition(ofVec2f position);
-  ofVec2f TransformPositionInverse(ofVec2f position);
-  float TransformSize(float size);
   void UpdateRackets();
   
   Console console;
