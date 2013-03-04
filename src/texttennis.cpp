@@ -16,7 +16,11 @@ constexpr int TextTennis::kWindowHeight;
  */
 constexpr float TextTennis::kAngularDamping;
 
+constexpr float TextTennis::kAngularVelocity;
+
 constexpr float TextTennis::kBallCartoonFactor;
+
+const ofVec2f TextTennis::kBallInitialPosition = ofVec2f(11, 1);
 
 constexpr float TextTennis::kBallMass;
 
@@ -25,6 +29,8 @@ constexpr float TextTennis::kBallRadius;
 constexpr int TextTennis::kBox2dVelocityIterations;
 
 constexpr int TextTennis::kBox2dPositionIterations;
+
+constexpr float TextTennis::kCeilingHeight;
 
 constexpr float TextTennis::kCourtLength;
 
@@ -36,15 +42,21 @@ constexpr float TextTennis::kDefaultAngularVelocity;
 
 constexpr float TextTennis::kDeltaTime;
 
-constexpr float TextTennis::kDrag;
+constexpr float TextTennis::kDensity;
 
 constexpr float TextTennis::kFrameRate;
+
+constexpr float TextTennis::kFriction;
 
 constexpr float TextTennis::kGravity;
 
 const b2Vec2 TextTennis::kGravityVector = b2Vec2(0.0, -kGravity);
 
 constexpr float TextTennis::kHalfCourtLength;
+
+constexpr float TextTennis::kHalfCourtThickness;
+
+const ofVec2f TextTennis::kHitDirection = ofVec2f(1.0, 0.5).normalized();
 
 constexpr float TextTennis::kHitMean;
 
@@ -64,6 +76,10 @@ constexpr float TextTennis::kRacketRadius;
 
 constexpr float TextTennis::kRacketSpeed;
 
+constexpr float TextTennis::kRestitution;
+
+constexpr int TextTennis::kSaveEveryNFrames;
+
 constexpr int TextTennis::kTrailSize;
 
 const ofMatrix4x4 TextTennis::kViewMatrix =
@@ -79,7 +95,6 @@ TextTennis::TextTennis()
 : console(), world(kGravityVector), ball_body(), ball_shape(), ball_fixture(nullptr),
   court_body(nullptr), court_shape(), court_fixture(nullptr), net_body(nullptr), net_shape(),
   net_fixture(nullptr), border_body(nullptr), border_shape(), border_fixture(nullptr),
-  show_console(false), show_text(false), use_ai(false),
   racket1(kRacket1StartPosition), mouse_position(), states(), previous_keys(), keys()
 {}
 
@@ -91,7 +106,6 @@ void TextTennis::setup() {
   ofBackground(ofColor::white);
 
   // Box2D
-  CreateBall(ofVec2f(11, 1), ofVec2f(-15, 7.5));
   CreateBorder();
   CreateCourt();
   CreateNet();
@@ -125,7 +139,7 @@ void TextTennis::update() {
     UpdateRackets();
     RacketCollide();
     world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
-    if (ofGetFrameNum() % 2 == 0) {
+    if (ofGetFrameNum() % kSaveEveryNFrames == 0) {
       states.push_back(states.back());
       states.back().racket1 = racket1;
       states.back().balls.clear();
@@ -135,10 +149,18 @@ void TextTennis::update() {
                                                  body->GetAngle(), body->GetAngularVelocity()));
       }
     }
-    if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-      ofVec2f mouse = 12.0 * (mouse_position - ofVec2f(11, 1)).normalized();
-      CreateBall(ofVec2f(11, 1), mouse, 0.0, 100.0 * ofRandomf());
+    if (keys[' '] && !previous_keys[' ']) {
+      ofVec2f mouse = kHitMean * (mouse_position - kBallInitialPosition).normalized();
+      CreateBall(kBallInitialPosition, mouse, 0.0, kAngularVelocity * ofRandomf());
       if (ball_body.size() > kMaxBalls) {
+        b2Body *const body = ball_body.front();
+        body->DestroyFixture(body->GetFixtureList());
+        world.DestroyBody(body);
+        ball_body.pop_front();
+      }
+    }
+    if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
+      if (ball_body.size() > 0) {
         b2Body *const body = ball_body.front();
         body->DestroyFixture(body->GetFixtureList());
         world.DestroyBody(body);
@@ -190,15 +212,15 @@ void TextTennis::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_body_definition.linearVelocity.Set(velocity.x, velocity.y);
   ball_body_definition.angle = angle;
   ball_body_definition.angularVelocity = angular_velocity;
-  ball_body_definition.linearDamping = 0.1;
-  ball_body_definition.angularDamping = 0.1;
+  ball_body_definition.linearDamping = kLinearDamping;
+  ball_body_definition.angularDamping = kAngularDamping;
   ball_body.push_back(world.CreateBody(&ball_body_definition));
   ball_shape.m_radius = kBallRadius;
   b2FixtureDef ball_fixture_definition;
   ball_fixture_definition.shape = &ball_shape;
-  ball_fixture_definition.density = 1.0;
-  ball_fixture_definition.restitution = 0.728;
-  ball_fixture_definition.friction = 0.3;
+  ball_fixture_definition.density = kDensity;
+  ball_fixture_definition.restitution = kRestitution;
+  ball_fixture_definition.friction = kFriction;
   ball_fixture = ball_body.back()->CreateFixture(&ball_fixture_definition);
 }
 
@@ -207,10 +229,10 @@ void TextTennis::CreateBorder() {
   border_body_definition.position.Set(0.0, kCourtThickness);
   border_body = world.CreateBody(&border_body_definition);
   b2Vec2 vertices[4];
-  vertices[0].Set(-kCourtLength / 2.0, 0.0);
-  vertices[1].Set(-kCourtLength / 2.0, 100.0);
-  vertices[2].Set(kCourtLength / 2.0, 100.0);
-  vertices[3].Set(kCourtLength / 2.0, 0.0);
+  vertices[0].Set(-kHalfCourtLength, 0.0);
+  vertices[1].Set(-kHalfCourtLength, kCeilingHeight);
+  vertices[2].Set(kHalfCourtLength, kCeilingHeight);
+  vertices[3].Set(kHalfCourtLength, 0.0);
   border_shape.CreateChain(vertices, 4);
   b2FixtureDef border_fixture_definition;
   border_fixture_definition.shape = &border_shape;
@@ -219,12 +241,12 @@ void TextTennis::CreateBorder() {
 
 void TextTennis::CreateCourt() {
   b2BodyDef court_body_definition;
-  court_body_definition.position.Set(0.0, kCourtThickness / 2.0);
+  court_body_definition.position.Set(0.0, kHalfCourtThickness);
   court_body = world.CreateBody(&court_body_definition);
-  court_shape.SetAsBox(kCourtLength / 2.0, kCourtThickness / 2.0);
+  court_shape.SetAsBox(kHalfCourtLength, kHalfCourtThickness);
   b2FixtureDef court_fixture_definition;
   court_fixture_definition.shape = &court_shape;
-  court_fixture_definition.friction = 0.3;
+  court_fixture_definition.friction = kFriction;
   court_fixture = court_body->CreateFixture(&court_fixture_definition);
 }
 
@@ -259,14 +281,14 @@ void TextTennis::DrawFrameRate() {
   out << ofGetFrameRate();
   ofPushStyle();
   ofSetColor(ofColor::white);
-  ofDrawBitmapString(out.str(), 0, ofGetHeight());
+  ofDrawBitmapString(out.str(), -kHalfCourtLength, kHalfCourtThickness);
   ofPopStyle();
 }
 
 void TextTennis::DrawNet() {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
+  ofRect(ofVec2f(-kHalfNetThickness, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
   ofPopStyle();
 }
 
@@ -282,33 +304,25 @@ void TextTennis::RacketCollide() {
     const ofVec2f position = ofVec2f(ball->GetPosition().x, ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
     if ((position - racket1).length() < kBallRadius + kRacketRadius) {
-      float skill = 0.0;
+      float variance = 0.0;
       if ((keys['a'] && dx < 0) || (keys['d'] && dx > 0)) {
-        skill = -kHitVariance * ofRandomuf();
+        variance = -kHitVariance * ofRandomuf();
       } else if ((keys['a'] && dx > 0) || (keys['d'] && dx < 0)) {
-        skill = kHitVariance * ofRandomuf();
+        variance = kHitVariance * ofRandomuf();
       } else {
-        skill = kHitVariance * ofRandomf();
+        variance = kHitVariance * ofRandomf();
       }
-      ball->SetLinearVelocity(50.0 * b2Vec2(kHitMean + skill, (kHitMean + skill) / 2.0));
+      const ofVec2f velocity = kHitMean * (1.0 + variance) * kHitDirection;
+      ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
     }
   }
 }
 
 void TextTennis::UpdateRackets() {
-  if (keys['a'] && racket1.x > -kCourtLength / 2.0) {
+  if (keys['a'] && racket1.x > -kHalfCourtLength) {
     racket1.x -= kRacketSpeed;
   }
   if (keys['d'] && racket1.x < -kRacketSpeed - kRacketRadius) {
     racket1.x += kRacketSpeed;
-  }
-  if (keys[' '] && !previous_keys[' ']) {
-    show_text = !show_text;
-  }
-  if (keys['`'] && !previous_keys['`']) {
-    show_console = !show_console;
-  }
-  if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-    use_ai = !use_ai;
   }
 }

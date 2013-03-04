@@ -56,7 +56,11 @@ private:
    */
   static constexpr float kAngularDamping = 0.1;
   
+  static constexpr float kAngularVelocity = 100.0;
+  
   static constexpr float kBallCartoonFactor = 2.0;
+  
+  static const ofVec2f kBallInitialPosition;
   
   static constexpr float kBallMass = 0.056;
   
@@ -65,6 +69,8 @@ private:
   static constexpr int kBox2dVelocityIterations = 8;
   
   static constexpr int kBox2dPositionIterations = 3;
+  
+  static constexpr float kCeilingHeight = 100.0;
   
   static constexpr float kCourtLength = 23.78;
   
@@ -76,9 +82,11 @@ private:
   
   static constexpr float kDeltaTime = 1.0 / 60.0;
   
-  static constexpr float kDrag = 0.1 * kBallMass;
+  static constexpr float kDensity = kBallMass / M_PI / kBallRadius / kBallRadius;
   
   static constexpr float kFrameRate = 1.0 / kDeltaTime;
+  
+  static constexpr float kFriction = 0.3;
   
   static constexpr float kGravity = 9.81;
   
@@ -86,9 +94,15 @@ private:
   
   static constexpr float kHalfCourtLength = kCourtLength / 2.0;
   
-  static constexpr float kHitMean = 0.20;
+  static constexpr float kHalfCourtThickness = kCourtThickness / 2.0;
   
-  static constexpr float kHitVariance = 0.08;
+  static constexpr float kHalfNetThickness = kBallRadius / 2.0;
+  
+  static const ofVec2f kHitDirection;
+  
+  static constexpr float kHitMean = 15.0;
+  
+  static constexpr float kHitVariance = 0.1;
   
   static constexpr float kLinearDamping = 0.1;
   
@@ -103,6 +117,10 @@ private:
   static constexpr float kRacketRadius = kBallCartoonFactor * 0.1155;
   
   static constexpr float kRacketSpeed = 0.1;
+  
+  static constexpr float kRestitution = 0.728;
+  
+  static constexpr int kSaveEveryNFrames = 2;
   
   static constexpr int kTrailSize = 700;
   
@@ -173,13 +191,6 @@ private:
   b2ChainShape border_shape;
   
   b2Fixture *border_fixture;
-  
-  
-  bool show_console;
-  
-  bool show_text;
-  
-  bool use_ai;
   
   
   ofVec2f racket1;
