@@ -14,8 +14,6 @@ constexpr int TextTennis::kWindowHeight;
 /**
  * Private constant definitions.
  */
-constexpr int TextTennis::OF_KEY_TAB;
-
 constexpr float TextTennis::kAngularDamping;
 
 constexpr float TextTennis::kBallCartoonFactor;
@@ -108,12 +106,12 @@ void TextTennis::setup() {
 }
 
 void TextTennis::update() {
-  if (keys[OF_KEY_TAB]) {
+  if (keys['\t']) {
     if (states.size() > 1) {
       states.pop_back();
     }
   } else {
-    if (!keys[OF_KEY_TAB] && previous_keys[OF_KEY_TAB]) {
+    if (!keys['\t'] && previous_keys['\t']) {
       racket1 = states.back().racket1;
       for (auto body : ball_body) {
         body->DestroyFixture(body->GetFixtureList());
@@ -155,7 +153,7 @@ void TextTennis::draw() {
   ofMultMatrix(kViewMatrix);
   DrawCourt();
   DrawNet();
-  if (keys[OF_KEY_TAB]) {
+  if (keys['\t']) {
     DrawRacket(states.back().racket1);
     for (auto ball : states.back().balls) {
       DrawBall(ball.position, ball.angle);

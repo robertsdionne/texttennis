@@ -54,8 +54,6 @@ private:
   /**
    * Private constant declarations.
    */
-  static constexpr int OF_KEY_TAB = '\t';
-  
   static constexpr float kAngularDamping = 0.1;
   
   static constexpr float kBallCartoonFactor = 2.0;
