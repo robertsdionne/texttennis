@@ -28,17 +28,17 @@ public:
   
   void mouseMoved(int x, int y);
   
-  void mouseDragged(int x, int y, int button);
+  void mouseDragged(int x, int y, int button) {}
   
-  void mousePressed(int x, int y, int button);
+  void mousePressed(int x, int y, int button) {}
   
-  void mouseReleased(int x, int y, int button);
+  void mouseReleased(int x, int y, int button) {}
   
-  void windowResized(int w, int h);
+  void windowResized(int w, int h) {}
   
-  void dragEvent(ofDragInfo dragInfo);
+  void dragEvent(ofDragInfo dragInfo) {}
   
-  void gotMessage(ofMessage msg);
+  void gotMessage(ofMessage msg) {}
   
 public:
   /**
@@ -92,6 +92,8 @@ private:
   void CreateCourt();
   
   void CreateNet();
+  
+  void DrawBall(ofVec2f position, float angle);
   
   void RacketCollide();
   

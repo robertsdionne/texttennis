@@ -37,6 +37,100 @@ void TextTennis::setup() {
   }
 }
 
+void TextTennis::update() {
+  if (keys['\t']) {
+    if (states.size() > 1) {
+      states.pop_back();
+    }
+  } else {
+    if (!keys['\t'] && previous_keys['\t']) {
+      racket1 = states.back().racket1;
+      for (auto body : ball_body) {
+        body->DestroyFixture(body->GetFixtureList());
+        world.DestroyBody(body);
+      }
+      ball_body.clear();
+      for (auto ball : states.back().balls) {
+        CreateBall(ball.position, ball.velocity, ball.angle, ball.angular_velocity);
+      }
+    }
+    UpdateRackets();
+    RacketCollide();
+    world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
+    if (ofGetFrameNum() % 2 == 0) {
+      states.push_back(states.back());
+      states.back().racket1 = racket1;
+      states.back().balls.clear();
+      for (auto body : ball_body) {
+        states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+                                                 ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
+                                                 body->GetAngle(), body->GetAngularVelocity()));
+      }
+    }
+    if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
+      ofVec2f mouse = 12.0 * (mouse_position - ofVec2f(11, 1)).normalized();
+      CreateBall(ofVec2f(11, 1), mouse, 0.0, 100.0 * ofRandomf());
+      if (ball_body.size() > kMaxBalls) {
+        b2Body *const body = ball_body.front();
+        body->DestroyFixture(body->GetFixtureList());
+        world.DestroyBody(body);
+        ball_body.pop_front();
+      }
+    }
+  }
+  previous_keys = keys;
+}
+
+void TextTennis::draw() {
+  ofMultMatrix(kViewMatrix);
+  ofBackground(ofColor::white);
+  ofSetColor(ofColor::black);
+  ofRect(ofVec2f(-kCourtLength / 2.0, kCourtThickness), kCourtLength, -kCourtThickness);
+  ofRect(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
+  if (keys['\t']) {
+    ofCircle(states.back().racket1, kRacketRadius);
+    for (auto ball : states.back().balls) {
+      ofSetColor(ofColor::black);
+      ofCircle(ball.position, kBallRadius);
+      ofSetColor(ofColor::white);
+      ofLine(ball.position,
+             ball.position + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle)));
+    }
+  } else {
+    ofCircle(racket1, kRacketRadius);
+    for (auto ball : ball_body) {
+      const float angle = ball->GetAngle();
+      const b2Vec2 position = ball->GetPosition();
+      ofSetColor(ofColor::black);
+      ofCircle(ofVec2f(position.x, position.y), kBallRadius);
+      ofSetColor(ofColor::white);
+      ofLine(ofVec2f(position.x, position.y),
+             ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle)));
+    }
+  }
+  std::stringstream out;
+  out << ofGetFrameRate();
+  ofPushStyle();
+  ofSetColor(ofColor::white);
+  ofDrawBitmapString(out.str(), 0, ofGetHeight());
+  ofPopStyle();
+  if (show_console) {
+    console.Draw();
+  }
+}
+
+void TextTennis::keyPressed(int key) {
+  keys[key] = true;
+}
+
+void TextTennis::keyReleased(int key) {
+  keys[key] = false;
+}
+
+void TextTennis::mouseMoved(int x, int y) {
+  mouse_position = ofVec3f(x, y) * kViewMatrixInverse;
+}
+
 void TextTennis::CreateBall(ofVec2f position, ofVec2f velocity,
                             float angle, float angular_velocity) {
   b2BodyDef ball_body_definition;
@@ -93,68 +187,6 @@ void TextTennis::CreateNet() {
   net_fixture = net_body->CreateFixture(&net_fixture_definition);
 }
 
-void TextTennis::update() {
-  if (keys['\t']) {
-    if (states.size() > 1) {
-      states.pop_back();
-    }
-  } else {
-    if (!keys['\t'] && previous_keys['\t']) {
-      racket1 = states.back().racket1;
-      for (auto body : ball_body) {
-        body->DestroyFixture(body->GetFixtureList());
-        world.DestroyBody(body);
-      }
-      ball_body.clear();
-      for (auto ball : states.back().balls) {
-        CreateBall(ball.position, ball.velocity, ball.angle, ball.angular_velocity);
-      }
-    }
-    UpdateRackets();
-    RacketCollide();
-    world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
-    if (ofGetFrameNum() % 2 == 0) {
-      states.push_back(states.back());
-      states.back().racket1 = racket1;
-      states.back().balls.clear();
-      for (auto body : ball_body) {
-        states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
-                                                 ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
-                                                 body->GetAngle(), body->GetAngularVelocity()));
-      }
-    }
-    if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-      ofVec2f mouse = 12.0 * (mouse_position - ofVec2f(11, 1)).normalized();
-      CreateBall(ofVec2f(11, 1), mouse, 0.0, 100.0 * ofRandomf());
-      if (ball_body.size() > kMaxBalls) {
-        b2Body *const body = ball_body.front();
-        body->DestroyFixture(body->GetFixtureList());
-        world.DestroyBody(body);
-        ball_body.pop_front();
-      }
-    }
-  }
-  previous_keys = keys;
-}
-
-void TextTennis::UpdateRackets() {
-  if (keys['a'] && racket1.x > -kCourtLength / 2.0) {
-    racket1.x -= kRacketSpeed;
-  }
-  if (keys['d'] && racket1.x < -kRacketSpeed - kRacketRadius) {
-    racket1.x += kRacketSpeed;
-  }
-  if (keys[' '] && !previous_keys[' ']) {
-    show_text = !show_text;
-  }
-  if (keys['`'] && !previous_keys['`']) {
-    show_console = !show_console;
-  }
-  if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-    use_ai = !use_ai;
-  }
-}
-
 void TextTennis::RacketCollide() {
   for (auto ball : ball_body) {
     const ofVec2f position = ofVec2f(ball->GetPosition().x, ball->GetPosition().y);
@@ -173,76 +205,20 @@ void TextTennis::RacketCollide() {
   }
 }
 
-void TextTennis::draw() {
-  ofMultMatrix(kViewMatrix);
-  ofBackground(ofColor::white);
-  ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kCourtLength / 2.0, kCourtThickness), kCourtLength, -kCourtThickness);
-  ofRect(ofVec2f(-kNetThickness / 2.0, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
-  if (keys['\t']) {
-    ofCircle(states.back().racket1, kRacketRadius);
-    for (auto ball : states.back().balls) {
-      ofSetColor(ofColor::black);
-      ofCircle(ball.position, kBallRadius);
-      ofSetColor(ofColor::white);
-      ofLine(ball.position,
-             ball.position + kBallRadius * ofVec2f(cos(ball.angle), sin(ball.angle)));
-    }
-  } else {
-    ofCircle(racket1, kRacketRadius);
-    for (auto ball : ball_body) {
-      const float angle = ball->GetAngle();
-      const b2Vec2 position = ball->GetPosition();
-      ofSetColor(ofColor::black);
-      ofCircle(ofVec2f(position.x, position.y), kBallRadius);
-      ofSetColor(ofColor::white);
-      ofLine(ofVec2f(position.x, position.y),
-             ofVec2f(position.x, position.y) + kBallRadius * ofVec2f(cos(angle), sin(angle)));
-    }
+void TextTennis::UpdateRackets() {
+  if (keys['a'] && racket1.x > -kCourtLength / 2.0) {
+    racket1.x -= kRacketSpeed;
   }
-  std::stringstream out;
-  out << ofGetFrameRate();
-  ofPushStyle();
-  ofSetColor(ofColor::white);
-  ofDrawBitmapString(out.str(), 0, ofGetHeight());
-  ofPopStyle();
-  if (show_console) {
-    console.Draw();
+  if (keys['d'] && racket1.x < -kRacketSpeed - kRacketRadius) {
+    racket1.x += kRacketSpeed;
   }
-}
-
-void TextTennis::keyPressed(int key) {
-  keys[key] = true;
-}
-
-void TextTennis::keyReleased(int key) {
-  keys[key] = false;
-}
-
-void TextTennis::mouseMoved(int x, int y) {
-  mouse_position = ofVec3f(x, y) * kViewMatrixInverse;
-}
-
-void TextTennis::mouseDragged(int x, int y, int button) {
-
-}
-
-void TextTennis::mousePressed(int x, int y, int button) {
-
-}
-
-void TextTennis::mouseReleased(int x, int y, int button) {
-
-}
-
-void TextTennis::windowResized(int w, int h) {
-
-}
-
-void TextTennis::gotMessage(ofMessage msg) {
-
-}
-
-void TextTennis::dragEvent(ofDragInfo dragInfo) { 
-
+  if (keys[' '] && !previous_keys[' ']) {
+    show_text = !show_text;
+  }
+  if (keys['`'] && !previous_keys['`']) {
+    show_console = !show_console;
+  }
+  if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
+    use_ai = !use_ai;
+  }
 }
