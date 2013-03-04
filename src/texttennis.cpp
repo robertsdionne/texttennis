@@ -138,8 +138,7 @@ void TextTennis::update() {
       racket1 = states.back().racket1;
       racket2 = states.back().racket2;
       for (auto body : ball_body) {
-        body->DestroyFixture(body->GetFixtureList());
-        world.DestroyBody(body);
+        DestroyBall(body);
       }
       ball_body.clear();
       for (auto ball : states.back().balls) {
@@ -147,16 +146,6 @@ void TextTennis::update() {
       }
     }
     UpdateRackets();
-    if (keys['w'] && !previous_keys['w']) {
-      RacketCollide(racket1, kRacket1HighHitDirection, kHighHitMean, 'a', 'd');
-    } else if (keys['s'] && !previous_keys['s']) {
-      RacketCollide(racket1, kRacket1LowHitDirection, kLowHitMean, 'a', 'd');
-    }
-    if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
-      RacketCollide(racket2, kRacket2HighHitDirection, kHighHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
-    } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
-      RacketCollide(racket2, kRacket2LowHitDirection, kLowHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
-    }
     world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
     if (ofGetFrameNum() % kSaveEveryNFrames == 0) {
       states.push_back(states.back());
@@ -174,16 +163,14 @@ void TextTennis::update() {
       CreateBall(kBallInitialPosition, mouse, 0.0, kAngularVelocity * ofRandomf());
       if (ball_body.size() > kMaxBalls) {
         b2Body *const body = ball_body.front();
-        body->DestroyFixture(body->GetFixtureList());
-        world.DestroyBody(body);
+        DestroyBall(body);
         ball_body.pop_front();
       }
     }
     if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
       if (ball_body.size() > 0) {
         b2Body *const body = ball_body.front();
-        body->DestroyFixture(body->GetFixtureList());
-        world.DestroyBody(body);
+        DestroyBall(body);
         ball_body.pop_front();
       }
     }
@@ -282,6 +269,11 @@ void TextTennis::CreateNet() {
   net_fixture = net_body->CreateFixture(&net_fixture_definition);
 }
 
+void TextTennis::DestroyBall(b2Body *ball) {
+  ball->DestroyFixture(ball->GetFixtureList());
+  world.DestroyBody(ball);
+}
+
 void TextTennis::DrawBall(ofVec2f position, float angle) {
   ofPushStyle();
   ofSetColor(ofColor::black);
@@ -354,5 +346,15 @@ void TextTennis::UpdateRackets() {
   }
   if (keys[OF_KEY_RIGHT] && racket2.x < kHalfCourtLength) {
     racket2.x += kRacketSpeed;
+  }
+  if (keys['w'] && !previous_keys['w']) {
+    RacketCollide(racket1, kRacket1HighHitDirection, kHighHitMean, 'a', 'd');
+  } else if (keys['s'] && !previous_keys['s']) {
+    RacketCollide(racket1, kRacket1LowHitDirection, kLowHitMean, 'a', 'd');
+  }
+  if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
+    RacketCollide(racket2, kRacket2HighHitDirection, kHighHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
+    RacketCollide(racket2, kRacket2LowHitDirection, kLowHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
   }
 }

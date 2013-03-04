@@ -149,6 +149,8 @@ private:
   
   void CreateNet();
   
+  void DestroyBall(b2Body *ball);
+  
   void DrawBall(ofVec2f position, float angle);
   
   void DrawCourt();
