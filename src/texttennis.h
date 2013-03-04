@@ -11,6 +11,9 @@
 
 class TextTennis : public ofBaseApp {
 public:
+  /**
+   * Public method declarations.
+   */
   TextTennis();
   
   void setup();
@@ -37,43 +40,62 @@ public:
   
   void gotMessage(ofMessage msg);
   
+public:
+  /**
+   * Public constant declarations.
+   */
   static constexpr int kWindowWidth = 1024;
+  
   static constexpr int kWindowHeight = 768;
   
 private:
-  static constexpr float kFrameRate = 60.0;
-  static constexpr float kDeltaTime = 1.0 / kFrameRate;
-  
+  /**
+   * Private constant declarations.
+   */
   static constexpr float kAngularDamping = 0.1;
+  static constexpr float kBallCartoonFactor = 2.0;
+  static constexpr float kBallMass = 0.056;
+  static constexpr float kBallRadius = kBallCartoonFactor * 0.03429;
   static constexpr int kBox2dVelocityIterations = 8;
   static constexpr int kBox2dPositionIterations = 3;
-  static constexpr float kBallMass = 0.056;
-  static constexpr float kBallRadius = 2.0 * 0.03429;
   static constexpr float kCourtLength = 23.78;
   static constexpr float kCourtThickness = 0.5;
+  static constexpr float kDefaultAngle = 0.0;
+  static constexpr float kDefaultAngularVelocity = 0.0;
+  static constexpr float kDeltaTime = 1.0 / 60.0;
   static constexpr float kDrag = 0.1 * kBallMass;
-  static const b2Vec2 kGravityVector;
+  static constexpr float kFrameRate = 1.0 / kDeltaTime;
   static constexpr float kGravity = 9.81;
+  static const b2Vec2 kGravityVector;
+  static constexpr float kHalfCourtLength = kCourtLength / 2.0;
   static constexpr float kHitMean = 0.20;
   static constexpr float kHitVariance = 0.08;
   static constexpr float kLinearDamping = 0.1;
   static constexpr long kMaxBalls = 500;
   static constexpr float kNetHeight = 0.914;
   static constexpr float kNetThickness = kBallRadius;
-  static constexpr float kRacketRadius = 2.0 * 0.1155;
+  static constexpr float kRacketRadius = kBallCartoonFactor * 0.1155;
   static constexpr float kRacketSpeed = 0.1;
   static constexpr int kTrailSize = 700;
   static const ofMatrix4x4 kViewMatrix;
   static const ofMatrix4x4 kViewMatrixInverse;
   
+private:
+  /**
+   * Private method declarations.
+   */
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
-                  float angle = 0.0, float angular_velocity = 0.0);
+                  float angle = kDefaultAngle, float angular_velocity = kDefaultAngularVelocity);
   void CreateBorder();
   void CreateCourt();
   void CreateNet();
   void RacketCollide();
   void UpdateRackets();
   
+private:
+  /**
+   * Private member variables.
+   */
   Console console;
   
   b2World world;
@@ -97,9 +119,12 @@ private:
   bool show_console;
   bool show_text;
   bool use_ai;
+  
   ofVec2f racket1;
   ofVec2f mouse_position;
+  
   std::list<GameState> states;
+  
   std::map<int, bool> previous_keys;
   std::map<int, bool> keys;
 };
