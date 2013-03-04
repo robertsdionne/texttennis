@@ -58,7 +58,7 @@ private:
   
   static constexpr float kAngularVelocity = 100.0;
   
-  static constexpr float kBallCartoonFactor = 1.0;
+  static constexpr float kBallCartoonFactor = 2.0;
   
   static const ofVec2f kBallInitialPosition;
   
