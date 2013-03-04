@@ -80,8 +80,6 @@ constexpr float TextTennis::kRestitution;
 
 constexpr int TextTennis::kSaveEveryNFrames;
 
-constexpr int TextTennis::kTrailSize;
-
 const ofMatrix4x4 TextTennis::kViewMatrix =
     ofMatrix4x4::newScaleMatrix(kWindowWidth / kCourtLength, -kWindowWidth / kCourtLength, 1) *
         ofMatrix4x4::newTranslationMatrix(kHalfWindowWidth, kWindowHeight, 0.0);

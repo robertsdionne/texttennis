@@ -122,8 +122,6 @@ private:
   
   static constexpr int kSaveEveryNFrames = 2;
   
-  static constexpr int kTrailSize = 700;
-  
   static const ofMatrix4x4 kViewMatrix;
   
   static const ofMatrix4x4 kViewMatrixInverse;
