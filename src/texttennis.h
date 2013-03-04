@@ -44,11 +44,11 @@ public:
   /**
    * Public constant declarations.
    */
-  static constexpr int kHalfWindowWidth = 512;
+  static constexpr int kHalfWindowWidth = 720;
   
   static constexpr int kWindowWidth = 2 * kHalfWindowWidth;
   
-  static constexpr int kWindowHeight = 768;
+  static constexpr int kWindowHeight = 900;
   
 private:
   /**
@@ -58,7 +58,7 @@ private:
   
   static constexpr float kAngularVelocity = 100.0;
   
-  static constexpr float kBallCartoonFactor = 2.0;
+  static constexpr float kBallCartoonFactor = 1.0;
   
   static const ofVec2f kBallInitialPosition;
   

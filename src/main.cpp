@@ -5,6 +5,6 @@
 int main() {
   ofAppGlutWindow window;
   window.setGlutDisplayString("rgba double depth alpha samples>=4");
-  ofSetupOpenGL(&window, TextTennis::kWindowWidth, TextTennis::kWindowHeight, OF_WINDOW);
+  ofSetupOpenGL(&window, TextTennis::kWindowWidth, TextTennis::kWindowHeight, OF_FULLSCREEN);
   ofRunApp(new TextTennis());
 }
