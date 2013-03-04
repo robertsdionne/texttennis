@@ -129,6 +129,8 @@ private:
   
   void DrawCourt();
   
+  void DrawFrameRate();
+  
   void DrawNet();
   
   void DrawRacket(ofVec2f position);

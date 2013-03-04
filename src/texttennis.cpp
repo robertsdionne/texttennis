@@ -166,15 +166,7 @@ void TextTennis::draw() {
       DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
     }
   }
-  std::stringstream out;
-  out << ofGetFrameRate();
-  ofPushStyle();
-  ofSetColor(ofColor::white);
-  ofDrawBitmapString(out.str(), 0, ofGetHeight());
-  ofPopStyle();
-  if (show_console) {
-    console.Draw();
-  }
+  DrawFrameRate();
 }
 
 void TextTennis::keyPressed(int key) {
@@ -261,6 +253,15 @@ void TextTennis::DrawCourt() {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-kHalfCourtLength, kCourtThickness), kCourtLength, -kCourtThickness);
+  ofPopStyle();
+}
+
+void TextTennis::DrawFrameRate() {
+  std::stringstream out;
+  out << ofGetFrameRate();
+  ofPushStyle();
+  ofSetColor(ofColor::white);
+  ofDrawBitmapString(out.str(), 0, ofGetHeight());
   ofPopStyle();
 }
 
