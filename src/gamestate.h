@@ -16,14 +16,13 @@
 
 class GameState {
 public:
-  GameState();
-  
-  GameState(ofVec2f racket1);
+  GameState(ofVec2f racket1 = ofVec2f(), ofVec2f racket2 = ofVec2f());
   
   virtual ~GameState();
   
   std::list<GameObject> balls;
   ofVec2f racket1;
+  ofVec2f racket2;
 };
 
 #endif /* defined(__texttennis__gamestate__) */

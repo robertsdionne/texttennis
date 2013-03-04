@@ -56,13 +56,13 @@ constexpr float TextTennis::kHalfCourtLength;
 
 constexpr float TextTennis::kHalfCourtThickness;
 
-const ofVec2f TextTennis::kHitDirection = ofVec2f(1.0, 0.5).normalized();
-
-constexpr float TextTennis::kHitMean;
+constexpr float TextTennis::kHighHitMean;
 
 constexpr float TextTennis::kHitVariance;
 
 constexpr float TextTennis::kLinearDamping;
+
+constexpr float TextTennis::kLowHitMean;
 
 constexpr long TextTennis::kMaxBalls;
 
@@ -70,7 +70,17 @@ constexpr float TextTennis::kNetHeight;
 
 constexpr float TextTennis::kNetThickness;
 
+const ofVec2f TextTennis::kRacket1HighHitDirection = ofVec2f(1.0, 1.0).normalized();
+
+const ofVec2f TextTennis::kRacket1LowHitDirection = ofVec2f(1.0, 0.5).normalized();
+
 const ofVec2f TextTennis::kRacket1StartPosition = ofVec2f(-8, kCourtThickness + kRacketRadius);
+
+const ofVec2f TextTennis::kRacket2HighHitDirection = ofVec2f(-1.0, 1.0).normalized();
+
+const ofVec2f TextTennis::kRacket2LowHitDirection = ofVec2f(-1.0, 0.5).normalized();
+
+const ofVec2f TextTennis::kRacket2StartPosition = ofVec2f(8, kCourtThickness + kRacketRadius);
 
 constexpr float TextTennis::kRacketRadius;
 
@@ -90,11 +100,11 @@ const ofMatrix4x4 TextTennis::kViewMatrixInverse = ofMatrix4x4::getInverseOf(kVi
  * Public method definitions.
  */
 TextTennis::TextTennis()
-: console(), world(kGravityVector), ball_body(), ball_shape(), ball_fixture(nullptr),
-  court_body(nullptr), court_shape(), court_fixture(nullptr), net_body(nullptr), net_shape(),
-  net_fixture(nullptr), border_body(nullptr), border_shape(), border_fixture(nullptr),
-  racket1(kRacket1StartPosition), mouse_position(), states(), previous_keys(), keys()
-{}
+: console(), world(kGravityVector), ball_body(), court_body(nullptr), net_body(nullptr),
+  border_body(nullptr), ball_shape(), court_shape(), net_shape(), border_shape(),
+  ball_fixture(nullptr), court_fixture(nullptr), net_fixture(nullptr), border_fixture(nullptr),
+  racket1(kRacket1StartPosition), racket2(kRacket2StartPosition), mouse_position(), states(),
+  keys(), previous_keys() {}
 
 void TextTennis::setup() {
   ofSetFrameRate(kFrameRate);
@@ -110,6 +120,7 @@ void TextTennis::setup() {
   
   states.push_back(GameState());
   states.back().racket1 = racket1;
+  states.back().racket2 = racket2;
   for (auto body : ball_body) {
     states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
                                              ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
@@ -125,6 +136,7 @@ void TextTennis::update() {
   } else {
     if (!keys['\t'] && previous_keys['\t']) {
       racket1 = states.back().racket1;
+      racket2 = states.back().racket2;
       for (auto body : ball_body) {
         body->DestroyFixture(body->GetFixtureList());
         world.DestroyBody(body);
@@ -135,11 +147,21 @@ void TextTennis::update() {
       }
     }
     UpdateRackets();
-    RacketCollide();
+    if (keys['w'] && !previous_keys['w']) {
+      RacketCollide(racket1, kRacket1HighHitDirection, kHighHitMean, 'a', 'd');
+    } else if (keys['s'] && !previous_keys['s']) {
+      RacketCollide(racket1, kRacket1LowHitDirection, kLowHitMean, 'a', 'd');
+    }
+    if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
+      RacketCollide(racket2, kRacket2HighHitDirection, kHighHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
+      RacketCollide(racket2, kRacket2LowHitDirection, kLowHitMean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    }
     world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
     if (ofGetFrameNum() % kSaveEveryNFrames == 0) {
       states.push_back(states.back());
       states.back().racket1 = racket1;
+      states.back().racket2 = racket2;
       states.back().balls.clear();
       for (auto body : ball_body) {
         states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
@@ -148,7 +170,7 @@ void TextTennis::update() {
       }
     }
     if (keys[' '] && !previous_keys[' ']) {
-      ofVec2f mouse = kHitMean * (mouse_position - kBallInitialPosition).normalized();
+      ofVec2f mouse = kLowHitMean * (mouse_position - kBallInitialPosition).normalized();
       CreateBall(kBallInitialPosition, mouse, 0.0, kAngularVelocity * ofRandomf());
       if (ball_body.size() > kMaxBalls) {
         b2Body *const body = ball_body.front();
@@ -175,11 +197,13 @@ void TextTennis::draw() {
   DrawNet();
   if (keys['\t']) {
     DrawRacket(states.back().racket1);
+    DrawRacket(states.back().racket2);
     for (auto ball : states.back().balls) {
       DrawBall(ball.position, ball.angle);
     }
   } else {
     DrawRacket(racket1);
+    DrawRacket(racket2);
     for (auto ball : ball_body) {
       DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
     }
@@ -297,20 +321,22 @@ void TextTennis::DrawRacket(ofVec2f position) {
   ofPopStyle();
 }
 
-void TextTennis::RacketCollide() {
+void TextTennis::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
+                               float hit_mean, int key_left, int key_right) {
   for (auto ball : ball_body) {
     const ofVec2f position = ofVec2f(ball->GetPosition().x, ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
-    if ((position - racket1).length() < kBallRadius + kRacketRadius) {
+    if ((position - racket_position).length() < kBallRadius + 2.0 * kRacketRadius) {
       float variance = 0.0;
-      if ((keys['a'] && dx < 0) || (keys['d'] && dx > 0)) {
+      float angular_velocity = 0.0;
+      if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
         variance = -kHitVariance * ofRandomuf();
-      } else if ((keys['a'] && dx > 0) || (keys['d'] && dx < 0)) {
+      } else if ((keys[key_left] && dx > 0) || (keys[key_right] && dx < 0)) {
         variance = kHitVariance * ofRandomuf();
       } else {
         variance = kHitVariance * ofRandomf();
       }
-      const ofVec2f velocity = kHitMean * (1.0 + variance) * kHitDirection;
+      const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
     }
   }
@@ -322,5 +348,11 @@ void TextTennis::UpdateRackets() {
   }
   if (keys['d'] && racket1.x < -kRacketSpeed - kRacketRadius) {
     racket1.x += kRacketSpeed;
+  }
+  if (keys[OF_KEY_LEFT] && racket2.x > kRacketSpeed + kRacketRadius) {
+    racket2.x -= kRacketSpeed;
+  }
+  if (keys[OF_KEY_RIGHT] && racket2.x < kHalfCourtLength) {
+    racket2.x += kRacketSpeed;
   }
 }

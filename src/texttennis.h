@@ -98,13 +98,13 @@ private:
   
   static constexpr float kHalfNetThickness = kBallRadius / 2.0;
   
-  static const ofVec2f kHitDirection;
+  static constexpr float kHighHitMean = 10.0;
   
-  static constexpr float kHitMean = 15.0;
-  
-  static constexpr float kHitVariance = 0.1;
+  static constexpr float kHitVariance = 0.05;
   
   static constexpr float kLinearDamping = 0.1;
+  
+  static constexpr float kLowHitMean = 13.0;
   
   static constexpr long kMaxBalls = 500;
   
@@ -112,11 +112,21 @@ private:
   
   static constexpr float kNetThickness = kBallRadius;
   
+  static const ofVec2f kRacket1HighHitDirection;
+  
+  static const ofVec2f kRacket1LowHitDirection;
+  
   static const ofVec2f kRacket1StartPosition;
+  
+  static const ofVec2f kRacket2HighHitDirection;
+  
+  static const ofVec2f kRacket2LowHitDirection;
+  
+  static const ofVec2f kRacket2StartPosition;
   
   static constexpr float kRacketRadius = kBallCartoonFactor * 0.1155;
   
-  static constexpr float kRacketSpeed = 0.1;
+  static constexpr float kRacketSpeed = 0.15;
   
   static constexpr float kRestitution = 0.728;
   
@@ -149,7 +159,8 @@ private:
   
   void DrawRacket(ofVec2f position);
   
-  void RacketCollide();
+  void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
+                     float hit_mean, int key_left, int key_right);
   
   void UpdateRackets();
   
@@ -165,41 +176,22 @@ private:
   
   std::list<b2Body *> ball_body;
   
+  b2Body *court_body, *border_body, *net_body;
+  
   b2CircleShape ball_shape;
-  
-  b2Fixture *ball_fixture;
-  
-  
-  b2Body *court_body;
   
   b2PolygonShape court_shape;
   
-  b2Fixture *court_fixture;
-  
-  
-  b2Body *net_body;
-  
   b2EdgeShape net_shape;
-  
-  b2Fixture *net_fixture;
-  
-  
-  b2Body *border_body;
   
   b2ChainShape border_shape;
   
-  b2Fixture *border_fixture;
+  b2Fixture *ball_fixture, *court_fixture, *net_fixture, *border_fixture;
   
   
-  ofVec2f racket1;
-  
-  ofVec2f mouse_position;
-  
+  ofVec2f racket1, racket2, mouse_position;
   
   std::list<GameState> states;
   
-  
-  std::map<int, bool> previous_keys;
-  
-  std::map<int, bool> keys;
+  std::map<int, bool> keys, previous_keys;
 };
