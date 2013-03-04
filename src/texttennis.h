@@ -86,10 +86,15 @@ private:
    */
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
                   float angle = kDefaultAngle, float angular_velocity = kDefaultAngularVelocity);
+  
   void CreateBorder();
+  
   void CreateCourt();
+  
   void CreateNet();
+  
   void RacketCollide();
+  
   void UpdateRackets();
   
 private:
