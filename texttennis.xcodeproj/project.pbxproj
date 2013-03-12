@@ -12,6 +12,7 @@
 		46393BF116EFE635000269B0 /* LinearTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46393B0416EFE635000269B0 /* LinearTexture.cpp */; };
 		46393BF216EFE635000269B0 /* ofxSpriteSheetRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46393B0616EFE635000269B0 /* ofxSpriteSheetRenderer.cpp */; };
 		46393BF316EFE635000269B0 /* PixelTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46393B0816EFE635000269B0 /* PixelTexture.cpp */; };
+		46393BF816EFE7FC000269B0 /* controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46393BF716EFE7FC000269B0 /* controller.cpp */; };
 		464C06A016DAE14C00D7D927 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 464C069E16DAE14C00D7D927 /* gamestate.cpp */; };
 		4676FB0E16DC498400948123 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676FB0C16DC498400948123 /* console.cpp */; };
 		468A010C16DAABD800489431 /* texttennis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 468A010B16DAABD800489431 /* texttennis.cpp */; };
@@ -346,6 +347,8 @@
 		46393BEC16EFE635000269B0 /* wrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wrap.hpp; sourceTree = "<group>"; };
 		46393BED16EFE635000269B0 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		46393BEF16EFE635000269B0 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
+		46393BF616EFE7FC000269B0 /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
+		46393BF716EFE7FC000269B0 /* controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = controller.cpp; sourceTree = "<group>"; };
 		464C069E16DAE14C00D7D927 /* gamestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gamestate.cpp; sourceTree = "<group>"; };
 		464C069F16DAE14C00D7D927 /* gamestate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamestate.h; sourceTree = "<group>"; };
 		4676FB0C16DC498400948123 /* console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = console.cpp; sourceTree = "<group>"; };
@@ -1015,6 +1018,8 @@
 			children = (
 				4676FB0C16DC498400948123 /* console.cpp */,
 				4676FB0D16DC498400948123 /* console.h */,
+				46393BF716EFE7FC000269B0 /* controller.cpp */,
+				46393BF616EFE7FC000269B0 /* controller.h */,
 				4619FE8D16DAB189006F45CF /* gameobject.cpp */,
 				4619FE8E16DAB189006F45CF /* gameobject.h */,
 				464C069E16DAE14C00D7D927 /* gamestate.cpp */,
@@ -1173,6 +1178,7 @@
 				46393BF116EFE635000269B0 /* LinearTexture.cpp in Sources */,
 				46393BF216EFE635000269B0 /* ofxSpriteSheetRenderer.cpp in Sources */,
 				46393BF316EFE635000269B0 /* PixelTexture.cpp in Sources */,
+				46393BF816EFE7FC000269B0 /* controller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

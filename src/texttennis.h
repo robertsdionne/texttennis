@@ -5,6 +5,7 @@
 #include <map>
 
 #include "console.h"
+#include "controller.h"
 #include "gameobject.h"
 #include "gamestate.h"
 #include "ofMain.h"
@@ -171,6 +172,7 @@ private:
    * Private member variables.
    */
   Console console;
+  Controller controller;
   
   
   b2World world;

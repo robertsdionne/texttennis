@@ -176,6 +176,7 @@ void TextTennis::update() {
     }
   }
   previous_keys = keys;
+  controller.Update();
 }
 
 void TextTennis::draw() {
@@ -200,14 +201,17 @@ void TextTennis::draw() {
 
 void TextTennis::keyPressed(int key) {
   keys[key] = true;
+  controller.OnKeyPressed(key);
 }
 
 void TextTennis::keyReleased(int key) {
   keys[key] = false;
+  controller.OnKeyReleased(key);
 }
 
 void TextTennis::mouseMoved(int x, int y) {
   mouse_position = ofVec3f(x, y) * kViewMatrixInverse;
+  controller.OnMouseMoved(x, y);
 }
 
 /**
