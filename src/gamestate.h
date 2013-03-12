@@ -9,28 +9,20 @@
 #ifndef __texttennis__gamestate__
 #define __texttennis__gamestate__
 
-#include <iostream>
+#include <list>
 
 #include "gameobject.h"
 #include "ofMain.h"
 
 class GameState {
 public:
-  struct Trail {
-    Trail() : position(), text(nullptr) {}
-    ofVec2f position;
-    const char *text;
-  };
-  
-  GameState(GameObject ball, bool collided_with_net, ofVec2f racket1, ofVec2f racket2, const std::list<Trail> &trail);
+  GameState(ofVec2f racket1 = ofVec2f(), ofVec2f racket2 = ofVec2f());
   
   virtual ~GameState();
   
-  GameObject ball;
-  bool collided_with_net;
+  std::list<GameObject> balls;
   ofVec2f racket1;
   ofVec2f racket2;
-  std::list<Trail> trail;
 };
 
 #endif /* defined(__texttennis__gamestate__) */

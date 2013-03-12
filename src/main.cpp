@@ -2,11 +2,9 @@
 #include "ofAppGlutWindow.h"
 #include "texttennis.h"
 
-constexpr int kWindowWidth = 1024;
-constexpr int kWindowHeight = 768;
-
 int main() {
   ofAppGlutWindow window;
-  ofSetupOpenGL(&window, kWindowWidth, kWindowHeight, OF_WINDOW);
+  window.setGlutDisplayString("rgba double depth alpha samples>=4");
+  ofSetupOpenGL(&window, TextTennis::kWindowWidth, TextTennis::kWindowHeight, OF_FULLSCREEN);
   ofRunApp(new TextTennis());
 }

@@ -9,29 +9,18 @@
 #ifndef __texttennis__gameobject__
 #define __texttennis__gameobject__
 
-#include <iostream>
 #include "ofMain.h"
 
 class GameObject {
 public:
-  GameObject(float radius = 1.0, float mass = 1.0, ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f());
+  GameObject(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(), float angle = 0.0, float angular_velocity = 0.0);
   
-  virtual ~GameObject();
+  virtual ~GameObject() {}
   
-  ofVec2f velocity() const;
-  
-  void Accelerate(float dt);
-  
-  void Inertia();
-  
-  static constexpr float kFrameRate = 60.0;
-  static constexpr float kDeltaTime = 1.0 / kFrameRate;
-  
-  float radius;
-  float mass;
   ofVec2f position;
-  ofVec2f previous_position;
-  ofVec2f force;
+  ofVec2f velocity;
+  float angle;
+  float angular_velocity;
 };
 
 #endif /* defined(__texttennis__gameobject__) */
