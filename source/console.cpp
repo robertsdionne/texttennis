@@ -1,11 +1,3 @@
-//
-//  console.cpp
-//  texttennis
-//
-//  Created by Robert Dionne on 2/25/13.
-//
-//
-
 #include "console.h"
 #include "ofMain.h"
 

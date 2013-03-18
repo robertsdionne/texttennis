@@ -1,13 +1,5 @@
-//
-//  gameobject.h
-//  texttennis
-//
-//  Created by Robert Dionne on 2/24/13.
-//
-//
-
-#ifndef __texttennis__gameobject__
-#define __texttennis__gameobject__
+#ifndef TEXTTENNIS_GAMEOBJECT_H_
+#define TEXTTENNIS_GAMEOBJECT_H_
 
 #include "ofMain.h"
 
@@ -23,4 +15,4 @@ public:
   float angular_velocity;
 };
 
-#endif /* defined(__texttennis__gameobject__) */
+#endif  // TEXTTENNIS_GAMEOBJECT_H_

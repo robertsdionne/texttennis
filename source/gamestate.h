@@ -1,13 +1,5 @@
-//
-//  gamestate.h
-//  texttennis
-//
-//  Created by Robert Dionne on 2/24/13.
-//
-//
-
-#ifndef __texttennis__gamestate__
-#define __texttennis__gamestate__
+#ifndef TEXTTENNIS_GAMESTATE_H_
+#define TEXTTENNIS_GAMESTATE_H_
 
 #include <list>
 
@@ -25,4 +17,4 @@ public:
   ofVec2f racket2;
 };
 
-#endif /* defined(__texttennis__gamestate__) */
+#endif  // TEXTTENNIS_GAMESTATE_H_

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTTENNIS_H_
+#define TEXTTENNIS_H_
 
 #include <Box2D/Box2D.h>
 #include <list>
@@ -199,3 +200,5 @@ private:
   
   std::map<int, bool> keys, previous_keys;
 };
+
+#endif  // TEXTTENNIS_H_

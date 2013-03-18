@@ -1,13 +1,5 @@
-//
-//  console.h
-//  texttennis
-//
-//  Created by Robert Dionne on 2/25/13.
-//
-//
-
-#ifndef __texttennis__console__
-#define __texttennis__console__
+#ifndef TEXTTENNIS_CONSOLE_H_
+#define TEXTTENNIS_CONSOLE_H_
 
 #include <iostream>
 #include <list>
@@ -30,4 +22,4 @@ private:
   std::list<std::string> lines;
 };
 
-#endif /* defined(__texttennis__console__) */
+#endif  // TEXTTENNIS_CONSOLE_H_

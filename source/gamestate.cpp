@@ -1,11 +1,3 @@
-//
-//  gamestate.cpp
-//  texttennis
-//
-//  Created by Robert Dionne on 2/24/13.
-//
-//
-
 #include <list>
 
 #include "gamestate.h"
