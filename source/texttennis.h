@@ -46,11 +46,11 @@ public:
   /**
    * Public constant declarations.
    */
-  static constexpr int kHalfWindowWidth = 720;
+  static constexpr int kHalfWindowWidth = 600;
   
   static constexpr int kWindowWidth = 2 * kHalfWindowWidth;
   
-  static constexpr int kWindowHeight = 900;
+  static constexpr int kWindowHeight = 600;
   
 private:
   /**
