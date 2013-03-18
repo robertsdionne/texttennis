@@ -5,6 +5,7 @@
 
 #include "constants.h"
 
+class b2Body;
 class Model;
 
 class Controller {
@@ -39,7 +40,14 @@ private:
   
   void CreateNet();
   
+  void DestroyBall(b2Body *ball);
+  
   bool MouseButtonIsPressed(int button);
+  
+  void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
+                     float hit_mean, int key_left, int key_right);
+  
+  void UpdateRackets();
   
 private:
   Model &model;

@@ -43,20 +43,6 @@ public:
   void dragEvent(ofDragInfo dragInfo) {}
   
   void gotMessage(ofMessage msg) {}
-
-private:
-  /**
-   * Private method declarations.
-   */
-  void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
-                  float angle = kDefaultAngle, float angular_velocity = kDefaultAngularVelocity);
-  
-  void DestroyBall(b2Body *ball);
-  
-  void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
-                     float hit_mean, int key_left, int key_right);
-  
-  void UpdateRackets();
   
 private:
   /**
@@ -65,8 +51,6 @@ private:
   Model model;
   View view;
   Controller controller;
-  
-  std::map<int, bool> keys, previous_keys;
 };
 
 #endif  // TEXTTENNIS_H_
