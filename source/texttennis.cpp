@@ -36,6 +36,7 @@ void TextTennis::update() {
     if (model.states.size() > 1) {
       model.states.pop_back();
     }
+    model.rewinding = true;
   } else {
     if (!keys['\t'] && previous_keys['\t']) {
       model.racket1 = model.states.back().racket1;
@@ -47,6 +48,7 @@ void TextTennis::update() {
       for (auto ball : model.states.back().balls) {
         CreateBall(ball.position, ball.velocity, ball.angle, ball.angular_velocity);
       }
+      model.rewinding = false;
     }
     UpdateRackets();
     model.world.Step(kDeltaTime, kBox2dVelocityIterations, kBox2dPositionIterations);
@@ -83,23 +85,7 @@ void TextTennis::update() {
 }
 
 void TextTennis::draw() {
-  ofMultMatrix(kViewMatrix);
-  DrawCourt();
-  DrawNet();
-  if (keys['\t']) {
-    DrawRacket(model.states.back().racket1);
-    DrawRacket(model.states.back().racket2);
-    for (auto ball : model.states.back().balls) {
-      DrawBall(ball.position, ball.angle);
-    }
-  } else {
-    DrawRacket(model.racket1);
-    DrawRacket(model.racket2);
-    for (auto ball : model.ball_body) {
-      DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
-    }
-  }
-  DrawFrameRate();
+  view.Draw(model);
 }
 
 void TextTennis::keyPressed(int key) {
@@ -183,45 +169,6 @@ void TextTennis::CreateNet() {
 void TextTennis::DestroyBall(b2Body *ball) {
   ball->DestroyFixture(ball->GetFixtureList());
   model.world.DestroyBody(ball);
-}
-
-void TextTennis::DrawBall(ofVec2f position, float angle) {
-  ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, kBallRadius);
-  ofSetColor(ofColor::white);
-  ofLine(position, position + kBallRadius * ofVec2f(cos(angle), sin(angle)));
-  ofPopStyle();
-}
-
-void TextTennis::DrawCourt() {
-  ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kHalfCourtLength, kCourtThickness), kCourtLength, -kCourtThickness);
-  ofPopStyle();
-}
-
-void TextTennis::DrawFrameRate() {
-  std::stringstream out;
-  out << ofGetFrameRate();
-  ofPushStyle();
-  ofSetColor(ofColor::white);
-  ofDrawBitmapString(out.str(), -kHalfCourtLength, kHalfCourtThickness);
-  ofPopStyle();
-}
-
-void TextTennis::DrawNet() {
-  ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kHalfNetThickness, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
-  ofPopStyle();
-}
-
-void TextTennis::DrawRacket(ofVec2f position) {
-  ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, kRacketRadius);
-  ofPopStyle();
 }
 
 void TextTennis::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,

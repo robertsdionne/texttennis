@@ -23,6 +23,8 @@ public:
   ofVec2f racket1, racket2, mouse_position;
   
   std::list<GameState> states;
+  
+  bool rewinding;
 };
 
 #endif  // TEXTTENNIS_MODEL_H_

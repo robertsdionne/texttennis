@@ -11,6 +11,7 @@
 #include "gamestate.h"
 #include "model.h"
 #include "ofMain.h"
+#include "view.h"
 
 class TextTennis : public ofBaseApp {
 public:
@@ -58,16 +59,6 @@ private:
   
   void DestroyBall(b2Body *ball);
   
-  void DrawBall(ofVec2f position, float angle);
-  
-  void DrawCourt();
-  
-  void DrawFrameRate();
-  
-  void DrawNet();
-  
-  void DrawRacket(ofVec2f position);
-  
   void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
                      float hit_mean, int key_left, int key_right);
   
@@ -78,6 +69,7 @@ private:
    * Private member variables.
    */
   Model model;
+  View view;
   Controller controller;
   
   std::map<int, bool> keys, previous_keys;
