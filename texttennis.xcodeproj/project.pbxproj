@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46D1404716F6A377009A2AD3 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1403C16F6A377009A2AD3 /* console.cpp */; };
 		46D1404816F6A377009A2AD3 /* controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1403E16F6A377009A2AD3 /* controller.cpp */; };
 		46D1404916F6A377009A2AD3 /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404016F6A377009A2AD3 /* gameobject.cpp */; };
 		46D1404A16F6A377009A2AD3 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404216F6A377009A2AD3 /* gamestate.cpp */; };
@@ -114,8 +113,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		46D1403C16F6A377009A2AD3 /* console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = console.cpp; sourceTree = "<group>"; };
-		46D1403D16F6A377009A2AD3 /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = console.h; sourceTree = "<group>"; };
 		46D1403E16F6A377009A2AD3 /* controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = controller.cpp; sourceTree = "<group>"; };
 		46D1403F16F6A377009A2AD3 /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
 		46D1404016F6A377009A2AD3 /* gameobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameobject.cpp; sourceTree = "<group>"; };
@@ -507,8 +504,6 @@
 		46D1403B16F6A377009A2AD3 /* source */ = {
 			isa = PBXGroup;
 			children = (
-				46D1403C16F6A377009A2AD3 /* console.cpp */,
-				46D1403D16F6A377009A2AD3 /* console.h */,
 				46E7762F16F76C400011A27F /* constants.h */,
 				46D1403E16F6A377009A2AD3 /* controller.cpp */,
 				46D1403F16F6A377009A2AD3 /* controller.h */,
@@ -1133,7 +1128,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46D1404716F6A377009A2AD3 /* console.cpp in Sources */,
 				46D1404816F6A377009A2AD3 /* controller.cpp in Sources */,
 				46D1404916F6A377009A2AD3 /* gameobject.cpp in Sources */,
 				46D1404A16F6A377009A2AD3 /* gamestate.cpp in Sources */,

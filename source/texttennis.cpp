@@ -7,7 +7,7 @@
  * Public method definitions.
  */
 TextTennis::TextTennis()
-: console(), world(kGravityVector), ball_body(), court_body(nullptr), net_body(nullptr),
+: world(kGravityVector), ball_body(), court_body(nullptr), net_body(nullptr),
   border_body(nullptr), ball_shape(), court_shape(), net_shape(), border_shape(),
   ball_fixture(nullptr), court_fixture(nullptr), net_fixture(nullptr), border_fixture(nullptr),
   racket1(kRacket1StartPosition), racket2(kRacket2StartPosition), mouse_position(), states(),

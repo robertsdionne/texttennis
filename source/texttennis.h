@@ -5,7 +5,6 @@
 #include <list>
 #include <map>
 
-#include "console.h"
 #include "constants.h"
 #include "controller.h"
 #include "gameobject.h"
@@ -77,7 +76,6 @@ private:
   /**
    * Private member variables.
    */
-  Console console;
   Controller controller;
   
   
