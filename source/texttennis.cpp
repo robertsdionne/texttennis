@@ -7,19 +7,11 @@
  * Public method definitions.
  */
 TextTennis::TextTennis()
-: keys(), previous_keys() {}
+: model(), view(), controller(model), keys(), previous_keys() {}
 
 void TextTennis::setup() {
-  ofSetFrameRate(kFrameRate);
-  ofSetVerticalSync(true);
-  ofEnableAlphaBlending();
-  ofEnableSmoothing();
-  ofBackground(ofColor::white);
-
-  // Box2D
-  CreateBorder();
-  CreateCourt();
-  CreateNet();
+  view.Setup();
+  controller.Setup();
 
   model.states.push_back(GameState());
   model.states.back().racket1 = model.racket1;
@@ -125,45 +117,6 @@ void TextTennis::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_fixture_definition.restitution = kRestitution;
   ball_fixture_definition.friction = kFriction;
   model.ball_body.back()->CreateFixture(&ball_fixture_definition);
-}
-
-void TextTennis::CreateBorder() {
-  b2BodyDef border_body_definition;
-  border_body_definition.position.Set(0.0, kCourtThickness);
-  model.border_body = model.world.CreateBody(&border_body_definition);
-  b2Vec2 vertices[4];
-  vertices[0].Set(-kHalfCourtLength, 0.0);
-  vertices[1].Set(-kHalfCourtLength, kCeilingHeight);
-  vertices[2].Set(kHalfCourtLength, kCeilingHeight);
-  vertices[3].Set(kHalfCourtLength, 0.0);
-  b2ChainShape border_shape;
-  border_shape.CreateChain(vertices, 4);
-  b2FixtureDef border_fixture_definition;
-  border_fixture_definition.shape = &border_shape;
-  model.border_body->CreateFixture(&border_fixture_definition);
-}
-
-void TextTennis::CreateCourt() {
-  b2BodyDef court_body_definition;
-  court_body_definition.position.Set(0.0, kHalfCourtThickness);
-  model.court_body = model.world.CreateBody(&court_body_definition);
-  b2PolygonShape court_shape;
-  court_shape.SetAsBox(kHalfCourtLength, kHalfCourtThickness);
-  b2FixtureDef court_fixture_definition;
-  court_fixture_definition.shape = &court_shape;
-  court_fixture_definition.friction = kFriction;
-  model.court_body->CreateFixture(&court_fixture_definition);
-}
-
-void TextTennis::CreateNet() {
-  b2BodyDef net_body_definition;
-  net_body_definition.position.Set(0.0, kCourtThickness);
-  model.net_body = model.world.CreateBody(&net_body_definition);
-  b2EdgeShape net_shape;
-  net_shape.Set(b2Vec2(), b2Vec2(0.0, kNetHeight));
-  b2FixtureDef net_fixture_definition;
-  net_fixture_definition.shape = &net_shape;
-  model.net_body->CreateFixture(&net_fixture_definition);
 }
 
 void TextTennis::DestroyBall(b2Body *ball) {

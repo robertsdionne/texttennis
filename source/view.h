@@ -11,7 +11,7 @@ public:
   
   virtual ~View() {}
   
-  void Setup();
+  void Setup() const;
   
   void Draw(Model &model) const;
   

@@ -51,12 +51,6 @@ private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
                   float angle = kDefaultAngle, float angular_velocity = kDefaultAngularVelocity);
   
-  void CreateBorder();
-  
-  void CreateCourt();
-  
-  void CreateNet();
-  
   void DestroyBall(b2Body *ball);
   
   void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,

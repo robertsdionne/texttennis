@@ -2,6 +2,14 @@
 #include "model.h"
 #include "view.h"
 
+void View::Setup() const {
+  ofSetFrameRate(kFrameRate);
+  ofSetVerticalSync(true);
+  ofEnableAlphaBlending();
+  ofEnableSmoothing();
+  ofBackground(ofColor::white);
+}
+
 void View::Draw(Model &model) const {
   ofMultMatrix(kViewMatrix);
   DrawCourt();
