@@ -9,6 +9,7 @@
 #include "controller.h"
 #include "gameobject.h"
 #include "gamestate.h"
+#include "model.h"
 #include "ofMain.h"
 
 class TextTennis : public ofBaseApp {
@@ -76,30 +77,8 @@ private:
   /**
    * Private member variables.
    */
+  Model model;
   Controller controller;
-  
-  
-  b2World world;
-  
-  
-  std::list<b2Body *> ball_body;
-  
-  b2Body *court_body, *border_body, *net_body;
-  
-  b2CircleShape ball_shape;
-  
-  b2PolygonShape court_shape;
-  
-  b2EdgeShape net_shape;
-  
-  b2ChainShape border_shape;
-  
-  b2Fixture *ball_fixture, *court_fixture, *net_fixture, *border_fixture;
-  
-  
-  ofVec2f racket1, racket2, mouse_position;
-  
-  std::list<GameState> states;
   
   std::map<int, bool> keys, previous_keys;
 };
