@@ -4,6 +4,7 @@
 #include <map>
 
 #include "constants.h"
+#include "ofMain.h"
 
 class b2Body;
 class Model;
@@ -13,22 +14,22 @@ public:
   Controller(Model &model);
   
   virtual ~Controller() {}
-  
-  void OnKeyPressed(int key);
-  
-  void OnKeyReleased(int key);
-  
-  void OnMouseDragged(int x, int y, int button);
-  
-  void OnMouseMoved(int x, int y);
-  
-  void OnMousePressed(int x, int y, int button);
-  
-  void OnMouseReleased(int x, int y, int button);
-  
+
   void Setup();
-  
+
   void Update();
+  
+  void keyPressed(ofKeyEventArgs &event);
+  
+  void keyReleased(ofKeyEventArgs &event);
+  
+  void mouseDragged(ofMouseEventArgs &event);
+  
+  void mouseMoved(ofMouseEventArgs &event);
+  
+  void mousePressed(ofMouseEventArgs &event);
+  
+  void mouseReleased(ofMouseEventArgs &event);
   
 private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),

@@ -6,30 +6,16 @@
 /**
  * Public method definitions.
  */
-TextTennis::TextTennis()
-: model(), view(), controller(model) {}
+TextTennis::TextTennis() : scene() {}
 
 void TextTennis::setup() {
-  view.Setup();
-  controller.Setup();
+  scene.Setup();
 }
 
 void TextTennis::update() {
-  controller.Update();
+  scene.Update();
 }
 
 void TextTennis::draw() {
-  view.Draw(model);
-}
-
-void TextTennis::keyPressed(int key) {
-  controller.OnKeyPressed(key);
-}
-
-void TextTennis::keyReleased(int key) {
-  controller.OnKeyReleased(key);
-}
-
-void TextTennis::mouseMoved(int x, int y) {
-  controller.OnMouseMoved(x, y);
+  scene.Draw();
 }

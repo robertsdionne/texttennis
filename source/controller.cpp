@@ -6,36 +6,12 @@
 Controller::Controller(Model &model)
 : model(model), keys(), previous_keys() {}
 
-void Controller::OnKeyPressed(int key) {
-  keys[key] = true;
-}
-
-void Controller::OnKeyReleased(int key) {
-  keys[key] = false;
-}
-
-void Controller::OnMouseDragged(int x, int y, int button) {
-  OnMouseMoved(x, y);
-}
-
-void Controller::OnMouseMoved(int x, int y) {
-  model.mouse_position = ofVec3f(x, y) * param_view_matrix_inverse;
-}
-
-void Controller::OnMousePressed(int x, int y, int button) {
-  buttons[button] = true;
-}
-
-void Controller::OnMouseReleased(int x, int y, int button) {
-  buttons[button] = false;
-}
-
 void Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
-  
+
   model.states.push_back(GameState());
   model.states.back().racket1 = model.racket1;
   model.states.back().racket2 = model.racket2;
@@ -97,6 +73,30 @@ void Controller::Update() {
   }
   previous_buttons = buttons;
   previous_keys = keys;
+}
+
+void Controller::keyPressed(ofKeyEventArgs &event) {
+  keys[event.key] = true;
+}
+
+void Controller::keyReleased(ofKeyEventArgs &event) {
+  keys[event.key] = false;
+}
+
+void Controller::mouseDragged(ofMouseEventArgs &event) {
+  mouseMoved(event);
+}
+
+void Controller::mouseMoved(ofMouseEventArgs &event) {
+  model.mouse_position = ofVec3f(event.x, event.y) * param_view_matrix_inverse;
+}
+
+void Controller::mousePressed(ofMouseEventArgs &event) {
+  buttons[event.button] = true;
+}
+
+void Controller::mouseReleased(ofMouseEventArgs &event) {
+  buttons[event.button] = false;
 }
 
 /**

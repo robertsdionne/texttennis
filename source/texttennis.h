@@ -11,6 +11,7 @@
 #include "gamestate.h"
 #include "model.h"
 #include "ofMain.h"
+#include "scene1.h"
 #include "view.h"
 
 class TextTennis : public ofBaseApp {
@@ -25,32 +26,9 @@ public:
   void update();
   
   void draw();
-  
-  void keyPressed(int key);
-  
-  void keyReleased(int key);
-  
-  void mouseMoved(int x, int y);
-  
-  void mouseDragged(int x, int y, int button) {}
-  
-  void mousePressed(int x, int y, int button) {}
-  
-  void mouseReleased(int x, int y, int button) {}
-  
-  void windowResized(int w, int h) {}
-  
-  void dragEvent(ofDragInfo dragInfo) {}
-  
-  void gotMessage(ofMessage msg) {}
-  
+
 private:
-  /**
-   * Private member variables.
-   */
-  Model model;
-  View view;
-  Controller controller;
+  Scene1 scene;
 };
 
 #endif  // TEXTTENNIS_H_
