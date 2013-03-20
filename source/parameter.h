@@ -12,10 +12,6 @@ class Parameter {
 public:
   typedef std::tr1::function<T()> Getter;
 
-  Parameter(T value) : name(), get_value(), value(value) {}
-
-  Parameter(Getter get_value) : name(), get_value(get_value), value() {}
-
   Parameter(const std::string name) : name(name), get_value(), value(value) {
     AddParameter(this);
   }
