@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include <tr1/functional>
+#include <vector>
 
 #define DEFINE_PARAMETER(type, name, value) \
   auto name = Parameter<type>(#name, [] (Dependent *dependent) -> type {return (value);});
