@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4607F84716F7E1EF00DC0B1B /* constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4607F84616F7E1EF00DC0B1B /* constants.cpp */; };
 		46D1404816F6A377009A2AD3 /* controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1403E16F6A377009A2AD3 /* controller.cpp */; };
 		46D1404916F6A377009A2AD3 /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404016F6A377009A2AD3 /* gameobject.cpp */; };
 		46D1404A16F6A377009A2AD3 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404216F6A377009A2AD3 /* gamestate.cpp */; };
@@ -115,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4607F84616F7E1EF00DC0B1B /* constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = constants.cpp; sourceTree = "<group>"; };
 		46D1403E16F6A377009A2AD3 /* controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = controller.cpp; sourceTree = "<group>"; };
 		46D1403F16F6A377009A2AD3 /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
 		46D1404016F6A377009A2AD3 /* gameobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameobject.cpp; sourceTree = "<group>"; };
@@ -449,6 +451,7 @@
 		46D1419E16F6A3F4009A2AD3 /* wrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wrap.hpp; sourceTree = "<group>"; };
 		46D1419F16F6A3F4009A2AD3 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		46D141A116F6A3F4009A2AD3 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
+		46D8F90E16F7D3BA001857BC /* parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameter.h; sourceTree = "<group>"; };
 		46E7762C16F76B5F0011A27F /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		46E7762D16F76B5F0011A27F /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		46E7762F16F76C400011A27F /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
@@ -510,6 +513,7 @@
 		46D1403B16F6A377009A2AD3 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				4607F84616F7E1EF00DC0B1B /* constants.cpp */,
 				46E7762F16F76C400011A27F /* constants.h */,
 				46D1403E16F6A377009A2AD3 /* controller.cpp */,
 				46D1403F16F6A377009A2AD3 /* controller.h */,
@@ -520,6 +524,7 @@
 				46D1404416F6A377009A2AD3 /* main.cpp */,
 				46E7763116F7715F0011A27F /* model.cpp */,
 				46E7763216F7715F0011A27F /* model.h */,
+				46D8F90E16F7D3BA001857BC /* parameter.h */,
 				46D1404516F6A377009A2AD3 /* texttennis.cpp */,
 				46D1404616F6A377009A2AD3 /* texttennis.h */,
 				46E7762C16F76B5F0011A27F /* utilities.cpp */,
@@ -1198,6 +1203,7 @@
 				46E7762E16F76B5F0011A27F /* utilities.cpp in Sources */,
 				46E7763316F7715F0011A27F /* model.cpp in Sources */,
 				46E7763616F7746C0011A27F /* view.cpp in Sources */,
+				4607F84716F7E1EF00DC0B1B /* constants.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

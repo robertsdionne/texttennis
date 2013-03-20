@@ -4,95 +4,51 @@
 #include <Box2D/Box2D.h>
 
 #include "ofMain.h"
+#include "parameter.h"
 
-constexpr int kHalfWindowWidth = 600;
+extern Parameter<float> param_angular_damping;
+extern Parameter<float> param_angular_velocity;
+extern Parameter<float> param_ball_cartoon_factor;
+extern Parameter<ofVec2f> param_ball_initial_position;
+extern Parameter<float> param_ball_mass;
+extern Parameter<float> param_ball_radius;
+extern Parameter<int> param_box2d_velocity_iterations;
+extern Parameter<int> param_box2d_position_iterations;
+extern Parameter<float> param_ceiling_height;
+extern Parameter<float> param_court_length;
+extern Parameter<float> param_court_thickness;
+extern Parameter<float> param_default_angle;
+extern Parameter<float> param_default_angular_velocity;
+extern Parameter<float> param_delta_time;
+extern Parameter<float> param_density;
+extern Parameter<float> param_frame_rate;
+extern Parameter<float> param_friction;
+extern Parameter<float> param_gravity;
+extern Parameter<b2Vec2> param_gravity_vector;
+extern Parameter<float> param_half_court_length;
+extern Parameter<float> param_half_court_thickness;
+extern Parameter<float> param_half_net_thickness;
+extern Parameter<float> param_half_window_width;
+extern Parameter<float> param_high_hit_mean;
+extern Parameter<float> param_hit_variance;
+extern Parameter<float> param_linear_damping;
+extern Parameter<float> param_low_hit_mean;
+extern Parameter<long> param_max_balls;
+extern Parameter<float> param_net_height;
+extern Parameter<float> param_net_thickness;
+extern Parameter<float> param_racket_radius;
+extern Parameter<float> param_racket_speed;
+extern Parameter<ofVec2f> param_racket1_high_hit_direction;
+extern Parameter<ofVec2f> param_racket1_low_hit_direction;
+extern Parameter<ofVec2f> param_racket1_start_position;
+extern Parameter<ofVec2f> param_racket2_high_hit_direction;
+extern Parameter<ofVec2f> param_racket2_low_hit_direction;
+extern Parameter<ofVec2f> param_racket2_start_position;
+extern Parameter<float> param_restitution;
+extern Parameter<int> param_save_every_n_frames;
+extern Parameter<ofMatrix4x4> param_view_matrix;
+extern Parameter<ofMatrix4x4> param_view_matrix_inverse;
+extern Parameter<int> param_window_height;
+extern Parameter<int> param_window_width;
 
-constexpr int kWindowWidth = 2 * kHalfWindowWidth;
-
-constexpr int kWindowHeight = 600;
-
-constexpr float kAngularDamping = 0.1;
-
-constexpr float kAngularVelocity = 100.0;
-
-constexpr float kBallCartoonFactor = 2.0;
-
-const ofVec2f kBallInitialPosition = ofVec2f(11, 1);
-
-constexpr float kBallMass = 0.056;
-
-constexpr float kBallRadius = kBallCartoonFactor * 0.03429;
-
-constexpr int kBox2dVelocityIterations = 8;
-
-constexpr int kBox2dPositionIterations = 3;
-
-constexpr float kCeilingHeight = 100.0;
-
-constexpr float kCourtLength = 23.78;
-
-constexpr float kCourtThickness = 0.5;
-
-constexpr float kDefaultAngle = 0.0;
-
-constexpr float kDefaultAngularVelocity = 0.0;
-
-constexpr float kDeltaTime = 1.0 / 60.0;
-
-constexpr float kDensity = kBallMass / M_PI / kBallRadius / kBallRadius;
-
-constexpr float kFrameRate = 1.0 / kDeltaTime;
-
-constexpr float kFriction = 0.3;
-
-constexpr float kGravity = 9.81;
-
-const b2Vec2 kGravityVector = b2Vec2(0.0, -kGravity);
-
-constexpr float kHalfCourtLength = kCourtLength / 2.0;
-
-constexpr float kHalfCourtThickness = kCourtThickness / 2.0;
-
-constexpr float kHalfNetThickness = kBallRadius / 2.0;
-
-constexpr float kHighHitMean = 10.0;
-
-constexpr float kHitVariance = 0.05;
-
-constexpr float kLinearDamping = 0.1;
-
-constexpr float kLowHitMean = 13.0;
-
-constexpr long kMaxBalls = 500;
-
-constexpr float kNetHeight = 0.914;
-
-constexpr float kNetThickness = kBallRadius;
-
-constexpr float kRacketRadius = kBallCartoonFactor * 0.1155;
-
-const ofVec2f kRacket1HighHitDirection = ofVec2f(1.0, 1.0).normalized();
-
-const ofVec2f kRacket1LowHitDirection = ofVec2f(1.0, 0.5).normalized();
-
-const ofVec2f kRacket1StartPosition = ofVec2f(-8, kCourtThickness + kRacketRadius);
-
-const ofVec2f kRacket2HighHitDirection = ofVec2f(-1.0, 1.0).normalized();
-
-const ofVec2f kRacket2LowHitDirection = ofVec2f(-1.0, 0.5).normalized();
-
-const ofVec2f kRacket2StartPosition = ofVec2f(8, kCourtThickness + kRacketRadius);
-
-constexpr float kRacketSpeed = 0.15;
-
-constexpr float kRestitution = 0.728;
-
-constexpr int kSaveEveryNFrames = 2;
-
-const ofMatrix4x4 kViewMatrix =
-    ofMatrix4x4::newScaleMatrix(kWindowWidth / kCourtLength, -kWindowWidth / kCourtLength, 1) *
-        ofMatrix4x4::newTranslationMatrix(kHalfWindowWidth, kWindowHeight, 0.0);
-
-const ofMatrix4x4 kViewMatrixInverse = ofMatrix4x4::getInverseOf(kViewMatrix);
-
-#endif
+#endif  // TEXTTENNIS_CONSTANTS_H_

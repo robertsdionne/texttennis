@@ -3,7 +3,7 @@
 #include "view.h"
 
 void View::Setup() const {
-  ofSetFrameRate(kFrameRate);
+  ofSetFrameRate(param_frame_rate);
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
@@ -11,7 +11,7 @@ void View::Setup() const {
 }
 
 void View::Draw(Model &model) const {
-  ofMultMatrix(kViewMatrix);
+  ofMultMatrix(param_view_matrix);
   DrawCourt();
   DrawNet();
   if (model.rewinding) {
@@ -33,16 +33,16 @@ void View::Draw(Model &model) const {
 void View::DrawBall(ofVec2f position, float angle) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofCircle(position, kBallRadius);
+  ofCircle(position, param_ball_radius);
   ofSetColor(ofColor::white);
-  ofLine(position, position + kBallRadius * ofVec2f(cos(angle), sin(angle)));
+  ofLine(position, position + param_ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }
 
 void View::DrawCourt() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kHalfCourtLength, kCourtThickness), kCourtLength, -kCourtThickness);
+  ofRect(ofVec2f(-param_half_court_length, param_court_thickness), param_court_length, -param_court_thickness);
   ofPopStyle();
 }
 
@@ -51,20 +51,20 @@ void View::DrawFrameRate() const {
   out << ofGetFrameRate();
   ofPushStyle();
   ofSetColor(ofColor::white);
-  ofDrawBitmapString(out.str(), -kHalfCourtLength, kHalfCourtThickness);
+  ofDrawBitmapString(out.str(), -param_half_court_length, param_half_court_thickness);
   ofPopStyle();
 }
 
 void View::DrawNet() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-kHalfNetThickness, kNetHeight + kCourtThickness), kNetThickness, -kNetHeight);
+  ofRect(ofVec2f(-param_half_net_thickness, param_net_height + param_court_thickness), param_net_thickness, -param_net_height);
   ofPopStyle();
 }
 
 void View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofCircle(position, kRacketRadius);
+  ofCircle(position, param_racket_radius);
   ofPopStyle();
 }
