@@ -68,6 +68,11 @@
 		46E7763616F7746C0011A27F /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E7763416F7746C0011A27F /* view.cpp */; };
 		46E8C3BB16F95CCA0033523B /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3B916F95CCA0033523B /* scene.cpp */; };
 		46E8C3BE16F95D940033523B /* scene1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3BC16F95D940033523B /* scene1.cpp */; };
+		46E8C3C116F967A60033523B /* scene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3BF16F967A60033523B /* scene2.cpp */; };
+		46E8C3C416F967AA0033523B /* scene3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3C216F967AA0033523B /* scene3.cpp */; };
+		46E8C3C716F967AE0033523B /* scene4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3C516F967AE0033523B /* scene4.cpp */; };
+		46E8C3CA16F967B30033523B /* scene5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3C816F967B30033523B /* scene5.cpp */; };
+		46E8C3CD16F967C30033523B /* introduction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3CB16F967C30033523B /* introduction.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -467,6 +472,16 @@
 		46E8C3BA16F95CCA0033523B /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
 		46E8C3BC16F95D940033523B /* scene1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene1.cpp; sourceTree = "<group>"; };
 		46E8C3BD16F95D940033523B /* scene1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1.h; sourceTree = "<group>"; };
+		46E8C3BF16F967A60033523B /* scene2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2.cpp; sourceTree = "<group>"; };
+		46E8C3C016F967A60033523B /* scene2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene2.h; sourceTree = "<group>"; };
+		46E8C3C216F967AA0033523B /* scene3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3.cpp; sourceTree = "<group>"; };
+		46E8C3C316F967AA0033523B /* scene3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene3.h; sourceTree = "<group>"; };
+		46E8C3C516F967AE0033523B /* scene4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene4.cpp; sourceTree = "<group>"; };
+		46E8C3C616F967AE0033523B /* scene4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene4.h; sourceTree = "<group>"; };
+		46E8C3C816F967B30033523B /* scene5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene5.cpp; sourceTree = "<group>"; };
+		46E8C3C916F967B30033523B /* scene5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene5.h; sourceTree = "<group>"; };
+		46E8C3CB16F967C30033523B /* introduction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = introduction.cpp; sourceTree = "<group>"; };
+		46E8C3CC16F967C30033523B /* introduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = introduction.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = libraries/of_v0.7.4_osx_release/libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = libraries/of_v0.7.4_osx_release/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -529,6 +544,8 @@
 				46D1404116F6A377009A2AD3 /* gameobject.h */,
 				46D1404216F6A377009A2AD3 /* gamestate.cpp */,
 				46D1404316F6A377009A2AD3 /* gamestate.h */,
+				46E8C3CB16F967C30033523B /* introduction.cpp */,
+				46E8C3CC16F967C30033523B /* introduction.h */,
 				46D1404416F6A377009A2AD3 /* main.cpp */,
 				46E7763116F7715F0011A27F /* model.cpp */,
 				46E7763216F7715F0011A27F /* model.h */,
@@ -538,6 +555,14 @@
 				46E8C3BA16F95CCA0033523B /* scene.h */,
 				46E8C3BC16F95D940033523B /* scene1.cpp */,
 				46E8C3BD16F95D940033523B /* scene1.h */,
+				46E8C3BF16F967A60033523B /* scene2.cpp */,
+				46E8C3C016F967A60033523B /* scene2.h */,
+				46E8C3C216F967AA0033523B /* scene3.cpp */,
+				46E8C3C316F967AA0033523B /* scene3.h */,
+				46E8C3C516F967AE0033523B /* scene4.cpp */,
+				46E8C3C616F967AE0033523B /* scene4.h */,
+				46E8C3C816F967B30033523B /* scene5.cpp */,
+				46E8C3C916F967B30033523B /* scene5.h */,
 				46D1404516F6A377009A2AD3 /* texttennis.cpp */,
 				46D1404616F6A377009A2AD3 /* texttennis.h */,
 				46E7762C16F76B5F0011A27F /* utilities.cpp */,
@@ -1220,6 +1245,11 @@
 				46A7062716F95195008D1313 /* parameter.cpp in Sources */,
 				46E8C3BB16F95CCA0033523B /* scene.cpp in Sources */,
 				46E8C3BE16F95D940033523B /* scene1.cpp in Sources */,
+				46E8C3C116F967A60033523B /* scene2.cpp in Sources */,
+				46E8C3C416F967AA0033523B /* scene3.cpp in Sources */,
+				46E8C3C716F967AE0033523B /* scene4.cpp in Sources */,
+				46E8C3CA16F967B30033523B /* scene5.cpp in Sources */,
+				46E8C3CD16F967C30033523B /* introduction.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

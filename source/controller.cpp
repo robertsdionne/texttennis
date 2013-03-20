@@ -2,9 +2,10 @@
 #include "controller.h"
 #include "ofMain.h"
 #include "model.h"
+#include "texttennis.h"
 
-Controller::Controller(Model &model)
-: model(model), keys(), previous_keys() {}
+Controller::Controller(TextTennis &scene_manager, Model &model)
+: scene_manager(scene_manager), model(model), keys(), previous_keys() {}
 
 void Controller::Setup() {
   // Box2D
@@ -23,6 +24,18 @@ void Controller::Setup() {
 }
 
 void Controller::Update() {
+  if (keys['r'] && !previous_keys['r']) {
+    scene_manager.RestartScene();
+    return;
+  }
+  if (keys['['] && !previous_keys['[']) {
+    scene_manager.PreviousScene();
+    return;
+  }
+  if (keys[']'] && !previous_keys[']']) {
+    scene_manager.NextScene();
+    return;
+  }
   if (keys['\t']) {
     if (model.states.size() > 1) {
       model.states.pop_back();

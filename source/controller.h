@@ -8,10 +8,11 @@
 
 class b2Body;
 class Model;
+class TextTennis;
 
 class Controller {
 public:
-  Controller(Model &model);
+  Controller(TextTennis &scene_manager, Model &model);
   
   virtual ~Controller() {}
 
@@ -51,6 +52,7 @@ private:
   void UpdateRackets();
   
 private:
+  TextTennis &scene_manager;
   Model &model;
   std::map<int, bool> buttons, keys, previous_buttons, previous_keys;
 };

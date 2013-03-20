@@ -2,15 +2,17 @@
 #define TEXTTENNIS_H_
 
 #include <Box2D/Box2D.h>
-#include <list>
-#include <map>
+#include <tr1/functional>
+#include <vector>
 
 #include "constants.h"
 #include "controller.h"
 #include "gameobject.h"
 #include "gamestate.h"
+#include "introduction.h"
 #include "model.h"
 #include "ofMain.h"
+#include "scene.h"
 #include "scene1.h"
 #include "view.h"
 
@@ -20,6 +22,12 @@ public:
    * Public method declarations.
    */
   TextTennis();
+
+  void NextScene();
+
+  void PreviousScene();
+
+  void RestartScene();
   
   void setup();
   
@@ -28,7 +36,15 @@ public:
   void draw();
 
 private:
-  Scene1 scene;
+  void CreateScene();
+
+  void DeleteCurrentScene();
+
+  typedef std::tr1::function<Scene *(TextTennis &)> SceneFactoryFunction;
+
+  std::vector<SceneFactoryFunction> scene_factory_functions;
+  int scene_index;
+  Scene *current_scene;
 };
 
 #endif  // TEXTTENNIS_H_

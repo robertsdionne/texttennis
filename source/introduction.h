@@ -1,5 +1,5 @@
-#ifndef TEXTTENNIS_SCENE1_H_
-#define TEXTTENNIS_SCENE1_H_
+#ifndef __texttennis__introduction__
+#define __texttennis__introduction__
 
 #include "controller.h"
 #include "model.h"
@@ -8,11 +8,11 @@
 
 class TextTennis;
 
-class Scene1 : public Scene {
+class Introduction : public Scene {
 public:
-  Scene1(TextTennis &scene_manager);
+  Introduction(TextTennis &scene_manager);
 
-  virtual ~Scene1();
+  virtual ~Introduction();
 
   static Scene *Create(TextTennis &scene_manager);
 
@@ -28,4 +28,4 @@ private:
   Controller controller;
 };
 
-#endif  // TEXTTENNIS_SCENE1_H_
+#endif /* defined(__texttennis__introduction__) */
