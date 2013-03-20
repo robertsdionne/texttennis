@@ -1,14 +1,31 @@
-//
-//  scene5.h
-//  texttennis
-//
-//  Created by Robert Dionne on 3/19/13.
-//
-//
+#ifndef TEXTTENNIS_SCENE5_H_
+#define TEXTTENNIS_SCENE5_H_
 
-#ifndef __texttennis__scene5__
-#define __texttennis__scene5__
+#include "controller.h"
+#include "model.h"
+#include "scene.h"
+#include "view.h"
 
-#include <iostream>
+class TextTennis;
 
-#endif /* defined(__texttennis__scene5__) */
+class Scene5 : public Scene {
+public:
+  Scene5(TextTennis &scene_manager);
+
+  virtual ~Scene5();
+
+  static Scene *Create(TextTennis &scene_manager);
+
+  virtual void Draw();
+
+  virtual void Setup();
+
+  virtual void Update();
+
+private:
+  Model model;
+  View view;
+  Controller controller;
+};
+
+#endif  // TEXTTENNIS_SCENE5_H_

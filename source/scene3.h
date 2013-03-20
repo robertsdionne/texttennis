@@ -1,14 +1,31 @@
-//
-//  scene3.h
-//  texttennis
-//
-//  Created by Robert Dionne on 3/19/13.
-//
-//
+#ifndef TEXTTENNIS_SCENE3_H_
+#define TEXTTENNIS_SCENE3_H_
 
-#ifndef __texttennis__scene3__
-#define __texttennis__scene3__
+#include "controller.h"
+#include "model.h"
+#include "scene.h"
+#include "view.h"
 
-#include <iostream>
+class TextTennis;
 
-#endif /* defined(__texttennis__scene3__) */
+class Scene3 : public Scene {
+public:
+  Scene3(TextTennis &scene_manager);
+
+  virtual ~Scene3();
+
+  static Scene *Create(TextTennis &scene_manager);
+
+  virtual void Draw();
+
+  virtual void Setup();
+
+  virtual void Update();
+
+private:
+  Model model;
+  View view;
+  Controller controller;
+};
+
+#endif  // TEXTTENNIS_SCENE3_H_

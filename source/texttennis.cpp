@@ -4,6 +4,10 @@
 #include "introduction.h"
 #include "scene.h"
 #include "scene1.h"
+#include "scene2.h"
+#include "scene3.h"
+#include "scene4.h"
+#include "scene5.h"
 #include "texttennis.h"
 
 /**
@@ -13,6 +17,10 @@ TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
+  scene_factory_functions.push_back(Scene2::Create);
+  scene_factory_functions.push_back(Scene3::Create);
+  scene_factory_functions.push_back(Scene4::Create);
+  scene_factory_functions.push_back(Scene5::Create);
 }
 
 void TextTennis::setup() {

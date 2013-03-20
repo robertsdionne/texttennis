@@ -13,7 +13,6 @@
 #include "model.h"
 #include "ofMain.h"
 #include "scene.h"
-#include "scene1.h"
 #include "view.h"
 
 class TextTennis : public ofBaseApp {
