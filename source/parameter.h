@@ -1,26 +1,37 @@
 #ifndef TEXTTENNIS_PARAMETER_H_
 #define TEXTTENNIS_PARAMETER_H_
 
+#include <set>
 #include <string>
 #include <tr1/functional>
 
 #define DEFINE_PARAMETER(type, name, value) \
-  auto name = Parameter<type>(#name, value)
+  auto name = Parameter<type>(#name, [] (Dependent *dependent) -> type {return (value);});
+
+#define DEPENDENCY(dependency) \
+  dependency.GetValue(dependent)
+
+class Dependent {
+public:
+  virtual ~Dependent() {}
+
+  void SetStale(bool stale) {
+    this->stale = stale;
+  }
+
+protected:
+  Dependent() : stale(true) {}
+
+  bool stale;
+};
 
 template <typename T>
-class Parameter {
+class Parameter : public Dependent {
 public:
-  typedef std::tr1::function<T()> Getter;
+  typedef std::tr1::function<T(Dependent *)> Getter;
 
-  Parameter(const std::string name) : name(name), get_value(), value(value) {
-    AddParameter(this);
-  }
-
-  Parameter(const std::string name, T value) : name(name), get_value(), value(value) {
-    AddParameter(this);
-  }
-
-  Parameter(const std::string name, Getter get_value) : name(name), get_value(get_value), value() {
+  Parameter(const std::string name, Getter get_value)
+  : Dependent(), name(name), get_value(get_value), value(), dependents() {
     AddParameter(this);
   }
 
@@ -30,18 +41,51 @@ public:
     return name;
   }
 
-  T GetValue() const {
-    return get_value ? get_value() : value;
+  T GetValue(Dependent *dependent = nullptr) {
+    if (dependent) {
+      dependents.insert(dependent);
+    }
+    if (stale) {
+      value = get_value(this);
+      stale = false;
+    }
+    return value;
   };
 
-  void MaybeSet(T value) {
-    if (!get_value) {
-      this->value = value;
-    }
+  void Set(T value) {
+    this->value = value;
+    NotifyDependents();
   }
 
-  operator T() const {
+  operator T() {
     return GetValue();
+  }
+
+  Parameter<T> &operator =(T value) {
+    Set(value);
+    return *this;
+  }
+
+  Parameter<T> &operator +=(T value) {
+    Set(this->value + value);
+    return *this;
+  }
+
+  Parameter<T> &operator -=(T value) {
+    Set(this->value - value);
+    return *this;
+  }
+
+  template <typename U>
+  Parameter<T> &operator *=(U value) {
+    Set(this->value * value);
+    return *this;
+  }
+
+  template <typename U>
+  Parameter<T> &operator /=(U value) {
+    Set(this->value / value);
+    return *this;
   }
 
 public:
@@ -56,10 +100,17 @@ private:
 
   static std::vector<Parameter<T> *> parameters;
 
+  void NotifyDependents() {
+    for (auto dependent : dependents) {
+      dependent->SetStale(true);
+    }
+  }
+
 private:
   const std::string name;
   Getter get_value;
   T value;
+  std::set<Dependent *> dependents;
 };
 
 template <typename T> std::vector<Parameter<T> *> Parameter<T>::parameters;
