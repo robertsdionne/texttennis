@@ -6,6 +6,9 @@
 
 DEFINE_PARAMETER(float, param_angular_damping, 0.1);
 DEFINE_PARAMETER(float, param_angular_velocity, 100.0);
+DEFINE_PARAMETER(float, param_aspect_ratio, [] () {
+  return static_cast<float>(param_window_width) / static_cast<float>(param_window_height);
+});
 DEFINE_PARAMETER(float, param_ball_cartoon_factor, 2.0);
 DEFINE_PARAMETER(ofVec2f, param_ball_initial_position, ofVec2f(11, 1));
 DEFINE_PARAMETER(float, param_ball_mass, 0.056);
@@ -15,6 +18,9 @@ DEFINE_PARAMETER( float, param_ball_radius, [] () {
 DEFINE_PARAMETER(int, param_box2d_velocity_iterations, 8);
 DEFINE_PARAMETER(int, param_box2d_position_iterations, 3);
 DEFINE_PARAMETER(float, param_ceiling_height, 100.0);
+DEFINE_PARAMETER(float, param_court_height, [] () {
+  return param_court_length / param_aspect_ratio;
+});
 DEFINE_PARAMETER(float, param_court_length, 23.78);
 DEFINE_PARAMETER(float, param_court_thickness, 0.5);
 DEFINE_PARAMETER(float, param_default_angle, 0.0);
@@ -30,6 +36,9 @@ DEFINE_PARAMETER(float, param_friction, 0.3);
 DEFINE_PARAMETER(float, param_gravity, 9.81);
 DEFINE_PARAMETER(b2Vec2, param_gravity_vector, [] () {
   return b2Vec2(0.0, -param_gravity);
+});
+DEFINE_PARAMETER(float, param_half_court_height, [] () {
+  return param_court_height / 2.0;
 });
 DEFINE_PARAMETER(float, param_half_court_length, [] () {
   return param_court_length / 2.0;

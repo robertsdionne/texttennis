@@ -5,7 +5,7 @@
 #include <tr1/functional>
 
 #define DEFINE_PARAMETER(type, name, value) \
-  auto name = Parameter<type>(#name, value);
+  auto name = Parameter<type>(#name, value)
 
 template <typename T>
 class Parameter {

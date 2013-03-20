@@ -12,6 +12,8 @@ Scene1::~Scene1() {
 
 void Scene1::Draw() {
   view.Draw(model);
+  ofSetColor(ofColor::black);
+  ofDrawBitmapString("Scene 1", -param_half_court_length + 1.0, param_court_height - 1.0);
 }
 
 void Scene1::Setup() {

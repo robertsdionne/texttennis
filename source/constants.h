@@ -8,6 +8,7 @@
 
 extern Parameter<float> param_angular_damping;
 extern Parameter<float> param_angular_velocity;
+extern Parameter<float> param_aspect_ratio;
 extern Parameter<float> param_ball_cartoon_factor;
 extern Parameter<ofVec2f> param_ball_initial_position;
 extern Parameter<float> param_ball_mass;
@@ -15,6 +16,7 @@ extern Parameter<float> param_ball_radius;
 extern Parameter<int> param_box2d_velocity_iterations;
 extern Parameter<int> param_box2d_position_iterations;
 extern Parameter<float> param_ceiling_height;
+extern Parameter<float> param_court_height;
 extern Parameter<float> param_court_length;
 extern Parameter<float> param_court_thickness;
 extern Parameter<float> param_default_angle;
@@ -25,6 +27,7 @@ extern Parameter<float> param_frame_rate;
 extern Parameter<float> param_friction;
 extern Parameter<float> param_gravity;
 extern Parameter<b2Vec2> param_gravity_vector;
+extern Parameter<float> param_half_court_height;
 extern Parameter<float> param_half_court_length;
 extern Parameter<float> param_half_court_thickness;
 extern Parameter<float> param_half_net_thickness;
