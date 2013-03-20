@@ -33,7 +33,7 @@ extern Parameter<float> param_high_hit_mean;
 extern Parameter<float> param_hit_variance;
 extern Parameter<float> param_linear_damping;
 extern Parameter<float> param_low_hit_mean;
-extern Parameter<long> param_max_balls;
+extern Parameter<int> param_max_balls;
 extern Parameter<float> param_net_height;
 extern Parameter<float> param_net_thickness;
 extern Parameter<float> param_racket_radius;

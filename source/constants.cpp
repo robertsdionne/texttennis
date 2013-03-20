@@ -1,120 +1,80 @@
+#include <Box2D/Box2D.h>
+
 #include "constants.h"
 #include "ofMain.h"
 #include "parameter.h"
 
-auto param_angular_damping = Parameter<float>(0.1);
-
-auto param_angular_velocity = Parameter<float>(100.0);
-
-auto param_ball_cartoon_factor = Parameter<float>(2.0);
-
-auto param_ball_initial_position = Parameter<ofVec2f>(ofVec2f(11, 1));
-
-auto param_ball_mass = Parameter<float>(0.056);
-
-auto param_ball_radius = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_angular_damping, 0.1);
+DEFINE_PARAMETER(float, param_angular_velocity, 100.0);
+DEFINE_PARAMETER(float, param_ball_cartoon_factor, 2.0);
+DEFINE_PARAMETER(ofVec2f, param_ball_initial_position, ofVec2f(11, 1));
+DEFINE_PARAMETER(float, param_ball_mass, 0.056);
+DEFINE_PARAMETER( float, param_ball_radius, [] () {
   return param_ball_cartoon_factor * 0.03429;
 });
-
-auto param_box2d_velocity_iterations = Parameter<int>(8);
-
-auto param_box2d_position_iterations = Parameter<int>(3);
-
-auto param_ceiling_height = Parameter<float>(100.0);
-
-auto param_court_length = Parameter<float>(23.78);
-
-auto param_court_thickness = Parameter<float>(0.5);
-
-auto param_default_angle = Parameter<float>(0.0);
-
-auto param_default_angular_velocity = Parameter<float>(0.0);
-
-auto param_delta_time = Parameter<float>([] () {
+DEFINE_PARAMETER(int, param_box2d_velocity_iterations, 8);
+DEFINE_PARAMETER(int, param_box2d_position_iterations, 3);
+DEFINE_PARAMETER(float, param_ceiling_height, 100.0);
+DEFINE_PARAMETER(float, param_court_length, 23.78);
+DEFINE_PARAMETER(float, param_court_thickness, 0.5);
+DEFINE_PARAMETER(float, param_default_angle, 0.0);
+DEFINE_PARAMETER(float, param_default_angular_velocity, 0.0);
+DEFINE_PARAMETER(float, param_delta_time, [] () {
   return 1.0 / param_frame_rate;
 });
-
-auto param_density = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_density, [] () {
   return param_ball_mass / M_PI / param_ball_radius / param_ball_radius;
 });
-
-auto param_frame_rate = Parameter<float>(60.0);
-
-auto param_friction = Parameter<float>(0.3);
-
-auto param_gravity = Parameter<float>(9.81);
-
-auto param_gravity_vector = Parameter<b2Vec2>([] () {
+DEFINE_PARAMETER(float, param_frame_rate, 60.0);
+DEFINE_PARAMETER(float, param_friction, 0.3);
+DEFINE_PARAMETER(float, param_gravity, 9.81);
+DEFINE_PARAMETER(b2Vec2, param_gravity_vector, [] () {
   return b2Vec2(0.0, -param_gravity);
 });
-
-auto param_half_court_length = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_half_court_length, [] () {
   return param_court_length / 2.0;
 });
-
-auto param_half_court_thickness = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_half_court_thickness, [] () {
   return param_court_thickness / 2.0;
 });
-
-auto param_half_net_thickness = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_half_net_thickness, [] () {
   return param_ball_radius / 2.0;
 });
-
-auto param_half_window_width = Parameter<float>([]() {
+DEFINE_PARAMETER(float, param_half_window_width, []() {
   return param_window_width / 2.0;
 });
-
-auto param_high_hit_mean = Parameter<float>(10.0);
-
-auto param_hit_variance = Parameter<float>(0.05);
-
-auto param_linear_damping = Parameter<float>(0.1);
-
-auto param_low_hit_mean = Parameter<float>(13.0);
-
-auto param_max_balls = Parameter<long>(500);
-
-auto param_net_height = Parameter<float>(0.914);
-
-auto param_net_thickness = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_high_hit_mean, 10.0);
+DEFINE_PARAMETER(float, param_hit_variance, 0.05);
+DEFINE_PARAMETER(float, param_linear_damping, 0.1);
+DEFINE_PARAMETER(float, param_low_hit_mean, 13.0);
+DEFINE_PARAMETER(int, param_max_balls, 500);
+DEFINE_PARAMETER(float, param_net_height, 0.914);
+DEFINE_PARAMETER(float, param_net_thickness, [] () {
   return param_ball_radius;
 });
-
-auto param_racket_radius = Parameter<float>([] () {
+DEFINE_PARAMETER(float, param_racket_radius, [] () {
   return param_ball_cartoon_factor * 0.1155;
 });
-
-auto param_racket_speed = Parameter<float>(0.15);
-
-auto param_racket1_high_hit_direction = Parameter<ofVec2f>(ofVec2f(1.0, 1.0).normalized());
-
-auto param_racket1_low_hit_direction = Parameter<ofVec2f>(ofVec2f(1.0, 0.5).normalized());
-
-auto param_racket1_start_position = Parameter<ofVec2f>([] () {
+DEFINE_PARAMETER(float, param_racket_speed, 0.15);
+DEFINE_PARAMETER(ofVec2f, param_racket1_high_hit_direction, ofVec2f(1.0, 1.0).normalized());
+DEFINE_PARAMETER(ofVec2f, param_racket1_low_hit_direction, ofVec2f(1.0, 0.5).normalized());
+DEFINE_PARAMETER(ofVec2f, param_racket1_start_position, [] () {
   return ofVec2f(-8, param_court_thickness + param_racket_radius);
 });
-
-auto param_racket2_high_hit_direction = Parameter<ofVec2f>(ofVec2f(-1.0, 1.0).normalized());
-
-auto param_racket2_low_hit_direction = Parameter<ofVec2f>(ofVec2f(-1.0, 0.5).normalized());
-
-auto param_racket2_start_position = Parameter<ofVec2f>([] () {
+DEFINE_PARAMETER(ofVec2f, param_racket2_high_hit_direction, ofVec2f(-1.0, 1.0).normalized());
+DEFINE_PARAMETER(ofVec2f, param_racket2_low_hit_direction, ofVec2f(-1.0, 0.5).normalized());
+DEFINE_PARAMETER(ofVec2f, param_racket2_start_position, [] () {
   return ofVec2f(8, param_court_thickness + param_racket_radius);
 });
-
-auto param_restitution = Parameter<float>(0.728);
-
-auto param_save_every_n_frames = Parameter<int>(2);
-
-auto param_view_matrix = Parameter<ofMatrix4x4>([] () {
-  return ofMatrix4x4::newScaleMatrix(param_window_width / param_court_length, -param_window_width / param_court_length, 1) *
+DEFINE_PARAMETER(float, param_restitution, 0.728);
+DEFINE_PARAMETER(int, param_save_every_n_frames, 2);
+DEFINE_PARAMETER(ofMatrix4x4, param_view_matrix,[] () {
+  return ofMatrix4x4::newScaleMatrix(param_window_width / param_court_length,
+                                     -param_window_width / param_court_length, 1) *
       ofMatrix4x4::newTranslationMatrix(param_half_window_width, param_window_height, 0.0);
 });
-
-auto param_view_matrix_inverse = Parameter<ofMatrix4x4>([] () {
+DEFINE_PARAMETER(ofMatrix4x4, param_view_matrix_inverse, [] () {
   return ofMatrix4x4::getInverseOf(param_view_matrix);
 });
-
-auto param_window_height = Parameter<int>(600);
-
-auto param_window_width = Parameter<int>(1200);
+DEFINE_PARAMETER(int, param_window_height, 600);
+DEFINE_PARAMETER(int, param_window_width, 1200);
