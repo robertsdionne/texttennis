@@ -2,19 +2,21 @@
 
 #include "constants.h"
 #include "introduction.h"
+#include "parameter.h"
 #include "scene.h"
 #include "scene1.h"
 #include "scene2.h"
 #include "scene3.h"
 #include "scene4.h"
 #include "scene5.h"
+#include "slider.h"
 #include "texttennis.h"
 
 /**
  * Public method definitions.
  */
 TextTennis::TextTennis()
-: scene_factory_functions(), scene_index(0), current_scene(nullptr) {
+: scene_factory_functions(), scene_index(0), current_scene(nullptr), float_panel() {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene2::Create);
@@ -23,8 +25,19 @@ TextTennis::TextTennis()
   scene_factory_functions.push_back(Scene5::Create);
 }
 
+TextTennis::~TextTennis() {
+  for (int i = 0; i < float_panel.getNumControls(); ++i) {
+    delete float_panel.getControl(i);
+  }
+  float_panel.clear();
+}
+
 void TextTennis::setup() {
   CreateScene();
+  float_panel.setup("float parameters");
+  for (auto parameter : Parameter<float>::GetParameters()) {
+    float_panel.add(new Slider<float>(parameter));
+  }
 }
 
 void TextTennis::update() {
@@ -37,6 +50,7 @@ void TextTennis::draw() {
   if (current_scene) {
     current_scene->Draw();
   }
+  float_panel.draw();
 }
 
 void TextTennis::NextScene() {

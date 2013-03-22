@@ -19,7 +19,7 @@ Scene *Scene3::Create(TextTennis &scene_manager) {
 void Scene3::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 3", -param_half_court_length + 1.0, param_court_height - 1.0);
+  ofDrawBitmapString("Scene 3", -half_court_length + 1.0, court_height - 1.0);
 }
 
 void Scene3::Setup() {

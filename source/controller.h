@@ -34,7 +34,7 @@ public:
   
 private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
-                  float angle = param_default_angle, float angular_velocity = param_default_angular_velocity);
+                  float angle = default_angle, float angular_velocity = default_angular_velocity);
 
   void CreateBorder();
   

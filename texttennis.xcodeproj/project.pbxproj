@@ -18,6 +18,7 @@
 		469D7B0C16FBEEEC00CB1D33 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B0816FBEEEC00CB1D33 /* tinyxml.cpp */; };
 		469D7B0D16FBEEEC00CB1D33 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B0A16FBEEEC00CB1D33 /* tinyxmlerror.cpp */; };
 		469D7B0E16FBEEEC00CB1D33 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B0B16FBEEEC00CB1D33 /* tinyxmlparser.cpp */; };
+		469D7B1216FC12BC00CB1D33 /* slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B1116FC12BC00CB1D33 /* slider.cpp */; };
 		46A7062716F95195008D1313 /* parameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A7062616F95195008D1313 /* parameter.cpp */; };
 		46D1404816F6A377009A2AD3 /* controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1403E16F6A377009A2AD3 /* controller.cpp */; };
 		46D1404916F6A377009A2AD3 /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404016F6A377009A2AD3 /* gameobject.cpp */; };
@@ -156,6 +157,8 @@
 		469D7B0916FBEEEC00CB1D33 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml.h; path = libraries/of_v0.7.4_osx_release/addons/ofxXmlSettings/libs/tinyxml.h; sourceTree = "<group>"; };
 		469D7B0A16FBEEEC00CB1D33 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlerror.cpp; path = libraries/of_v0.7.4_osx_release/addons/ofxXmlSettings/libs/tinyxmlerror.cpp; sourceTree = "<group>"; };
 		469D7B0B16FBEEEC00CB1D33 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = libraries/of_v0.7.4_osx_release/addons/ofxXmlSettings/libs/tinyxmlparser.cpp; sourceTree = "<group>"; };
+		469D7B1016FC12AC00CB1D33 /* slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slider.h; sourceTree = "<group>"; };
+		469D7B1116FC12BC00CB1D33 /* slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slider.cpp; sourceTree = "<group>"; };
 		46A7062616F95195008D1313 /* parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameter.cpp; sourceTree = "<group>"; };
 		46D1403E16F6A377009A2AD3 /* controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = controller.cpp; sourceTree = "<group>"; };
 		46D1403F16F6A377009A2AD3 /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
@@ -653,6 +656,8 @@
 				46E8C3C616F967AE0033523B /* scene4.h */,
 				46E8C3C816F967B30033523B /* scene5.cpp */,
 				46E8C3C916F967B30033523B /* scene5.h */,
+				469D7B1116FC12BC00CB1D33 /* slider.cpp */,
+				469D7B1016FC12AC00CB1D33 /* slider.h */,
 				46D1404516F6A377009A2AD3 /* texttennis.cpp */,
 				46D1404616F6A377009A2AD3 /* texttennis.h */,
 				46E7762C16F76B5F0011A27F /* utilities.cpp */,
@@ -1352,6 +1357,7 @@
 				469D7B0C16FBEEEC00CB1D33 /* tinyxml.cpp in Sources */,
 				469D7B0D16FBEEEC00CB1D33 /* tinyxmlerror.cpp in Sources */,
 				469D7B0E16FBEEEC00CB1D33 /* tinyxmlparser.cpp in Sources */,
+				469D7B1216FC12BC00CB1D33 /* slider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

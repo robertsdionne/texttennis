@@ -12,6 +12,7 @@
 #include "introduction.h"
 #include "model.h"
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "scene.h"
 #include "view.h"
 
@@ -21,6 +22,8 @@ public:
    * Public method declarations.
    */
   TextTennis();
+
+  virtual ~TextTennis();
 
   void NextScene();
 
@@ -44,6 +47,8 @@ private:
   std::vector<SceneFactoryFunction> scene_factory_functions;
   int scene_index;
   Scene *current_scene;
+
+  ofxPanel float_panel;
 };
 
 #endif  // TEXTTENNIS_H_
