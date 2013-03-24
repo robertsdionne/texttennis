@@ -13,31 +13,11 @@ void Scene1Controller::Setup() {
   CreateBorder();
   CreateCourt();
   CreateNet();
-
-  model_.states.push_back(GameState());
-  model_.states.back().racket1 = model_.racket1;
-  model_.states.back().racket2 = model_.racket2;
-  for (auto body : model_.ball_body) {
-    model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
-                                                   ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
-                                                   body->GetAngle(), body->GetAngularVelocity()));
-  }
 }
 
 void Scene1Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (ofGetFrameNum() % save_every_n_frames == 0) {
-    model_.states.push_back(model_.states.back());
-    model_.states.back().racket1 = model_.racket1;
-    model_.states.back().racket2 = model_.racket2;
-    model_.states.back().balls.clear();
-    for (auto body : model_.ball_body) {
-      model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
-                                                      ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
-                                                      body->GetAngle(), body->GetAngularVelocity()));
-    }
-  }
   if (keys[' '] && !previous_keys[' ']) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());

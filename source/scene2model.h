@@ -22,8 +22,6 @@ public:
   b2Body *court_body, *border_body, *net_body;
   
   ofVec2f racket1;
-  
-  std::list<GameState> states;
 };
 
 #endif  // TEXTTENNIS_SCENE2MODEL_H_
