@@ -5,6 +5,26 @@
 Controller::Controller(TextTennis &scene_manager)
 : scene_manager(scene_manager), buttons(), keys(), previous_buttons(), previous_keys() {}
 
+void Controller::Update() {
+  if (keys['`'] && !previous_keys['`']) {
+    scene_manager.ToggleSettings();
+  }
+  if (keys['r'] && !previous_keys['r']) {
+    scene_manager.RestartScene();
+    return;
+  }
+  if (keys['['] && !previous_keys['[']) {
+    scene_manager.PreviousScene();
+    return;
+  }
+  if (keys[']'] && !previous_keys[']']) {
+    scene_manager.NextScene();
+    return;
+  }
+  previous_buttons = buttons;
+  previous_keys = keys;
+}
+
 void Controller::keyPressed(ofKeyEventArgs &event) {
   keys[event.key] = true;
 }

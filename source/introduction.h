@@ -1,10 +1,10 @@
 #ifndef __texttennis__introduction__
 #define __texttennis__introduction__
 
-#include "scene2controller.h"
-#include "scene2model.h"
+#include "introductioncontroller.h"
+#include "introductionmodel.h"
 #include "scene.h"
-#include "scene2view.h"
+#include "introductionview.h"
 
 class TextTennis;
 
@@ -23,9 +23,9 @@ public:
   virtual void Update();
 
 private:
-  Scene2Model model;
-  Scene2View view;
-  Scene2Controller controller;
+  IntroductionModel model;
+  IntroductionView view;
+  IntroductionController controller;
 };
 
 #endif /* defined(__texttennis__introduction__) */

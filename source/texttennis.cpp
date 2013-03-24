@@ -61,6 +61,7 @@ void TextTennis::draw() {
     current_scene->Draw();
   }
   if (show_sliders) {
+    ofSetRectMode(OF_RECTMODE_CORNER);
     float_panel.draw();
     int_panel.draw();
   }

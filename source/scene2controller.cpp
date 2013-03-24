@@ -25,21 +25,6 @@ void Scene2Controller::Setup() {
 }
 
 void Scene2Controller::Update() {
-  if (keys['`'] && !previous_keys['`']) {
-    scene_manager.ToggleSettings();
-  }
-  if (keys['r'] && !previous_keys['r']) {
-    scene_manager.RestartScene();
-    return;
-  }
-  if (keys['['] && !previous_keys['[']) {
-    scene_manager.PreviousScene();
-    return;
-  }
-  if (keys[']'] && !previous_keys[']']) {
-    scene_manager.NextScene();
-    return;
-  }
   if (keys['\t']) {
     if (model_.states.size() > 1) {
       model_.states.pop_back();
@@ -88,8 +73,7 @@ void Scene2Controller::Update() {
       }
     }
   }
-  previous_buttons = buttons;
-  previous_keys = keys;
+  Controller::Update();
 }
 
 Model &Scene2Controller::model() {

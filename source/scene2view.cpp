@@ -13,6 +13,7 @@ void Scene2View::Setup() const {
 
 void Scene2View::Draw(Model &model) const {
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
+  ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();

@@ -1,0 +1,29 @@
+#ifndef TEXTTENNIS_INTRODUCTIONMODEL_H
+#define TEXTTENNIS_INTRODUCTIONMODEL_H_
+
+#include <Box2D/Box2D.h>
+#include <list>
+
+#include "model.h"
+#include "parameter.h"
+
+class IntroductionModel : public Model {
+public:
+  IntroductionModel();
+
+  virtual ~IntroductionModel() {};
+
+public:
+  b2World world;
+
+  std::list<b2Body *> boxes;
+
+  float last_create_time;
+
+public:
+  static Parameter<float> create_delay;
+  static Parameter<float> gravity;
+  static Parameter<b2Vec2> gravity_vector;
+};
+
+#endif  // TEXTTENNIS_INTRODUCTIONMODEL_H_
