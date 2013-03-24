@@ -1,11 +1,12 @@
 #include "constants.h"
 #include "scene2controller.h"
+#include "model.h"
 #include "ofMain.h"
 #include "scene2model.h"
 #include "texttennis.h"
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
-: scene_manager(scene_manager), model(model), keys(), previous_keys() {}
+: Controller(scene_manager), model_(model) {}
 
 void Scene2Controller::Setup() {
   // Box2D
@@ -13,11 +14,11 @@ void Scene2Controller::Setup() {
   CreateCourt();
   CreateNet();
 
-  model.states.push_back(GameState());
-  model.states.back().racket1 = model.racket1;
-  model.states.back().racket2 = model.racket2;
-  for (auto body : model.ball_body) {
-    model.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+  model_.states.push_back(GameState());
+  model_.states.back().racket1 = model_.racket1;
+  model_.states.back().racket2 = model_.racket2;
+  for (auto body : model_.ball_body) {
+    model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
                                                    ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
                                                    body->GetAngle(), body->GetAngularVelocity()));
   }
@@ -40,50 +41,50 @@ void Scene2Controller::Update() {
     return;
   }
   if (keys['\t']) {
-    if (model.states.size() > 1) {
-      model.states.pop_back();
+    if (model_.states.size() > 1) {
+      model_.states.pop_back();
     }
-    model.rewinding = true;
+    model_.rewinding = true;
   } else {
     if (!keys['\t'] && previous_keys['\t']) {
-      model.racket1 = model.states.back().racket1;
-      model.racket2 = model.states.back().racket2;
-      for (auto body : model.ball_body) {
+      model_.racket1 = model_.states.back().racket1;
+      model_.racket2 = model_.states.back().racket2;
+      for (auto body : model_.ball_body) {
         DestroyBall(body);
       }
-      model.ball_body.clear();
-      for (auto ball : model.states.back().balls) {
+      model_.ball_body.clear();
+      for (auto ball : model_.states.back().balls) {
         CreateBall(ball.position, ball.velocity, ball.angle, ball.angular_velocity);
       }
-      model.rewinding = false;
+      model_.rewinding = false;
     }
     UpdateRackets();
-    model.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+    model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
     if (ofGetFrameNum() % save_every_n_frames == 0) {
-      model.states.push_back(model.states.back());
-      model.states.back().racket1 = model.racket1;
-      model.states.back().racket2 = model.racket2;
-      model.states.back().balls.clear();
-      for (auto body : model.ball_body) {
-        model.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+      model_.states.push_back(model_.states.back());
+      model_.states.back().racket1 = model_.racket1;
+      model_.states.back().racket2 = model_.racket2;
+      model_.states.back().balls.clear();
+      for (auto body : model_.ball_body) {
+        model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
                                                        ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
                                                        body->GetAngle(), body->GetAngularVelocity()));
       }
     }
     if (keys[' '] && !previous_keys[' ']) {
-      ofVec2f mouse = low_hit_mean * (model.mouse_position - ball_initial_position).normalized();
+      ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
       CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
-      if (model.ball_body.size() > max_balls) {
-        b2Body *const body = model.ball_body.front();
+      if (model_.ball_body.size() > max_balls) {
+        b2Body *const body = model_.ball_body.front();
         DestroyBall(body);
-        model.ball_body.pop_front();
+        model_.ball_body.pop_front();
       }
     }
     if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-      if (model.ball_body.size() > 0) {
-        b2Body *const body = model.ball_body.front();
+      if (model_.ball_body.size() > 0) {
+        b2Body *const body = model_.ball_body.front();
         DestroyBall(body);
-        model.ball_body.pop_front();
+        model_.ball_body.pop_front();
       }
     }
   }
@@ -91,28 +92,8 @@ void Scene2Controller::Update() {
   previous_keys = keys;
 }
 
-void Scene2Controller::keyPressed(ofKeyEventArgs &event) {
-  keys[event.key] = true;
-}
-
-void Scene2Controller::keyReleased(ofKeyEventArgs &event) {
-  keys[event.key] = false;
-}
-
-void Scene2Controller::mouseDragged(ofMouseEventArgs &event) {
-  mouseMoved(event);
-}
-
-void Scene2Controller::mouseMoved(ofMouseEventArgs &event) {
-  model.mouse_position = ofVec3f(event.x, event.y) * view_matrix_inverse;
-}
-
-void Scene2Controller::mousePressed(ofMouseEventArgs &event) {
-  buttons[event.button] = true;
-}
-
-void Scene2Controller::mouseReleased(ofMouseEventArgs &event) {
-  buttons[event.button] = false;
+Model &Scene2Controller::model() {
+  return model_;
 }
 
 /**
@@ -128,7 +109,7 @@ void Scene2Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_body_definition.angularVelocity = angular_velocity;
   ball_body_definition.linearDamping = linear_damping;
   ball_body_definition.angularDamping = angular_damping;
-  model.ball_body.push_back(model.world.CreateBody(&ball_body_definition));
+  model_.ball_body.push_back(model_.world.CreateBody(&ball_body_definition));
   b2CircleShape ball_shape;
   ball_shape.m_radius = ball_radius;
   b2FixtureDef ball_fixture_definition;
@@ -136,13 +117,13 @@ void Scene2Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_fixture_definition.density = density;
   ball_fixture_definition.restitution = restitution;
   ball_fixture_definition.friction = friction;
-  model.ball_body.back()->CreateFixture(&ball_fixture_definition);
+  model_.ball_body.back()->CreateFixture(&ball_fixture_definition);
 }
 
 void Scene2Controller::CreateBorder() {
   b2BodyDef border_body_definition;
   border_body_definition.position.Set(0.0, court_thickness);
-  model.border_body = model.world.CreateBody(&border_body_definition);
+  model_.border_body = model_.world.CreateBody(&border_body_definition);
   b2Vec2 vertices[4];
   vertices[0].Set(-half_court_length, 0.0);
   vertices[1].Set(-half_court_length, ceiling_height);
@@ -152,35 +133,35 @@ void Scene2Controller::CreateBorder() {
   border_shape.CreateChain(vertices, 4);
   b2FixtureDef border_fixture_definition;
   border_fixture_definition.shape = &border_shape;
-  model.border_body->CreateFixture(&border_fixture_definition);
+  model_.border_body->CreateFixture(&border_fixture_definition);
 }
 
 void Scene2Controller::CreateCourt() {
   b2BodyDef court_body_definition;
   court_body_definition.position.Set(0.0, half_court_thickness);
-  model.court_body = model.world.CreateBody(&court_body_definition);
+  model_.court_body = model_.world.CreateBody(&court_body_definition);
   b2PolygonShape court_shape;
   court_shape.SetAsBox(half_court_length, half_court_thickness);
   b2FixtureDef court_fixture_definition;
   court_fixture_definition.shape = &court_shape;
   court_fixture_definition.friction = friction;
-  model.court_body->CreateFixture(&court_fixture_definition);
+  model_.court_body->CreateFixture(&court_fixture_definition);
 }
 
 void Scene2Controller::CreateNet() {
   b2BodyDef net_body_definition;
   net_body_definition.position.Set(0.0, court_thickness);
-  model.net_body = model.world.CreateBody(&net_body_definition);
+  model_.net_body = model_.world.CreateBody(&net_body_definition);
   b2EdgeShape net_shape;
   net_shape.Set(b2Vec2(), b2Vec2(0.0, net_height));
   b2FixtureDef net_fixture_definition;
   net_fixture_definition.shape = &net_shape;
-  model.net_body->CreateFixture(&net_fixture_definition);
+  model_.net_body->CreateFixture(&net_fixture_definition);
 }
 
 void Scene2Controller::DestroyBall(b2Body *ball) {
   ball->DestroyFixture(ball->GetFixtureList());
-  model.world.DestroyBody(ball);
+  model_.world.DestroyBody(ball);
 }
 
 bool Scene2Controller::MouseButtonIsPressed(int button) {
@@ -189,7 +170,7 @@ bool Scene2Controller::MouseButtonIsPressed(int button) {
 
 void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
                                float hit_mean, int key_left, int key_right) {
-  for (auto ball : model.ball_body) {
+  for (auto ball : model_.ball_body) {
     const ofVec2f position = ofVec2f(ball->GetPosition().x, ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
     if ((position - racket_position).length() < ball_radius + 2.0 * racket_radius) {
@@ -209,26 +190,26 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 }
 
 void Scene2Controller::UpdateRackets() {
-  if (keys['a'] && model.racket1.x > -half_court_length) {
-    model.racket1.x -= racket_speed;
+  if (keys['a'] && model_.racket1.x > -half_court_length) {
+    model_.racket1.x -= racket_speed;
   }
-  if (keys['d'] && model.racket1.x < -racket_speed - racket_radius) {
-    model.racket1.x += racket_speed;
+  if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
+    model_.racket1.x += racket_speed;
   }
-  if (keys[OF_KEY_LEFT] && model.racket2.x > racket_speed + racket_radius) {
-    model.racket2.x -= racket_speed;
+  if (keys[OF_KEY_LEFT] && model_.racket2.x > racket_speed + racket_radius) {
+    model_.racket2.x -= racket_speed;
   }
-  if (keys[OF_KEY_RIGHT] && model.racket2.x < half_court_length) {
-    model.racket2.x += racket_speed;
+  if (keys[OF_KEY_RIGHT] && model_.racket2.x < half_court_length) {
+    model_.racket2.x += racket_speed;
   }
   if (keys['w'] && !previous_keys['w']) {
-    RacketCollide(model.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
+    RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
   } else if (keys['s'] && !previous_keys['s']) {
-    RacketCollide(model.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
+    RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
   }
   if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
-    RacketCollide(model.racket2, racket2_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    RacketCollide(model_.racket2, racket2_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
-    RacketCollide(model.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   }
 }

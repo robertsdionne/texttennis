@@ -3,13 +3,13 @@
 #include "texttennis.h"
 
 Scene1::Scene1(TextTennis &scene_manager) : model(), view(), controller(scene_manager, model) {
-  ofRegisterKeyEvents(&controller);
-  ofRegisterMouseEvents(&controller);
+  ofRegisterKeyEvents(static_cast<Controller *>(&controller));
+  ofRegisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
 Scene1::~Scene1() {
-  ofUnregisterKeyEvents(&controller);
-  ofUnregisterMouseEvents(&controller);
+  ofUnregisterKeyEvents(static_cast<Controller *>(&controller));
+  ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
 Scene *Scene1::Create(TextTennis &scene_manager) {

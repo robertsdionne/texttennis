@@ -4,13 +4,13 @@
 
 Introduction::Introduction(TextTennis &scene_manager)
 : model(), view(), controller(scene_manager, model) {
-  ofRegisterKeyEvents(&controller);
-  ofRegisterMouseEvents(&controller);
+  ofRegisterKeyEvents(static_cast<Controller *>(&controller));
+  ofRegisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
 Introduction::~Introduction() {
-  ofUnregisterKeyEvents(&controller);
-  ofUnregisterMouseEvents(&controller);
+  ofUnregisterKeyEvents(static_cast<Controller *>(&controller));
+  ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
 Scene *Introduction::Create(TextTennis &scene_manager) {

@@ -1,4 +1,5 @@
 #include "constants.h"
+#include "model.h"
 #include "scene2model.h"
 #include "scene2view.h"
 
@@ -10,21 +11,22 @@ void Scene2View::Setup() const {
   ofBackground(ofColor::white);
 }
 
-void Scene2View::Draw(Scene2Model &model) const {
+void Scene2View::Draw(Model &model) const {
+  Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();
   DrawNet();
-  if (model.rewinding) {
-    DrawRacket(model.states.back().racket1);
-    DrawRacket(model.states.back().racket2);
-    for (auto ball : model.states.back().balls) {
+  if (scene2_model.rewinding) {
+    DrawRacket(scene2_model.states.back().racket1);
+    DrawRacket(scene2_model.states.back().racket2);
+    for (auto ball : scene2_model.states.back().balls) {
       DrawBall(ball.position, ball.angle);
     }
   } else {
-    DrawRacket(model.racket1);
-    DrawRacket(model.racket2);
-    for (auto ball : model.ball_body) {
+    DrawRacket(scene2_model.racket1);
+    DrawRacket(scene2_model.racket2);
+    for (auto ball : scene2_model.ball_body) {
       DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
     }
   }

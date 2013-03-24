@@ -1,36 +1,28 @@
-#ifndef TEXTTENNIS_CONTROLLER_H_
-#define TEXTTENNIS_CONTROLLER_H_
+#ifndef TEXTTENNIS_SCENE2CONTROLLER_H_
+#define TEXTTENNIS_SCENE2CONTROLLER_H_
 
 #include <map>
 
 #include "constants.h"
+#include "controller.h"
 #include "ofMain.h"
 
 class b2Body;
+class Model;
 class Scene2Model;
 class TextTennis;
 
-class Scene2Controller {
+class Scene2Controller : public Controller {
 public:
   Scene2Controller(TextTennis &scene_manager, Scene2Model &model);
   
   virtual ~Scene2Controller() {}
 
-  void Setup();
+  virtual void Setup();
 
-  void Update();
-  
-  void keyPressed(ofKeyEventArgs &event);
-  
-  void keyReleased(ofKeyEventArgs &event);
-  
-  void mouseDragged(ofMouseEventArgs &event);
-  
-  void mouseMoved(ofMouseEventArgs &event);
-  
-  void mousePressed(ofMouseEventArgs &event);
-  
-  void mouseReleased(ofMouseEventArgs &event);
+  virtual void Update();
+
+  virtual Model &model();
   
 private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
@@ -50,11 +42,9 @@ private:
                      float hit_mean, int key_left, int key_right);
   
   void UpdateRackets();
-  
+
 private:
-  TextTennis &scene_manager;
-  Scene2Model &model;
-  std::map<int, bool> buttons, keys, previous_buttons, previous_keys;
+  Scene2Model &model_;
 };
 
-#endif  // TEXTTENNIS_CONTROLLER_H_
+#endif  // TEXTTENNIS_SCENE2CONTROLLER_H_
