@@ -24,6 +24,9 @@ void Controller::Setup() {
 }
 
 void Controller::Update() {
+  if (keys['`'] && !previous_keys['`']) {
+    scene_manager.ToggleSettings();
+  }
   if (keys['r'] && !previous_keys['r']) {
     scene_manager.RestartScene();
     return;

@@ -30,6 +30,8 @@ public:
   void PreviousScene();
 
   void RestartScene();
+
+  void ToggleSettings();
   
   void setup();
   
@@ -48,6 +50,7 @@ private:
   int scene_index;
   Scene *current_scene;
 
+  bool show_sliders;
   ofxPanel float_panel;
 };
 

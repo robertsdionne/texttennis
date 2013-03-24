@@ -16,7 +16,8 @@
  * Public method definitions.
  */
 TextTennis::TextTennis()
-: scene_factory_functions(), scene_index(0), current_scene(nullptr), float_panel() {
+: scene_factory_functions(), scene_index(0), current_scene(nullptr),
+  show_sliders(false), float_panel() {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene2::Create);
@@ -50,7 +51,9 @@ void TextTennis::draw() {
   if (current_scene) {
     current_scene->Draw();
   }
-  float_panel.draw();
+  if (show_sliders) {
+    float_panel.draw();
+  }
 }
 
 void TextTennis::NextScene() {
@@ -65,6 +68,10 @@ void TextTennis::PreviousScene() {
 
 void TextTennis::RestartScene() {
   CreateScene();
+}
+
+void TextTennis::ToggleSettings() {
+  show_sliders = !show_sliders;
 }
 
 void TextTennis::CreateScene() {
