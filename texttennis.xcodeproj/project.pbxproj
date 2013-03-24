@@ -32,6 +32,9 @@
 		46CE39D016FF7DEF00D77873 /* scene1controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39CF16FF7DEF00D77873 /* scene1controller.cpp */; };
 		46CE39D316FF7E0700D77873 /* scene1model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D216FF7E0600D77873 /* scene1model.cpp */; };
 		46CE39D616FF7E1800D77873 /* scene1view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D516FF7E1700D77873 /* scene1view.cpp */; };
+		46CE39DE16FFC93A00D77873 /* scene3controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D816FFC93400D77873 /* scene3controller.cpp */; };
+		46CE39DF16FFC93A00D77873 /* scene3view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39DB16FFC93700D77873 /* scene3view.cpp */; };
+		46CE39E016FFC93A00D77873 /* scene3model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39DC16FFC93800D77873 /* scene3model.cpp */; };
 		46D1404B16F6A377009A2AD3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404416F6A377009A2AD3 /* main.cpp */; };
 		46D1404C16F6A377009A2AD3 /* texttennis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404516F6A377009A2AD3 /* texttennis.cpp */; };
 		46D141A216F6A3F4009A2AD3 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1405316F6A3F4009A2AD3 /* b2BroadPhase.cpp */; };
@@ -191,6 +194,12 @@
 		46CE39D416FF7E0E00D77873 /* scene1model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1model.h; sourceTree = "<group>"; };
 		46CE39D516FF7E1700D77873 /* scene1view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene1view.cpp; sourceTree = "<group>"; };
 		46CE39D716FF7E1E00D77873 /* scene1view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1view.h; sourceTree = "<group>"; };
+		46CE39D816FFC93400D77873 /* scene3controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3controller.cpp; sourceTree = "<group>"; };
+		46CE39D916FFC93500D77873 /* scene3controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene3controller.h; sourceTree = "<group>"; };
+		46CE39DA16FFC93600D77873 /* scene3view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene3view.h; sourceTree = "<group>"; };
+		46CE39DB16FFC93700D77873 /* scene3view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3view.cpp; sourceTree = "<group>"; };
+		46CE39DC16FFC93800D77873 /* scene3model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3model.cpp; sourceTree = "<group>"; };
+		46CE39DD16FFC93900D77873 /* scene3model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene3model.h; sourceTree = "<group>"; };
 		46D1404416F6A377009A2AD3 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		46D1404516F6A377009A2AD3 /* texttennis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texttennis.cpp; sourceTree = "<group>"; };
 		46D1404616F6A377009A2AD3 /* texttennis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texttennis.h; sourceTree = "<group>"; };
@@ -687,6 +696,12 @@
 				46CE39B616FF45B100D77873 /* scene2view.h */,
 				46E8C3C216F967AA0033523B /* scene3.cpp */,
 				46E8C3C316F967AA0033523B /* scene3.h */,
+				46CE39D816FFC93400D77873 /* scene3controller.cpp */,
+				46CE39D916FFC93500D77873 /* scene3controller.h */,
+				46CE39DC16FFC93800D77873 /* scene3model.cpp */,
+				46CE39DD16FFC93900D77873 /* scene3model.h */,
+				46CE39DB16FFC93700D77873 /* scene3view.cpp */,
+				46CE39DA16FFC93600D77873 /* scene3view.h */,
 				46E8C3C516F967AE0033523B /* scene4.cpp */,
 				46E8C3C616F967AE0033523B /* scene4.h */,
 				46E8C3C816F967B30033523B /* scene5.cpp */,
@@ -1400,6 +1415,9 @@
 				46CE39D016FF7DEF00D77873 /* scene1controller.cpp in Sources */,
 				46CE39D316FF7E0700D77873 /* scene1model.cpp in Sources */,
 				46CE39D616FF7E1800D77873 /* scene1view.cpp in Sources */,
+				46CE39DE16FFC93A00D77873 /* scene3controller.cpp in Sources */,
+				46CE39DF16FFC93A00D77873 /* scene3view.cpp in Sources */,
+				46CE39E016FFC93A00D77873 /* scene3model.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
