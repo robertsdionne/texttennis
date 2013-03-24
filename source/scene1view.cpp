@@ -18,18 +18,10 @@ void Scene1View::Draw(Model &model) const {
   ofMultMatrix(view_matrix);
   DrawCourt();
   DrawNet();
-  if (scene2_model.rewinding) {
-    DrawRacket(scene2_model.states.back().racket1);
-    DrawRacket(scene2_model.states.back().racket2);
-    for (auto ball : scene2_model.states.back().balls) {
-      DrawBall(ball.position, ball.angle);
-    }
-  } else {
-    DrawRacket(scene2_model.racket1);
-    DrawRacket(scene2_model.racket2);
-    for (auto ball : scene2_model.ball_body) {
-      DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
-    }
+  DrawRacket(scene2_model.racket1);
+  DrawRacket(scene2_model.racket2);
+  for (auto ball : scene2_model.ball_body) {
+    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
   }
   DrawFrameRate();
   ofPopMatrix();

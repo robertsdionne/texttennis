@@ -25,52 +25,33 @@ void Scene1Controller::Setup() {
 }
 
 void Scene1Controller::Update() {
-  if (keys['\t']) {
-    if (model_.states.size() > 1) {
-      model_.states.pop_back();
+  UpdateRackets();
+  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  if (ofGetFrameNum() % save_every_n_frames == 0) {
+    model_.states.push_back(model_.states.back());
+    model_.states.back().racket1 = model_.racket1;
+    model_.states.back().racket2 = model_.racket2;
+    model_.states.back().balls.clear();
+    for (auto body : model_.ball_body) {
+      model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
+                                                      ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
+                                                      body->GetAngle(), body->GetAngularVelocity()));
     }
-    model_.rewinding = true;
-  } else {
-    if (!keys['\t'] && previous_keys['\t']) {
-      model_.racket1 = model_.states.back().racket1;
-      model_.racket2 = model_.states.back().racket2;
-      for (auto body : model_.ball_body) {
-        DestroyBall(body);
-      }
-      model_.ball_body.clear();
-      for (auto ball : model_.states.back().balls) {
-        CreateBall(ball.position, ball.velocity, ball.angle, ball.angular_velocity);
-      }
-      model_.rewinding = false;
+  }
+  if (keys[' '] && !previous_keys[' ']) {
+    ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
+    CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
+    if (model_.ball_body.size() > max_balls) {
+      b2Body *const body = model_.ball_body.front();
+      DestroyBall(body);
+      model_.ball_body.pop_front();
     }
-    UpdateRackets();
-    model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-    if (ofGetFrameNum() % save_every_n_frames == 0) {
-      model_.states.push_back(model_.states.back());
-      model_.states.back().racket1 = model_.racket1;
-      model_.states.back().racket2 = model_.racket2;
-      model_.states.back().balls.clear();
-      for (auto body : model_.ball_body) {
-        model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
-                                                       ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
-                                                       body->GetAngle(), body->GetAngularVelocity()));
-      }
-    }
-    if (keys[' '] && !previous_keys[' ']) {
-      ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
-      CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
-      if (model_.ball_body.size() > max_balls) {
-        b2Body *const body = model_.ball_body.front();
-        DestroyBall(body);
-        model_.ball_body.pop_front();
-      }
-    }
-    if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
-      if (model_.ball_body.size() > 0) {
-        b2Body *const body = model_.ball_body.front();
-        DestroyBall(body);
-        model_.ball_body.pop_front();
-      }
+  }
+  if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
+    if (model_.ball_body.size() > 0) {
+      b2Body *const body = model_.ball_body.front();
+      DestroyBall(body);
+      model_.ball_body.pop_front();
     }
   }
   Controller::Update();
