@@ -7,8 +7,6 @@
 
 #include "constants.h"
 #include "scene2controller.h"
-#include "gameobject.h"
-#include "gamestate.h"
 #include "introduction.h"
 #include "scene2model.h"
 #include "ofMain.h"

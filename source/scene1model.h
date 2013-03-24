@@ -4,7 +4,6 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
-#include "gamestate.h"
 #include "model.h"
 #include "ofMain.h"
 
