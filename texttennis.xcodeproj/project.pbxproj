@@ -29,6 +29,9 @@
 		46CE39C816FF5ACF00D77873 /* introductionmodel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39C616FF5ACE00D77873 /* introductionmodel.cpp */; };
 		46CE39CB16FF5E0300D77873 /* introductionview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39C916FF5E0200D77873 /* introductionview.cpp */; };
 		46CE39CE16FF5E0C00D77873 /* introductioncontroller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39CC16FF5E0B00D77873 /* introductioncontroller.cpp */; };
+		46CE39D016FF7DEF00D77873 /* scene1controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39CF16FF7DEF00D77873 /* scene1controller.cpp */; };
+		46CE39D316FF7E0700D77873 /* scene1model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D216FF7E0600D77873 /* scene1model.cpp */; };
+		46CE39D616FF7E1800D77873 /* scene1view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D516FF7E1700D77873 /* scene1view.cpp */; };
 		46D1404916F6A377009A2AD3 /* gameobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404016F6A377009A2AD3 /* gameobject.cpp */; };
 		46D1404A16F6A377009A2AD3 /* gamestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404216F6A377009A2AD3 /* gamestate.cpp */; };
 		46D1404B16F6A377009A2AD3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404416F6A377009A2AD3 /* main.cpp */; };
@@ -184,6 +187,12 @@
 		46CE39CA16FF5E0200D77873 /* introductionview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = introductionview.h; sourceTree = "<group>"; };
 		46CE39CC16FF5E0B00D77873 /* introductioncontroller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = introductioncontroller.cpp; sourceTree = "<group>"; };
 		46CE39CD16FF5E0B00D77873 /* introductioncontroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = introductioncontroller.h; sourceTree = "<group>"; };
+		46CE39CF16FF7DEF00D77873 /* scene1controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene1controller.cpp; sourceTree = "<group>"; };
+		46CE39D116FF7DFA00D77873 /* scene1controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1controller.h; sourceTree = "<group>"; };
+		46CE39D216FF7E0600D77873 /* scene1model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene1model.cpp; sourceTree = "<group>"; };
+		46CE39D416FF7E0E00D77873 /* scene1model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1model.h; sourceTree = "<group>"; };
+		46CE39D516FF7E1700D77873 /* scene1view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene1view.cpp; sourceTree = "<group>"; };
+		46CE39D716FF7E1E00D77873 /* scene1view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene1view.h; sourceTree = "<group>"; };
 		46D1404016F6A377009A2AD3 /* gameobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gameobject.cpp; sourceTree = "<group>"; };
 		46D1404116F6A377009A2AD3 /* gameobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gameobject.h; sourceTree = "<group>"; };
 		46D1404216F6A377009A2AD3 /* gamestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gamestate.cpp; sourceTree = "<group>"; };
@@ -672,6 +681,12 @@
 				46E8C3BA16F95CCA0033523B /* scene.h */,
 				46E8C3BC16F95D940033523B /* scene1.cpp */,
 				46E8C3BD16F95D940033523B /* scene1.h */,
+				46CE39CF16FF7DEF00D77873 /* scene1controller.cpp */,
+				46CE39D116FF7DFA00D77873 /* scene1controller.h */,
+				46CE39D216FF7E0600D77873 /* scene1model.cpp */,
+				46CE39D416FF7E0E00D77873 /* scene1model.h */,
+				46CE39D516FF7E1700D77873 /* scene1view.cpp */,
+				46CE39D716FF7E1E00D77873 /* scene1view.h */,
 				46E8C3BF16F967A60033523B /* scene2.cpp */,
 				46E8C3C016F967A60033523B /* scene2.h */,
 				46CE39B316FF45B100D77873 /* scene2controller.cpp */,
@@ -1394,6 +1409,9 @@
 				46CE39C816FF5ACF00D77873 /* introductionmodel.cpp in Sources */,
 				46CE39CB16FF5E0300D77873 /* introductionview.cpp in Sources */,
 				46CE39CE16FF5E0C00D77873 /* introductioncontroller.cpp in Sources */,
+				46CE39D016FF7DEF00D77873 /* scene1controller.cpp in Sources */,
+				46CE39D316FF7E0700D77873 /* scene1model.cpp in Sources */,
+				46CE39D616FF7E1800D77873 /* scene1view.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
