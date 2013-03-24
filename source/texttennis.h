@@ -52,6 +52,7 @@ private:
 
   bool show_sliders;
   ofxPanel float_panel;
+  ofxPanel int_panel;
 };
 
 #endif  // TEXTTENNIS_H_

@@ -17,7 +17,7 @@
  */
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
-  show_sliders(false), float_panel() {
+  show_sliders(false), float_panel(), int_panel() {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene2::Create);
@@ -31,6 +31,10 @@ TextTennis::~TextTennis() {
     delete float_panel.getControl(i);
   }
   float_panel.clear();
+  for (int i = 0; i < int_panel.getNumControls(); ++i) {
+    delete int_panel.getControl(i);
+  }
+  int_panel.clear();
 }
 
 void TextTennis::setup() {
@@ -38,6 +42,11 @@ void TextTennis::setup() {
   float_panel.setup("float parameters");
   for (auto parameter : Parameter<float>::GetParameters()) {
     float_panel.add(new Slider<float>(parameter));
+  }
+  int_panel.setup("int parameters", "settings.xml",
+                  float_panel.getPosition().x + float_panel.getWidth() + 1);
+  for (auto parameter : Parameter<int>::GetParameters()) {
+    int_panel.add(new Slider<int>(parameter));
   }
 }
 
@@ -53,6 +62,7 @@ void TextTennis::draw() {
   }
   if (show_sliders) {
     float_panel.draw();
+    int_panel.draw();
   }
 }
 
