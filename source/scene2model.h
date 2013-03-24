@@ -7,11 +7,11 @@
 #include "gamestate.h"
 #include "ofMain.h"
 
-class Model {
+class Scene2Model {
 public:
-  Model();
+  Scene2Model();
   
-  virtual ~Model() {}
+  virtual ~Scene2Model() {}
   
 public:
   b2World world;

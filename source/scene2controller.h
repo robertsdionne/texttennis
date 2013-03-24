@@ -7,14 +7,14 @@
 #include "ofMain.h"
 
 class b2Body;
-class Model;
+class Scene2Model;
 class TextTennis;
 
-class Controller {
+class Scene2Controller {
 public:
-  Controller(TextTennis &scene_manager, Model &model);
+  Scene2Controller(TextTennis &scene_manager, Scene2Model &model);
   
-  virtual ~Controller() {}
+  virtual ~Scene2Controller() {}
 
   void Setup();
 
@@ -53,7 +53,7 @@ private:
   
 private:
   TextTennis &scene_manager;
-  Model &model;
+  Scene2Model &model;
   std::map<int, bool> buttons, keys, previous_buttons, previous_keys;
 };
 

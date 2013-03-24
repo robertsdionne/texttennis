@@ -1,13 +1,13 @@
 #include "constants.h"
-#include "controller.h"
+#include "scene2controller.h"
 #include "ofMain.h"
-#include "model.h"
+#include "scene2model.h"
 #include "texttennis.h"
 
-Controller::Controller(TextTennis &scene_manager, Model &model)
+Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
 : scene_manager(scene_manager), model(model), keys(), previous_keys() {}
 
-void Controller::Setup() {
+void Scene2Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -23,7 +23,7 @@ void Controller::Setup() {
   }
 }
 
-void Controller::Update() {
+void Scene2Controller::Update() {
   if (keys['`'] && !previous_keys['`']) {
     scene_manager.ToggleSettings();
   }
@@ -91,34 +91,34 @@ void Controller::Update() {
   previous_keys = keys;
 }
 
-void Controller::keyPressed(ofKeyEventArgs &event) {
+void Scene2Controller::keyPressed(ofKeyEventArgs &event) {
   keys[event.key] = true;
 }
 
-void Controller::keyReleased(ofKeyEventArgs &event) {
+void Scene2Controller::keyReleased(ofKeyEventArgs &event) {
   keys[event.key] = false;
 }
 
-void Controller::mouseDragged(ofMouseEventArgs &event) {
+void Scene2Controller::mouseDragged(ofMouseEventArgs &event) {
   mouseMoved(event);
 }
 
-void Controller::mouseMoved(ofMouseEventArgs &event) {
+void Scene2Controller::mouseMoved(ofMouseEventArgs &event) {
   model.mouse_position = ofVec3f(event.x, event.y) * view_matrix_inverse;
 }
 
-void Controller::mousePressed(ofMouseEventArgs &event) {
+void Scene2Controller::mousePressed(ofMouseEventArgs &event) {
   buttons[event.button] = true;
 }
 
-void Controller::mouseReleased(ofMouseEventArgs &event) {
+void Scene2Controller::mouseReleased(ofMouseEventArgs &event) {
   buttons[event.button] = false;
 }
 
 /**
  * Private method defintions.
  */
-void Controller::CreateBall(ofVec2f position, ofVec2f velocity,
+void Scene2Controller::CreateBall(ofVec2f position, ofVec2f velocity,
                             float angle, float angular_velocity) {
   b2BodyDef ball_body_definition;
   ball_body_definition.type = b2_dynamicBody;
@@ -139,7 +139,7 @@ void Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   model.ball_body.back()->CreateFixture(&ball_fixture_definition);
 }
 
-void Controller::CreateBorder() {
+void Scene2Controller::CreateBorder() {
   b2BodyDef border_body_definition;
   border_body_definition.position.Set(0.0, court_thickness);
   model.border_body = model.world.CreateBody(&border_body_definition);
@@ -155,7 +155,7 @@ void Controller::CreateBorder() {
   model.border_body->CreateFixture(&border_fixture_definition);
 }
 
-void Controller::CreateCourt() {
+void Scene2Controller::CreateCourt() {
   b2BodyDef court_body_definition;
   court_body_definition.position.Set(0.0, half_court_thickness);
   model.court_body = model.world.CreateBody(&court_body_definition);
@@ -167,7 +167,7 @@ void Controller::CreateCourt() {
   model.court_body->CreateFixture(&court_fixture_definition);
 }
 
-void Controller::CreateNet() {
+void Scene2Controller::CreateNet() {
   b2BodyDef net_body_definition;
   net_body_definition.position.Set(0.0, court_thickness);
   model.net_body = model.world.CreateBody(&net_body_definition);
@@ -178,16 +178,16 @@ void Controller::CreateNet() {
   model.net_body->CreateFixture(&net_fixture_definition);
 }
 
-void Controller::DestroyBall(b2Body *ball) {
+void Scene2Controller::DestroyBall(b2Body *ball) {
   ball->DestroyFixture(ball->GetFixtureList());
   model.world.DestroyBody(ball);
 }
 
-bool Controller::MouseButtonIsPressed(int button) {
+bool Scene2Controller::MouseButtonIsPressed(int button) {
   return buttons[button];
 }
 
-void Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
+void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
                                float hit_mean, int key_left, int key_right) {
   for (auto ball : model.ball_body) {
     const ofVec2f position = ofVec2f(ball->GetPosition().x, ball->GetPosition().y);
@@ -208,7 +208,7 @@ void Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
   }
 }
 
-void Controller::UpdateRackets() {
+void Scene2Controller::UpdateRackets() {
   if (keys['a'] && model.racket1.x > -half_court_length) {
     model.racket1.x -= racket_speed;
   }

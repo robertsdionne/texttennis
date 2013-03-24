@@ -6,15 +6,15 @@
 #include <vector>
 
 #include "constants.h"
-#include "controller.h"
+#include "scene2controller.h"
 #include "gameobject.h"
 #include "gamestate.h"
 #include "introduction.h"
-#include "model.h"
+#include "scene2model.h"
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "scene.h"
-#include "view.h"
+#include "scene2view.h"
 
 class TextTennis : public ofBaseApp {
 public:

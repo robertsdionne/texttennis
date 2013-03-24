@@ -1,8 +1,8 @@
 #include "constants.h"
-#include "model.h"
-#include "view.h"
+#include "scene2model.h"
+#include "scene2view.h"
 
-void View::Setup() const {
+void Scene2View::Setup() const {
   ofSetFrameRate(frame_rate);
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
@@ -10,7 +10,7 @@ void View::Setup() const {
   ofBackground(ofColor::white);
 }
 
-void View::Draw(Model &model) const {
+void Scene2View::Draw(Scene2Model &model) const {
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();
@@ -32,7 +32,7 @@ void View::Draw(Model &model) const {
   ofPopMatrix();
 }
 
-void View::DrawBall(ofVec2f position, float angle) const {
+void Scene2View::DrawBall(ofVec2f position, float angle) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofCircle(position, ball_radius);
@@ -41,14 +41,14 @@ void View::DrawBall(ofVec2f position, float angle) const {
   ofPopStyle();
 }
 
-void View::DrawCourt() const {
+void Scene2View::DrawCourt() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -court_thickness);
   ofPopStyle();
 }
 
-void View::DrawFrameRate() const {
+void Scene2View::DrawFrameRate() const {
   std::stringstream out;
   out << ofGetFrameRate();
   ofPushStyle();
@@ -57,14 +57,14 @@ void View::DrawFrameRate() const {
   ofPopStyle();
 }
 
-void View::DrawNet() const {
+void Scene2View::DrawNet() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-half_net_thickness, net_height + court_thickness), net_thickness, -net_height);
   ofPopStyle();
 }
 
-void View::DrawRacket(ofVec2f position) const {
+void Scene2View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofCircle(position, racket_radius);

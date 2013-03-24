@@ -3,17 +3,17 @@
 
 #include "ofMain.h"
 
-class Model;
+class Scene2Model;
 
-class View {
+class Scene2View {
 public:
-  View() {}
+  Scene2View() {}
   
-  virtual ~View() {}
+  virtual ~Scene2View() {}
   
   void Setup() const;
   
-  void Draw(Model &model) const;
+  void Draw(Scene2Model &model) const;
   
 private:
   void DrawBall(ofVec2f position, float angle) const;
