@@ -19,7 +19,6 @@ void Scene2View::Draw(Model &model) const {
   DrawCourt();
   DrawNet();
   DrawRacket(scene2_model.racket1);
-  DrawRacket(scene2_model.racket2);
   for (auto ball : scene2_model.ball_body) {
     DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
   }

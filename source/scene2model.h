@@ -21,7 +21,7 @@ public:
   
   b2Body *court_body, *border_body, *net_body;
   
-  ofVec2f racket1, racket2;
+  ofVec2f racket1;
   
   std::list<GameState> states;
 };

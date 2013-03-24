@@ -16,7 +16,6 @@ void Scene2Controller::Setup() {
 
   model_.states.push_back(GameState());
   model_.states.back().racket1 = model_.racket1;
-  model_.states.back().racket2 = model_.racket2;
   for (auto body : model_.ball_body) {
     model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
                                                    ofVec2f(body->GetLinearVelocity().x, body->GetLinearVelocity().y),
@@ -30,7 +29,6 @@ void Scene2Controller::Update() {
   if (ofGetFrameNum() % save_every_n_frames == 0) {
     model_.states.push_back(model_.states.back());
     model_.states.back().racket1 = model_.racket1;
-    model_.states.back().racket2 = model_.racket2;
     model_.states.back().balls.clear();
     for (auto body : model_.ball_body) {
       model_.states.back().balls.push_back(GameObject(ofVec2f(body->GetPosition().x, body->GetPosition().y),
@@ -161,20 +159,9 @@ void Scene2Controller::UpdateRackets() {
   if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
     model_.racket1.x += racket_speed;
   }
-  if (keys[OF_KEY_LEFT] && model_.racket2.x > racket_speed + racket_radius) {
-    model_.racket2.x -= racket_speed;
-  }
-  if (keys[OF_KEY_RIGHT] && model_.racket2.x < half_court_length) {
-    model_.racket2.x += racket_speed;
-  }
   if (keys['w'] && !previous_keys['w']) {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
   } else if (keys['s'] && !previous_keys['s']) {
     RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
-  }
-  if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
-    RacketCollide(model_.racket2, racket2_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
-    RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   }
 }
