@@ -20,7 +20,7 @@ Scene *Introduction::Create(TextTennis &scene_manager) {
 void Introduction::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Introduction", -half_court_length + 1.0, court_height - 1.0);
+  ofDrawBitmapString("Introduction", 100, 100);
 }
 
 void Introduction::Setup() {

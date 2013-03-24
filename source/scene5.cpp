@@ -19,7 +19,7 @@ Scene *Scene5::Create(TextTennis &scene_manager) {
 void Scene5::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 5", -half_court_length + 1.0, court_height - 1.0);
+  ofDrawBitmapString("Scene 5", 100, 100);
 }
 
 void Scene5::Setup() {
