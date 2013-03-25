@@ -34,6 +34,7 @@ void Scene3View::Draw(Model &model) {
   DrawCourt();
   DrawNet();
   DrawRacket(scene3_model.racket1);
+  DrawRacket(scene3_model.opponent);
   if (scene3_model.ball_body) {
     DrawBall(ofVec2f(scene3_model.ball_body->GetPosition().x,
                      scene3_model.ball_body->GetPosition().y),
