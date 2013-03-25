@@ -3,6 +3,11 @@
 #include "scene2model.h"
 #include "scene2view.h"
 
+Scene2View::Scene2View()
+: font() {
+  font.loadFont(font_filename, 2, true, false, true, 0.0);
+}
+
 void Scene2View::Setup() {
   ofSetFrameRate(frame_rate);
   ofSetVerticalSync(true);
@@ -22,6 +27,18 @@ void Scene2View::Draw(Model &model) {
   for (auto ball : scene2_model.ball_body) {
     DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
   }
+  ofPushMatrix();
+  ofScale(1, -1);
+  std::stringstream out;
+  if (scene2_model.score < 100) {
+    out << ' ';
+  }
+  if (scene2_model.score < 10) {
+    out << ' ';
+  }
+  out << scene2_model.score << "/500";
+  font.drawStringAsShapes(out.str(), -2, -half_court_height);
+  ofPopMatrix();
   DrawFrameRate();
   ofPopMatrix();
 }

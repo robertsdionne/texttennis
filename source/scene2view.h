@@ -8,7 +8,7 @@ class Scene2Model;
 
 class Scene2View : public View {
 public:
-  Scene2View() {}
+  Scene2View();
   
   virtual ~Scene2View() {}
   
@@ -26,6 +26,9 @@ private:
   void DrawNet() const;
   
   void DrawRacket(ofVec2f position) const;
+
+private:
+  ofTrueTypeFont font;
 };
 
 #endif  // TEXTTENNIS_SCENE2VIEW_H_

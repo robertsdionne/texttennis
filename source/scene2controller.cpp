@@ -18,7 +18,17 @@ void Scene2Controller::Setup() {
 void Scene2Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (ofGetFrameNum() % 5 == 0 && model_.ball_body.size() < max_balls) {
+  if (model_.score >= 500.0) {
+    scene_manager.NextScene();
+    return;
+  }
+  model_.score = 0.0;
+  for (auto ball : model_.ball_body) {
+    if (ball->GetPosition().x > 0 && ball->GetLinearVelocity().Length() < 0.01) {
+      model_.score += 1.0;
+    }
+  }
+  if (ofGetFrameNum() % 10 == 0 && model_.ball_body.size() < max_balls) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
