@@ -5,7 +5,7 @@
 
 Scene3View::Scene3View()
 : font() {
-  font.loadFont(font_filename, 692);
+  font.loadFont(font_filename, 12, true, false, true, 0.0);
 }
 
 void Scene3View::Setup() {
@@ -27,15 +27,17 @@ void Scene3View::Draw(Model &model) {
   for (auto ball : scene3_model.ball_body) {
     DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
   }
-  DrawFrameRate();
-  ofPopMatrix();
   ofSetColor(ofColor::black);
   std::stringstream out;
   if (scene3_model.score < 10) {
     out << ' ';
   }
   out << fmod(scene3_model.score, 100.0f);
-  font.drawString(out.str(), half_window_width - font.stringWidth("00") / 2.0 - 60, font.stringHeight("0") - 30);
+  ofScale(1.0, -1.0);
+  std::cout << font.stringWidth("0") << std::endl;
+  font.drawStringAsShapes(out.str(), -8.5, -1);
+  DrawFrameRate();
+  ofPopMatrix();
 }
 
 void Scene3View::DrawBall(ofVec2f position, float angle) const {
