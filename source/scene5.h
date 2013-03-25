@@ -1,10 +1,10 @@
 #ifndef TEXTTENNIS_SCENE5_H_
 #define TEXTTENNIS_SCENE5_H_
 
-#include "scene2controller.h"
-#include "scene2model.h"
+#include "scene5controller.h"
+#include "scene5model.h"
 #include "scene.h"
-#include "scene2view.h"
+#include "scene5view.h"
 
 class TextTennis;
 
@@ -23,9 +23,9 @@ public:
   virtual void Update();
 
 private:
-  Scene2Model model;
-  Scene2View view;
-  Scene2Controller controller;
+  Scene5Model model;
+  Scene5View view;
+  Scene5Controller controller;
 };
 
 #endif  // TEXTTENNIS_SCENE5_H_
