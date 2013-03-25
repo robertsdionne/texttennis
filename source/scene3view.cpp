@@ -21,12 +21,7 @@ void Scene3View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
-  DrawCourt();
-  DrawNet();
-  DrawRacket(scene3_model.racket1);
-  for (auto ball : scene3_model.ball_body) {
-    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
-  }
+  ofPushMatrix();
   ofSetColor(ofColor::black);
   std::stringstream out;
   if (scene3_model.score < 10) {
@@ -35,6 +30,15 @@ void Scene3View::Draw(Model &model) {
   out << fmod(scene3_model.score, 100.0f);
   ofScale(1.0, -1.0);
   font.drawStringAsShapes(out.str(), -8.5, -1);
+  ofPopMatrix();
+  DrawCourt();
+  DrawNet();
+  DrawRacket(scene3_model.racket1);
+  if (scene3_model.ball_body) {
+    DrawBall(ofVec2f(scene3_model.ball_body->GetPosition().x,
+                     scene3_model.ball_body->GetPosition().y),
+             scene3_model.ball_body->GetAngle());
+  }
   DrawFrameRate();
   ofPopMatrix();
 }

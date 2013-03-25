@@ -21,12 +21,6 @@ void Scene2View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
-  DrawCourt();
-  DrawNet();
-  DrawRacket(scene2_model.racket1);
-  for (auto ball : scene2_model.ball_body) {
-    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
-  }
   ofPushMatrix();
   ofScale(1, -1);
   std::stringstream out;
@@ -39,6 +33,12 @@ void Scene2View::Draw(Model &model) {
   out << scene2_model.score << "/" << scene2_model.ball_body.size();
   font.drawStringAsShapes(out.str(), -2, -half_court_height);
   ofPopMatrix();
+  DrawCourt();
+  DrawNet();
+  DrawRacket(scene2_model.racket1);
+  for (auto ball : scene2_model.ball_body) {
+    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
+  }
   DrawFrameRate();
   ofPopMatrix();
 }

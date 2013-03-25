@@ -15,14 +15,14 @@ public:
   
 public:
   b2World world;
-  
-  std::list<b2Body *> ball_body;
-  
-  b2Body *court_body, *border_body, *net_body;
+
+  b2Body *ball_body, *court_body, *border_body, *net_body;
   
   ofVec2f racket1;
 
   float score;
+
+  int bounces;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_
