@@ -8,17 +8,39 @@
 Scene3Controller::Scene3Controller(TextTennis &scene_manager, Scene3Model &model)
 : Controller(scene_manager), model_(model) {}
 
+void Scene3Controller::BeginContact(b2Contact* contact) {
+  const b2Body *body_a = contact->GetFixtureA()->GetBody();
+  const b2Body *body_b = contact->GetFixtureB()->GetBody();
+  const b2Body *ball = nullptr, *court = nullptr;
+  if (model_.ball_body.back() == body_a) {
+    ball = body_a;
+  }
+  if (model_.ball_body.back() == body_b) {
+    ball = body_b;
+  }
+  if (model_.court_body == body_a) {
+    court = body_a;
+  }
+  if (model_.court_body == body_b) {
+    court = body_b;
+  }
+  if (ball && court && ball->GetPosition().x > 0) {
+    model_.score += 1;
+  }
+}
+
 void Scene3Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
+  model_.world.SetContactListener(this);
 }
 
 void Scene3Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (ofGetFrameNum() % 5 == 0 && model_.ball_body.size() < max_balls) {
+  if (keys[' '] && !previous_keys[' ']) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {

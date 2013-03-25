@@ -12,11 +12,13 @@ class Model;
 class Scene3Model;
 class TextTennis;
 
-class Scene3Controller : public Controller {
+class Scene3Controller : public Controller, b2ContactListener {
 public:
   Scene3Controller(TextTennis &scene_manager, Scene3Model &model);
 
   virtual ~Scene3Controller() {}
+
+  virtual void BeginContact(b2Contact* contact);
 
   virtual void Setup();
 
