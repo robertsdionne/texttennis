@@ -34,7 +34,6 @@ void Scene3View::Draw(Model &model) {
   }
   out << fmod(scene3_model.score, 100.0f);
   ofScale(1.0, -1.0);
-  std::cout << font.stringWidth("0") << std::endl;
   font.drawStringAsShapes(out.str(), -8.5, -1);
   DrawFrameRate();
   ofPopMatrix();
