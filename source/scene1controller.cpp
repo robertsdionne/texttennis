@@ -21,7 +21,7 @@ void Scene1Controller::Update() {
   if (keys[' '] && !previous_keys[' ']) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
-    if (model_.ball_body.size() > max_balls) {
+    if (model_.ball_body.size() > 1) {
       b2Body *const body = model_.ball_body.front();
       DestroyBall(body);
       model_.ball_body.pop_front();
