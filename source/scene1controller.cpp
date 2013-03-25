@@ -18,7 +18,7 @@ void Scene1Controller::Setup() {
 void Scene1Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (keys[' '] && !previous_keys[' ']) {
+  if (model_.ball_body.size() < 1) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > 1) {
