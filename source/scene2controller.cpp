@@ -29,8 +29,7 @@ void Scene2Controller::Update() {
     }
   }
   if (ofGetFrameNum() % 2 == 0 && model_.ball_body.size() < max_balls) {
-    ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
-    CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
+    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
       b2Body *const body = model_.ball_body.front();
       DestroyBall(body);

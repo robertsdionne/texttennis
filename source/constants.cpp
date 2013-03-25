@@ -5,12 +5,15 @@
 #include "parameter.h"
 
 DEFINE_PARAMETER_RANGE(float, angular_damping, 0.1, 0.0, 1.0);
-DEFINE_PARAMETER_RANGE(float, angular_velocity, 100.0, -100.0, 100.0);
+DEFINE_PARAMETER_RANGE(float, angular_velocity, 200.0, -100.0, 200.0);
 DEFINE_PARAMETER_RANGE(float, aspect_ratio,
                  static_cast<float>(DEPENDENCY(window_width)) /
                  static_cast<float>(DEPENDENCY(window_height)), 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, ball_cartoon_factor, 2.0, 0.0, 5.0);
 DEFINE_PARAMETER(ofVec2f, ball_initial_position, ofVec2f(11, 1));
+DEFINE_PARAMETER(ofVec2f, ball_initial_velocity,
+                 (DEPENDENCY(low_hit_mean) + 0.25) * (ofVec2f(0, DEPENDENCY(half_court_height)) -
+                                                     DEPENDENCY(ball_initial_position)).normalized());
 DEFINE_PARAMETER_RANGE(float, ball_mass, 0.056, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, ball_radius, DEPENDENCY(ball_cartoon_factor) * 0.03429, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(int, box2d_velocity_iterations, 8, 1, 10);

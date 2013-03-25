@@ -53,8 +53,7 @@ void Scene3Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (!model_.ball_body) {
-    ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
-    CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
+    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
     if (model_.ball_body) {

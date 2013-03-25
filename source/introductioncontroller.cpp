@@ -11,24 +11,6 @@ void IntroductionController::Setup() {
 }
 
 void IntroductionController::Update() {
-  while (ofGetElapsedTimef() > model_.last_create_time + IntroductionModel::create_delay) {
-    CreateBox(ofVec2f(ofRandomf(), court_height + 1.0), ofVec2f(), ofRandomuf() * M_PI, ofRandomf() * 10.0);
-    model_.last_create_time = ofGetElapsedTimef();
-  }
-  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  for (auto box = model_.boxes.begin(); box != model_.boxes.end(); ++box) {
-    if ((*box)->GetPosition().x < -half_court_length) {
-      (*box)->SetTransform((*box)->GetPosition() + b2Vec2(court_length, 0.0), (*box)->GetAngle());
-    }
-    if ((*box)->GetPosition().x > half_court_length) {
-      (*box)->SetTransform((*box)->GetPosition() + b2Vec2(-court_length, 0.0), (*box)->GetAngle());
-    }
-    if ((*box)->GetPosition().y < -1.0) {
-      (*box)->DestroyFixture((*box)->GetFixtureList());
-      model_.world.DestroyBody(*box);
-      model_.boxes.erase(box);
-    }
-  }
   if (buttons[0] && !previous_buttons[0]) {
     b2AABB aabb;
     aabb.lowerBound = Box2dVector(model_.mouse_position);
@@ -44,6 +26,25 @@ void IntroductionController::Update() {
     if (intersect_callback.hit) {
       scene_manager.NextScene();
       return;
+    }
+  }
+  while (ofGetElapsedTimef() > model_.last_create_time + IntroductionModel::create_delay) {
+    CreateBox(ofVec2f(ofRandomf(), court_height + 1.0), ofVec2f(),
+              ofRandomuf() * M_PI, ofRandomf() * 10.0);
+    model_.last_create_time = ofGetElapsedTimef();
+  }
+  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  for (auto box = model_.boxes.begin(); box != model_.boxes.end(); ++box) {
+    if ((*box)->GetPosition().x < -half_court_length) {
+      (*box)->SetTransform((*box)->GetPosition() + b2Vec2(court_length, 0.0), (*box)->GetAngle());
+    }
+    if ((*box)->GetPosition().x > half_court_length) {
+      (*box)->SetTransform((*box)->GetPosition() + b2Vec2(-court_length, 0.0), (*box)->GetAngle());
+    }
+    if ((*box)->GetPosition().y < -1.0) {
+      (*box)->DestroyFixture((*box)->GetFixtureList());
+      model_.world.DestroyBody(*box);
+      model_.boxes.erase(box);
     }
   }
   Controller::Update();

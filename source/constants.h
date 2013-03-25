@@ -12,6 +12,7 @@ extern Parameter<float> angular_velocity;
 extern Parameter<float> aspect_ratio;
 extern Parameter<float> ball_cartoon_factor;
 extern Parameter<ofVec2f> ball_initial_position;
+extern Parameter<ofVec2f> ball_initial_velocity;
 extern Parameter<float> ball_mass;
 extern Parameter<float> ball_radius;
 extern Parameter<int> box2d_velocity_iterations;
