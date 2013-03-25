@@ -1,6 +1,8 @@
 #include "constants.h"
 #include "introductioncontroller.h"
 #include "introductionmodel.h"
+#include "texttennis.h"
+#include "utilities.h"
 
 IntroductionController::IntroductionController(TextTennis &scene_manager, IntroductionModel &model)
 : Controller(scene_manager), model_(model) {}
@@ -25,6 +27,23 @@ void IntroductionController::Update() {
       (*box)->DestroyFixture((*box)->GetFixtureList());
       model_.world.DestroyBody(*box);
       model_.boxes.erase(box);
+    }
+  }
+  if (buttons[0] && !previous_buttons[0]) {
+    b2AABB aabb;
+    aabb.lowerBound = Box2dVector(model_.mouse_position);
+    aabb.upperBound = Box2dVector(model_.mouse_position);
+    struct : public b2QueryCallback {
+      bool hit = false;
+      virtual bool ReportFixture(b2Fixture* fixture) {
+        hit = true;
+        return false;
+      }
+    } intersect_callback;
+    model_.world.QueryAABB(&intersect_callback, aabb);
+    if (intersect_callback.hit) {
+      scene_manager.NextScene();
+      return;
     }
   }
   Controller::Update();

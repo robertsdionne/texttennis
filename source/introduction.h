@@ -1,5 +1,5 @@
-#ifndef __texttennis__introduction__
-#define __texttennis__introduction__
+#ifndef TEXTTENNIS_INTRODUCTION_H_
+#define TEXTTENNIS_INTRODUCTION_H_
 
 #include "introductioncontroller.h"
 #include "introductionmodel.h"
@@ -28,4 +28,4 @@ private:
   IntroductionController controller;
 };
 
-#endif /* defined(__texttennis__introduction__) */
+#endif  // TEXTTENNIS_INTRODUCTION_H_
