@@ -2,6 +2,7 @@
 #define TEXTTENNIS_CONSTANTS_H_
 
 #include <Box2D/Box2D.h>
+#include <string>
 
 #include "ofMain.h"
 #include "parameter.h"
@@ -23,6 +24,7 @@ extern Parameter<float> default_angle;
 extern Parameter<float> default_angular_velocity;
 extern Parameter<float> delta_time;
 extern Parameter<float> density;
+extern Parameter<std::string> font_filename;
 extern Parameter<float> frame_rate;
 extern Parameter<float> friction;
 extern Parameter<float> gravity;

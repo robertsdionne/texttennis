@@ -3,7 +3,7 @@
 #include "scene1model.h"
 #include "scene1view.h"
 
-void Scene1View::Setup() const {
+void Scene1View::Setup() {
   ofSetFrameRate(frame_rate);
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
@@ -11,7 +11,7 @@ void Scene1View::Setup() const {
   ofBackground(ofColor::white);
 }
 
-void Scene1View::Draw(Model &model) const {
+void Scene1View::Draw(Model &model) {
   Scene1Model &scene2_model = dynamic_cast<Scene1Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();

@@ -26,6 +26,7 @@ DEFINE_PARAMETER_RANGE(float, delta_time, 1.0 / DEPENDENCY(frame_rate), 0.0, 1.0
 DEFINE_PARAMETER_RANGE(float, density,
                  DEPENDENCY(ball_mass) / M_PI /
                  DEPENDENCY(ball_radius) / DEPENDENCY(ball_radius), 0.0, 100.0);
+DEFINE_PARAMETER(std::string, font_filename, "UbuntuMono-R.ttf");
 DEFINE_PARAMETER_RANGE(float, frame_rate, 60.0, 10.0, 120.0);
 DEFINE_PARAMETER_RANGE(float, friction, 0.3, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, gravity, 9.81, -10.0, 10.0);

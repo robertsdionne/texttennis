@@ -7,9 +7,9 @@ class View {
 public:
   virtual ~View() {}
 
-  virtual void Setup() const = 0;
+  virtual void Setup() = 0;
 
-  virtual void Draw(Model &model) const = 0;
+  virtual void Draw(Model &model) = 0;
 
 protected:
   View() {}

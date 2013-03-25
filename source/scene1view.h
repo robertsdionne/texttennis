@@ -12,9 +12,9 @@ public:
   
   virtual ~Scene1View() {}
   
-  virtual void Setup() const;
+  virtual void Setup() override;
   
-  virtual void Draw(Model &model) const;
+  virtual void Draw(Model &model) override;
   
 private:
   void DrawBall(ofVec2f position, float angle) const;

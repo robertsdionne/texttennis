@@ -3,7 +3,12 @@
 #include "scene3model.h"
 #include "scene3view.h"
 
-void Scene3View::Setup() const {
+Scene3View::Scene3View()
+: font() {
+  font.loadFont(font_filename, 692);
+}
+
+void Scene3View::Setup() {
   ofSetFrameRate(frame_rate);
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
@@ -11,7 +16,7 @@ void Scene3View::Setup() const {
   ofBackground(ofColor::white);
 }
 
-void Scene3View::Draw(Model &model) const {
+void Scene3View::Draw(Model &model) {
   Scene3Model &scene3_model = dynamic_cast<Scene3Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
@@ -24,6 +29,13 @@ void Scene3View::Draw(Model &model) const {
   }
   DrawFrameRate();
   ofPopMatrix();
+  ofSetColor(ofColor::black);
+  std::stringstream out;
+  if (scene3_model.score < 10) {
+    out << ' ';
+  }
+  out << fmod(scene3_model.score, 100.0f);
+  font.drawString(out.str(), half_window_width - font.stringWidth("00") / 2.0 - 60, font.stringHeight("0") - 30);
 }
 
 void Scene3View::DrawBall(ofVec2f position, float angle) const {
