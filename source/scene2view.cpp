@@ -36,7 +36,7 @@ void Scene2View::Draw(Model &model) {
   if (scene2_model.score < 10) {
     out << ' ';
   }
-  out << scene2_model.score << "/500";
+  out << scene2_model.score << "/" << scene2_model.ball_body.size();
   font.drawStringAsShapes(out.str(), -2, -half_court_height);
   ofPopMatrix();
   DrawFrameRate();
