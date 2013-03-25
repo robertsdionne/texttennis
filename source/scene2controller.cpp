@@ -24,11 +24,11 @@ void Scene2Controller::Update() {
   }
   model_.score = 0.0;
   for (auto ball : model_.ball_body) {
-    if (ball->GetPosition().x > 0 && ball->GetLinearVelocity().Length() < 0.01) {
+    if (ball->GetPosition().x > 0 && ball->GetLinearVelocity().Length() < 5.0) {
       model_.score += 1.0;
     }
   }
-  if (ofGetFrameNum() % 10 == 0 && model_.ball_body.size() < max_balls) {
+  if (ofGetFrameNum() % 2 == 0 && model_.ball_body.size() < max_balls) {
     ofVec2f mouse = low_hit_mean * (model_.mouse_position - ball_initial_position).normalized();
     CreateBall(ball_initial_position, mouse, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
