@@ -30,6 +30,8 @@ private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
                   float angle = default_angle, float angular_velocity = default_angular_velocity);
 
+  void CreateTreePeople();
+
   void CreateBorder();
   
   void CreateCourt();

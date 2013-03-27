@@ -37,6 +37,7 @@ void Scene4Controller::Setup() {
   CreateBorder();
   CreateCourt();
   CreateNet();
+  CreateTreePeople();
   model_.world.SetContactListener(this);
 }
 
@@ -53,7 +54,7 @@ void Scene4Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (!model_.ball_body) {
-    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
+    CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
     if (model_.ball_body) {
@@ -90,6 +91,25 @@ void Scene4Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_fixture_definition.restitution = restitution;
   ball_fixture_definition.friction = friction;
   model_.ball_body->CreateFixture(&ball_fixture_definition);
+}
+
+void Scene4Controller::CreateTreePeople() {
+  float offset = 4.0;
+  for (int i = 0; i < 5; ++i) {
+    const float radius = 0.5 + 0.1 * i;
+    const float next_radius = 0.5 + 0.1 * (i + 1);
+
+    b2BodyDef person_definition;
+    person_definition.position.Set(offset, court_thickness + radius);
+    model_.tree_people[i] = model_.world.CreateBody(&person_definition);
+    b2CircleShape person_shape;
+    person_shape.m_radius = radius;
+    b2FixtureDef person_fixture_definition;
+    person_fixture_definition.shape = &person_shape;
+    model_.tree_people[i]->CreateFixture(&person_fixture_definition);
+
+    offset += radius + next_radius + 2.0 * ball_radius;
+  }
 }
 
 void Scene4Controller::CreateBorder() {
