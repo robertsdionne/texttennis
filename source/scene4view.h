@@ -26,6 +26,8 @@ private:
   void DrawNet() const;
   
   void DrawRacket(ofVec2f position) const;
+
+  void DrawTreePeople() const;
 };
 
 #endif  // TEXTTENNIS_SCENE4VIEW_H_

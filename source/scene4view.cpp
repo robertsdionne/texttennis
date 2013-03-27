@@ -21,6 +21,7 @@ void Scene4View::Draw(Model &model) {
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);
+  DrawTreePeople();
   if (scene4_model.ball_body) {
     DrawBall(ofVec2f(scene4_model.ball_body->GetPosition().x,
                      scene4_model.ball_body->GetPosition().y),
@@ -66,5 +67,17 @@ void Scene4View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofCircle(position, racket_radius);
+  ofPopStyle();
+}
+
+void Scene4View::DrawTreePeople() const {
+  ofPushStyle();
+  float offset = 5.0;
+  for (int i = 0; i < 5; ++i) {
+    const float radius = 0.5 + 0.1 * i;
+    const float next_radius = 0.5 + 0.1 * (i + 1);
+    ofCircle(offset, court_thickness + radius, radius);
+    offset += radius + next_radius;
+  }
   ofPopStyle();
 }
