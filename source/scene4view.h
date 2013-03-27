@@ -26,9 +26,6 @@ private:
   void DrawNet() const;
   
   void DrawRacket(ofVec2f position) const;
-
-private:
-  ofTrueTypeFont font;
 };
 
 #endif  // TEXTTENNIS_SCENE4VIEW_H_

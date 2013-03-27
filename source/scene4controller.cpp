@@ -72,7 +72,7 @@ Model &Scene4Controller::model() {
  * Private method defintions.
  */
 void Scene4Controller::CreateBall(ofVec2f position, ofVec2f velocity,
-                            float angle, float angular_velocity) {
+                                  float angle, float angular_velocity) {
   b2BodyDef ball_body_definition;
   ball_body_definition.type = b2_dynamicBody;
   ball_body_definition.position.Set(position.x, position.y);

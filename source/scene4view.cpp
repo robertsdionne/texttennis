@@ -3,10 +3,7 @@
 #include "scene4model.h"
 #include "scene4view.h"
 
-Scene4View::Scene4View()
-: font() {
-  font.loadFont(font_filename, 12, true, false, true, 0.0);
-}
+Scene4View::Scene4View() {}
 
 void Scene4View::Setup() {
   ofSetFrameRate(frame_rate);
@@ -21,16 +18,6 @@ void Scene4View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
-  ofPushMatrix();
-  ofSetColor(ofColor::black);
-  std::stringstream out;
-  if (scene4_model.score < 10) {
-    out << ' ';
-  }
-  out << fmod(scene4_model.score, 100.0f);
-  ofScale(1.0, -1.0);
-  font.drawStringAsShapes(out.str(), -8.5, -1);
-  ofPopMatrix();
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);

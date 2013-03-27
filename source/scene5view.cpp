@@ -3,10 +3,7 @@
 #include "scene5model.h"
 #include "scene5view.h"
 
-Scene5View::Scene5View()
-: font() {
-  font.loadFont(font_filename, 12, true, false, true, 0.0);
-}
+Scene5View::Scene5View() {}
 
 void Scene5View::Setup() {
   ofSetFrameRate(frame_rate);
@@ -21,16 +18,6 @@ void Scene5View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
-  ofPushMatrix();
-  ofSetColor(ofColor::black);
-  std::stringstream out;
-  if (scene5_model.score < 10) {
-    out << ' ';
-  }
-  out << fmod(scene5_model.score, 100.0f);
-  ofScale(1.0, -1.0);
-  font.drawStringAsShapes(out.str(), -8.5, -1);
-  ofPopMatrix();
   DrawCourt();
   DrawNet();
   DrawRacket(scene5_model.racket1);
