@@ -11,23 +11,23 @@ Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model
 void Scene4Controller::BeginContact(b2Contact* contact) {
   const b2Body *body_a = contact->GetFixtureA()->GetBody();
   const b2Body *body_b = contact->GetFixtureB()->GetBody();
-  const b2Body *ball = nullptr, *court = nullptr;
+  const b2Body *ball = nullptr, *other = nullptr;
   if (model_.ball_body == body_a) {
     ball = body_a;
+    other = body_b;
   }
   if (model_.ball_body == body_b) {
     ball = body_b;
+    other = body_a;
   }
-  if (model_.court_body == body_a) {
-    court = body_a;
-  }
-  if (model_.court_body == body_b) {
-    court = body_b;
-  }
-  if (ball && court && ball->GetPosition().x > 0) {
-    model_.bounces += 1;
-    if (model_.bounces == 2) {
-      model_.score += 1;
+  if (ball && other) {
+    if (other == model_.court_body && ball->GetPosition().x > 0) {
+      model_.bounces += 1;
+    }
+    for (int i = 0; i < 5; ++i) {
+      if (other == model_.tree_people[i]) {
+        model_.score[i] = true;
+      }
     }
   }
 }
@@ -42,7 +42,13 @@ void Scene4Controller::Setup() {
 }
 
 void Scene4Controller::Update() {
-  if (model_.score >= 10) {
+  int score = 0;
+  for (auto hit : model_.score) {
+    if (hit) {
+      score += 1;
+    }
+  }
+  if (score >= 5) {
     scene_manager.NextScene();
     return;
   }

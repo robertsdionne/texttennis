@@ -21,7 +21,7 @@ public:
   
   ofVec2f racket1;
 
-  float score;
+  bool score[5];
 
   int bounces;
 };

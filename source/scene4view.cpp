@@ -75,6 +75,7 @@ void Scene4View::DrawTreePeople(Scene4Model &model) const {
   ofPushStyle();
   for (int i = 0; i < 5; ++i) {
     const float radius = model.tree_people[i]->GetFixtureList()->GetShape()->m_radius;
+    ofSetColor(model.score[i] ? ofColor::royalBlue : ofColor::black);
     ofCircle(OpenFrameworksVector(model.tree_people[i]->GetPosition()), radius);
   }
   ofPopStyle();
