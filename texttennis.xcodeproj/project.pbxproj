@@ -188,6 +188,7 @@
 		469D7B1016FC12AC00CB1D33 /* slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slider.h; sourceTree = "<group>"; };
 		469D7B1116FC12BC00CB1D33 /* slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slider.cpp; sourceTree = "<group>"; };
 		46A7062616F95195008D1313 /* parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameter.cpp; sourceTree = "<group>"; };
+		46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuMono-R.ttf"; sourceTree = "<group>"; };
 		46CE39B316FF45B100D77873 /* scene2controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2controller.cpp; sourceTree = "<group>"; };
 		46CE39B416FF45B100D77873 /* scene2controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene2controller.h; sourceTree = "<group>"; };
 		46CE39B516FF45B100D77873 /* scene2view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2view.cpp; sourceTree = "<group>"; };
@@ -672,6 +673,15 @@
 				469D7B0B16FBEEEC00CB1D33 /* tinyxmlparser.cpp */,
 			);
 			name = libs;
+			sourceTree = "<group>";
+		};
+		46B4AD08170B853E0057F945 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */,
+			);
+			name = data;
+			path = bin/data;
 			sourceTree = "<group>";
 		};
 		46D1403B16F6A377009A2AD3 /* source */ = {
@@ -1254,6 +1264,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				46B4AD08170B853E0057F945 /* data */,
 				46D1404D16F6A3E3009A2AD3 /* libraries */,
 				46D1403B16F6A377009A2AD3 /* source */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
