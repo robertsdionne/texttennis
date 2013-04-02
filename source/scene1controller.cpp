@@ -140,20 +140,30 @@ void Scene1Controller::UpdateRackets() {
   if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
     model_.racket1.x += racket_speed;
   }
-  if (keys[OF_KEY_LEFT] && model_.racket2.x > racket_speed + racket_radius) {
-    model_.racket2.x -= racket_speed;
-  }
-  if (keys[OF_KEY_RIGHT] && model_.racket2.x < half_court_length) {
-    model_.racket2.x += racket_speed;
+  // opponent
+  if (model_.ball_body.size() && model_.ball_body.back()->GetPosition().x > 0) {
+    const float dx = model_.ball_body.back()->GetPosition().x - model_.racket2.x;
+    if (dx > racket_radius + ball_radius) {
+      model_.racket2.x += racket_speed;
+    } else if (dx < -racket_radius - ball_radius) {
+      model_.racket2.x -= racket_speed;
+    }
+  } else {
+    const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
+    if (dx > 0 && model_.racket2.x < half_court_length) {
+      model_.racket2.x += dx;
+    }
+    if (dx < 0 && model_.racket2.x > dx + racket_radius) {
+      model_.racket2.x += dx;
+    }
   }
   if (keys['w'] && !previous_keys['w']) {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
   } else if (keys['s'] && !previous_keys['s']) {
     RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
   }
-  if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
-    RacketCollide(model_.racket2, racket2_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
+  const ofVec2f position = ofVec2f(model_.ball_body.back()->GetPosition().x, model_.ball_body.back()->GetPosition().y);
+  if ((position - model_.racket2).length() < ball_radius + 2.0 * racket_radius) {
     RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   }
 }

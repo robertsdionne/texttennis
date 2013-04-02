@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "scene3model.h"
 #include "texttennis.h"
+#include "utilities.h"
 
 Scene3Controller::Scene3Controller(TextTennis &scene_manager, Scene3Model &model)
 : Controller(scene_manager), model_(model) {}
@@ -168,6 +169,23 @@ void Scene3Controller::UpdateRackets() {
   }
   if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
     model_.racket1.x += racket_speed;
+  }
+  // opponent
+  if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
+    const float dx = model_.ball_body->GetPosition().x - model_.opponent.x;
+    if (dx > racket_radius + ball_radius) {
+      model_.opponent.x += racket_speed;
+    } else if (dx < -racket_radius - ball_radius) {
+      model_.opponent.x -= racket_speed;
+    }
+  } else {
+    const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
+    if (dx > 0 && model_.opponent.x < half_court_length) {
+      model_.opponent.x += dx;
+    }
+    if (dx < 0 && model_.opponent.x > dx + racket_radius) {
+      model_.opponent.x += dx;
+    }
   }
   if (keys['w'] && !previous_keys['w']) {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
