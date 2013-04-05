@@ -189,6 +189,9 @@
 		469D7B1116FC12BC00CB1D33 /* slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slider.cpp; sourceTree = "<group>"; };
 		46A7062616F95195008D1313 /* parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameter.cpp; sourceTree = "<group>"; };
 		46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuMono-R.ttf"; sourceTree = "<group>"; };
+		46B4AD0B170B85960057F945 /* many.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = many.png; sourceTree = "<group>"; };
+		46B4AD0C170B85960057F945 /* scholar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scholar.png; sourceTree = "<group>"; };
+		46B4AD0D170B85960057F945 /* time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time.png; sourceTree = "<group>"; };
 		46CE39B316FF45B100D77873 /* scene2controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2controller.cpp; sourceTree = "<group>"; };
 		46CE39B416FF45B100D77873 /* scene2controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene2controller.h; sourceTree = "<group>"; };
 		46CE39B516FF45B100D77873 /* scene2view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2view.cpp; sourceTree = "<group>"; };
@@ -678,10 +681,21 @@
 		46B4AD08170B853E0057F945 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				46B4AD0A170B85960057F945 /* character_sprites */,
 				46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */,
 			);
 			name = data;
 			path = bin/data;
+			sourceTree = "<group>";
+		};
+		46B4AD0A170B85960057F945 /* character_sprites */ = {
+			isa = PBXGroup;
+			children = (
+				46B4AD0B170B85960057F945 /* many.png */,
+				46B4AD0C170B85960057F945 /* scholar.png */,
+				46B4AD0D170B85960057F945 /* time.png */,
+			);
+			path = character_sprites;
 			sourceTree = "<group>";
 		};
 		46D1403B16F6A377009A2AD3 /* source */ = {

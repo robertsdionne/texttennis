@@ -4,8 +4,11 @@
 #include "scene3view.h"
 
 Scene3View::Scene3View()
-: font() {
+: font(), many(), scholar(), time() {
   font.loadFont(font_filename, 12, true, false, true, 0.0);
+  many.loadImage("character_sprites/many.png");
+  scholar.loadImage("character_sprites/scholar.png");
+  time.loadImage("character_sprites/time.png");
 }
 
 void Scene3View::Setup() {
@@ -76,9 +79,10 @@ void Scene3View::DrawNet() const {
   ofPopStyle();
 }
 
-void Scene3View::DrawRacket(ofVec2f position) const {
+void Scene3View::DrawRacket(ofVec2f position) {
   ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, racket_radius);
+  ofSetColor(ofColor::white);
+//  ofCircle(position, racket_radius);
+  time.draw(position + ofVec2f(0.0, 2.5), 2.0, -3.0);
   ofPopStyle();
 }

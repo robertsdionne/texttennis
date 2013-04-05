@@ -25,10 +25,11 @@ private:
   
   void DrawNet() const;
   
-  void DrawRacket(ofVec2f position) const;
+  void DrawRacket(ofVec2f position);
 
 private:
   ofTrueTypeFont font;
+  ofImage many, scholar, time;
 };
 
 #endif  // TEXTTENNIS_SCENE3VIEW_H_
