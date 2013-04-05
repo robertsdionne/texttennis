@@ -20,7 +20,7 @@ Scene *Introduction::Create(TextTennis &scene_manager) {
 void Introduction::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Introduction\nClick a box.\n\n] - next scene\n[ - previous scene", 100, 100);
+  ofDrawBitmapString("Introduction\nClick a box.\n\n", 100, 100);
 }
 
 void Introduction::Setup() {
