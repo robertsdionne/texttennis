@@ -16,7 +16,7 @@ class Scene4Controller : public Controller, b2ContactListener {
 public:
   Scene4Controller(TextTennis &scene_manager, Scene4Model &model);
 
-  virtual ~Scene4Controller() {}
+  virtual ~Scene4Controller();
 
   virtual void BeginContact(b2Contact* contact);
 
@@ -49,6 +49,7 @@ private:
 
 private:
   Scene4Model &model_;
+  ofSoundPlayer music;
 };
 
 #endif  // TEXTTENNIS_SCENE4CONTROLLER_H_

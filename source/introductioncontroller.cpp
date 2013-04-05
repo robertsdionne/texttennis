@@ -5,9 +5,16 @@
 #include "utilities.h"
 
 IntroductionController::IntroductionController(TextTennis &scene_manager, IntroductionModel &model)
-: Controller(scene_manager), model_(model) {}
+: Controller(scene_manager), model_(model), introduction_music() {
+  introduction_music.loadSound("music/scene00_intro.wav", true);
+}
+
+IntroductionController::~IntroductionController() {
+  introduction_music.stop();
+}
 
 void IntroductionController::Setup() {
+  introduction_music.play();
 }
 
 void IntroductionController::Update() {

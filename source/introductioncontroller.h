@@ -9,7 +9,7 @@ class IntroductionController : public Controller {
 public:
   IntroductionController(TextTennis &scene_manager, IntroductionModel &model);
 
-  virtual ~IntroductionController() {};
+  virtual ~IntroductionController();
 
   virtual void Setup() override;
 
@@ -23,6 +23,7 @@ private:
 
 private:
   IntroductionModel &model_;
+  ofSoundPlayer introduction_music;
 };
 
 #endif  // TEXTTENNIS_INTRODUCTIONCONTROLLER_H_

@@ -6,13 +6,24 @@
 #include "texttennis.h"
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
-: Controller(scene_manager), model_(model) {}
+: Controller(scene_manager), model_(model), low_music(), high_music() {
+  low_music.loadSound("music/scene02_lows.wav", true);
+  high_music.loadSound("music/scene02_highs.wav", true);
+}
+
+Scene2Controller::~Scene2Controller() {
+  low_music.stop();
+  high_music.stop();
+}
 
 void Scene2Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
+  low_music.play();
+  high_music.play();
+  scene_begin_time = ofGetElapsedTimef();
 }
 
 void Scene2Controller::Update() {
@@ -28,7 +39,7 @@ void Scene2Controller::Update() {
       model_.score += 1.0;
     }
   }
-  if (ofGetFrameNum() % 2 == 0 && model_.ball_body.size() < max_balls) {
+  if (ofGetElapsedTimef() > scene_begin_time + 20.0 && ofGetFrameNum() % 2 == 0 && model_.ball_body.size() < max_balls) {
     CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
       b2Body *const body = model_.ball_body.front();

@@ -16,7 +16,7 @@ class Scene2Controller : public Controller {
 public:
   Scene2Controller(TextTennis &scene_manager, Scene2Model &model);
   
-  virtual ~Scene2Controller() {}
+  virtual ~Scene2Controller();
 
   virtual void Setup();
 
@@ -45,6 +45,9 @@ private:
 
 private:
   Scene2Model &model_;
+  ofSoundPlayer low_music;
+  ofSoundPlayer high_music;
+  float scene_begin_time;
 };
 
 #endif  // TEXTTENNIS_SCENE2CONTROLLER_H_

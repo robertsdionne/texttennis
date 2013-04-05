@@ -6,7 +6,13 @@
 #include "texttennis.h"
 
 Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model)
-: Controller(scene_manager), model_(model) {}
+: Controller(scene_manager), model_(model), music() {
+  music.loadSound("music/scene04_trees.wav");
+}
+
+Scene4Controller::~Scene4Controller() {
+  music.stop();
+}
 
 void Scene4Controller::BeginContact(b2Contact* contact) {
   const b2Body *body_a = contact->GetFixtureA()->GetBody();
@@ -58,7 +64,7 @@ void Scene4Controller::Update() {
     model_.bounces = 0;
   }
   UpdateRackets();
-  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(delta_time * model_.time_scale, box2d_velocity_iterations, box2d_position_iterations);
   if (!model_.ball_body) {
     CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
@@ -184,16 +190,20 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      if (model_.time_scale == 1.0) {
+        music.play();
+        model_.time_scale = 0.1;
+      }
     }
   }
 }
 
 void Scene4Controller::UpdateRackets() {
   if (keys['a'] && model_.racket1.x > -half_court_length) {
-    model_.racket1.x -= racket_speed;
+    model_.racket1.x -= racket_speed * model_.time_scale;
   }
-  if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
-    model_.racket1.x += racket_speed;
+  if (keys['d'] && model_.racket1.x < -racket_speed * model_.time_scale - racket_radius) {
+    model_.racket1.x += racket_speed * model_.time_scale;
   }
   if (keys['w'] && !previous_keys['w']) {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');

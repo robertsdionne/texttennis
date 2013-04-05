@@ -174,9 +174,9 @@ void Scene3Controller::UpdateRackets() {
   if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
     const float dx = model_.ball_body->GetPosition().x - model_.opponent.x;
     if (dx > racket_radius + ball_radius) {
-      model_.opponent.x += racket_speed;
+      model_.opponent.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     } else if (dx < -racket_radius - ball_radius) {
-      model_.opponent.x -= racket_speed;
+      model_.opponent.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     }
   } else {
     const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
@@ -191,5 +191,11 @@ void Scene3Controller::UpdateRackets() {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
   } else if (keys['s'] && !previous_keys['s']) {
     RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
+  }
+  if (model_.ball_body) {
+    const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x, model_.ball_body->GetPosition().y);
+    if ((position - model_.opponent).length() < ball_radius + 2.0 * racket_radius && ofRandomuf() < 0.1) {
+      RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    }
   }
 }

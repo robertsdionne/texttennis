@@ -24,6 +24,7 @@ public:
   bool score[5];
 
   int bounces;
+  float time_scale;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

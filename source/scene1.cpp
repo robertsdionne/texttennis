@@ -19,7 +19,7 @@ Scene *Scene1::Create(TextTennis &scene_manager) {
 void Scene1::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 1", 100, 100);
+  ofDrawBitmapString("Scene 1\nA friendly game.\n\n] - next scene\n[ - previous scene\nA - left\nD - right\nW - hit high\nS - hit low", 100, 100);
 }
 
 void Scene1::Setup() {

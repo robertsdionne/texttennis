@@ -6,13 +6,23 @@
 #include "texttennis.h"
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
-: Controller(scene_manager), model_(model) {}
+: Controller(scene_manager), model_(model), rhythm_music(), shiny_music() {
+  rhythm_music.loadSound("music/scene01_rhythm.wav", true);
+  shiny_music.loadSound("music/scene01_shiny.wav", true);
+}
+
+Scene1Controller::~Scene1Controller() {
+  rhythm_music.stop();
+  shiny_music.stop();
+}
 
 void Scene1Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
+  rhythm_music.play();
+  shiny_music.play();
 }
 
 void Scene1Controller::Update() {
@@ -144,9 +154,9 @@ void Scene1Controller::UpdateRackets() {
   if (model_.ball_body.size() && model_.ball_body.back()->GetPosition().x > 0) {
     const float dx = model_.ball_body.back()->GetPosition().x - model_.racket2.x;
     if (dx > racket_radius + ball_radius) {
-      model_.racket2.x += racket_speed;
+      model_.racket2.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     } else if (dx < -racket_radius - ball_radius) {
-      model_.racket2.x -= racket_speed;
+      model_.racket2.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     }
   } else {
     const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
@@ -162,8 +172,10 @@ void Scene1Controller::UpdateRackets() {
   } else if (keys['s'] && !previous_keys['s']) {
     RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
   }
-  const ofVec2f position = ofVec2f(model_.ball_body.back()->GetPosition().x, model_.ball_body.back()->GetPosition().y);
-  if ((position - model_.racket2).length() < ball_radius + 2.0 * racket_radius) {
-    RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  if (model_.ball_body.size()) {
+    const ofVec2f position = ofVec2f(model_.ball_body.back()->GetPosition().x, model_.ball_body.back()->GetPosition().y);
+    if ((position - model_.racket2).length() < ball_radius + 2.0 * racket_radius && ofRandomuf() < 0.1) {
+      RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    }
   }
 }

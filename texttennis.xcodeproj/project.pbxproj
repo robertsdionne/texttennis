@@ -187,6 +187,12 @@
 		469D7B0B16FBEEEC00CB1D33 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = libraries/of_v0.7.4_osx_release/addons/ofxXmlSettings/libs/tinyxmlparser.cpp; sourceTree = "<group>"; };
 		469D7B1016FC12AC00CB1D33 /* slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = slider.h; sourceTree = "<group>"; };
 		469D7B1116FC12BC00CB1D33 /* slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slider.cpp; sourceTree = "<group>"; };
+		469E3BDA170E7B990046FCBE /* scene00_intro.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene00_intro.wav; sourceTree = "<group>"; };
+		469E3BDB170E7B990046FCBE /* scene01_rhythm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene01_rhythm.wav; sourceTree = "<group>"; };
+		469E3BDC170E7B990046FCBE /* scene01_shiny.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene01_shiny.wav; sourceTree = "<group>"; };
+		469E3BDD170E7B990046FCBE /* scene02_highs.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene02_highs.wav; sourceTree = "<group>"; };
+		469E3BDE170E7B990046FCBE /* scene02_lows.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene02_lows.wav; sourceTree = "<group>"; };
+		469E3BDF170E7B990046FCBE /* scene04_trees.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene04_trees.wav; sourceTree = "<group>"; };
 		46A7062616F95195008D1313 /* parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameter.cpp; sourceTree = "<group>"; };
 		46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuMono-R.ttf"; sourceTree = "<group>"; };
 		46CE39B316FF45B100D77873 /* scene2controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2controller.cpp; sourceTree = "<group>"; };
@@ -675,9 +681,23 @@
 			name = libs;
 			sourceTree = "<group>";
 		};
+		469E3BD9170E7B990046FCBE /* music */ = {
+			isa = PBXGroup;
+			children = (
+				469E3BDA170E7B990046FCBE /* scene00_intro.wav */,
+				469E3BDB170E7B990046FCBE /* scene01_rhythm.wav */,
+				469E3BDC170E7B990046FCBE /* scene01_shiny.wav */,
+				469E3BDD170E7B990046FCBE /* scene02_highs.wav */,
+				469E3BDE170E7B990046FCBE /* scene02_lows.wav */,
+				469E3BDF170E7B990046FCBE /* scene04_trees.wav */,
+			);
+			path = music;
+			sourceTree = "<group>";
+		};
 		46B4AD08170B853E0057F945 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				469E3BD9170E7B990046FCBE /* music */,
 				46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */,
 			);
 			name = data;
