@@ -40,7 +40,7 @@ void IntroductionController::Update() {
               ofRandomuf() * M_PI, ofRandomf() * 10.0);
     model_.last_create_time = ofGetElapsedTimef();
   }
-  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(delta_time * 0.1, box2d_velocity_iterations, box2d_position_iterations);
   for (auto box = model_.boxes.begin(); box != model_.boxes.end(); ++box) {
     if ((*box)->GetPosition().x < -half_court_length) {
       (*box)->SetTransform((*box)->GetPosition() + b2Vec2(court_length, 0.0), (*box)->GetAngle());

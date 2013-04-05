@@ -39,7 +39,7 @@ void Scene2Controller::Update() {
       model_.score += 1.0;
     }
   }
-  if (ofGetElapsedTimef() > scene_begin_time + 20.0 && ofGetFrameNum() % 2 == 0 && model_.ball_body.size() < max_balls) {
+  if (ofGetElapsedTimef() > scene_begin_time + 8.0 && ofGetFrameNum() % 4 == 0 && model_.ball_body.size() < max_balls) {
     CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
       b2Body *const body = model_.ball_body.front();

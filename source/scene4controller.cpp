@@ -33,6 +33,10 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
         model_.score[i] = true;
+        if (model_.time_scale == 1.0) {
+          music.play();
+          model_.time_scale = 0.1;
+        }
       }
     }
   }
@@ -190,10 +194,6 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
-      if (model_.time_scale == 1.0) {
-        music.play();
-        model_.time_scale = 0.1;
-      }
     }
   }
 }
