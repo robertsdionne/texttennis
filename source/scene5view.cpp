@@ -20,7 +20,7 @@ void Scene5View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   std::string hi = std::string("Test test test");
-  font.drawStringAsShapes(hi, 20, 20);
+  //font.drawStringAsShapes(hi, 20, 20);
   ofPopMatrix();
 
 }

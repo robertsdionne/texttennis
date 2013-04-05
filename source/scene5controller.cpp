@@ -61,6 +61,14 @@ void Scene5Controller::Update() {
       model_.ball_body = nullptr;
     }
   }
+  if (keys['y'] && !previous_keys['y']) {
+    scene_manager.NextScene();
+    return;
+  }
+  if (keys['n'] && !previous_keys['n']) {
+    exit(0);
+    return;
+  }
   Controller::Update();
 }
 
