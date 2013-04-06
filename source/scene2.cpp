@@ -19,7 +19,7 @@ Scene *Scene2::Create(TextTennis &scene_manager) {
 void Scene2::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 2\nPractice.\n\nA - left\nD - right\nW - hit high\nS - hit low", 100, 100);
+  ofDrawBitmapString("Scene 2\nPractice.\n\nLEFT - left\nRIGHT - right\nUP - hit high\nDOWN - hit low", 100, 100);
 }
 
 void Scene2::Setup() {
