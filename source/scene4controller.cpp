@@ -201,15 +201,15 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 
 void Scene4Controller::UpdateRackets() {
   model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
-  if (keys['a'] && model_.racket1_target.x > -half_court_length) {
+  if (keys[OF_KEY_LEFT] && model_.racket1_target.x > -half_court_length) {
     model_.racket1_target.x -= racket_speed * model_.time_scale;
   }
-  if (keys['d'] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
+  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
     model_.racket1_target.x += racket_speed * model_.time_scale;
   }
-  if (keys['w'] && !previous_keys['w']) {
-    RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');
-  } else if (keys['s'] && !previous_keys['s']) {
-    RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, 'a', 'd');
+  if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
+    RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
+    RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   }
 }
