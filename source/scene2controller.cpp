@@ -29,7 +29,7 @@ void Scene2Controller::Setup() {
 
 void Scene2Controller::Update() {
   UpdateRackets();
-  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(delta_time * 0.5, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.score >= 500.0) {
     scene_manager.NextScene();
     return;
@@ -41,7 +41,11 @@ void Scene2Controller::Update() {
     }
   }
   if (ofGetElapsedTimef() > scene_begin_time + 8.0 && ofGetFrameNum() % 4 == 0 && model_.ball_body.size() < max_balls) {
-    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
+    const ofVec2f position = ball_initial_position.GetValue() + ofVec2f(-ofNoise(-1.7 * ofGetElapsedTimef()),
+                                                                        ofSignedNoise(1.3 * ofGetElapsedTimef()));
+    const ofVec2f velocity = ball_initial_velocity.GetValue()
+        .rotated(-15.0 + ofSignedNoise(ofGetElapsedTimef()) * 30.0) * (1.0 + 0.1 * ofSignedNoise(1.3 * ofGetElapsedTimef()));
+    CreateBall(position, velocity, 0.0, angular_velocity * ofRandomf());
     if (model_.ball_body.size() > max_balls) {
       b2Body *const body = model_.ball_body.front();
       DestroyBall(body);
@@ -77,7 +81,7 @@ void Scene2Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_body_definition.angularDamping = angular_damping;
   model_.ball_body.push_back(model_.world.CreateBody(&ball_body_definition));
   b2CircleShape ball_shape;
-  ball_shape.m_radius = ball_radius;
+  ball_shape.m_radius = ball_radius + 2.0 * ball_radius * model_.ball_body.size() / 500.0;
   b2FixtureDef ball_fixture_definition;
   ball_fixture_definition.shape = &ball_shape;
   ball_fixture_definition.density = density;
@@ -140,7 +144,8 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const ofVec2f position = ofVec2f(ball->GetPosition().x,
                                      ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
-    if (ofRandomuf() < 0.1 && (position - racket_position).length() < ball_radius + 2.0 * racket_radius) {
+    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
+        && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
       float variance = 0.0;
       float angular_velocity = 0.0;
       if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
