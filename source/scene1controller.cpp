@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "scene1model.h"
 #include "texttennis.h"
+#include "utilities.h"
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
 : Controller(scene_manager), model_(model), rhythm_music(), shiny_music() {
@@ -144,27 +145,29 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 }
 
 void Scene1Controller::UpdateRackets() {
-  if (keys['a'] && model_.racket1.x > -half_court_length) {
-    model_.racket1.x -= racket_speed;
+  model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
+  model_.racket2 = Lerp(model_.racket2, model_.racket2_target, player_move_smooth_factor);
+  if (keys['a'] && model_.racket1_target.x > -half_court_length) {
+    model_.racket1_target.x -= racket_speed;
   }
-  if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
-    model_.racket1.x += racket_speed;
+  if (keys['d'] && model_.racket1_target.x < -racket_speed - racket_radius) {
+    model_.racket1_target.x += racket_speed;
   }
   // opponent
   if (model_.ball_body.size() && model_.ball_body.back()->GetPosition().x > 0) {
-    const float dx = model_.ball_body.back()->GetPosition().x - model_.racket2.x;
+    const float dx = model_.ball_body.back()->GetPosition().x - model_.racket2_target.x;
     if (dx > racket_radius + ball_radius) {
-      model_.racket2.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.racket2_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     } else if (dx < -racket_radius - ball_radius) {
-      model_.racket2.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.racket2_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     }
   } else {
     const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
-    if (dx > 0 && model_.racket2.x < half_court_length) {
-      model_.racket2.x += dx;
+    if (dx > 0 && model_.racket2_target.x < half_court_length) {
+      model_.racket2_target.x += dx;
     }
-    if (dx < 0 && model_.racket2.x > dx + racket_radius) {
-      model_.racket2.x += dx;
+    if (dx < 0 && model_.racket2_target.x > dx + racket_radius) {
+      model_.racket2_target.x += dx;
     }
   }
   if (keys['w'] && !previous_keys['w']) {

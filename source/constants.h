@@ -42,6 +42,7 @@ extern Parameter<float> low_hit_mean;
 extern Parameter<int> max_balls;
 extern Parameter<float> net_height;
 extern Parameter<float> net_thickness;
+extern Parameter<float> player_move_smooth_factor;
 extern Parameter<float> racket_radius;
 extern Parameter<float> racket_speed;
 extern Parameter<ofVec2f> racket1_high_hit_direction;

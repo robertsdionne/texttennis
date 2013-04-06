@@ -20,6 +20,7 @@ public:
   b2Body *tree_people[5];
   
   ofVec2f racket1;
+  ofVec2f racket1_target;
 
   bool score[5];
 

@@ -21,6 +21,7 @@ public:
   b2Body *court_body, *border_body, *net_body;
   
   ofVec2f racket1;
+  ofVec2f racket1_target;
 
   float score;
 };

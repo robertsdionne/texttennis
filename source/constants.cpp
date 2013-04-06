@@ -46,6 +46,7 @@ DEFINE_PARAMETER_RANGE(float, low_hit_mean, 13.0, 0.0, 50.0);
 DEFINE_PARAMETER_RANGE(int, max_balls, 500, 0.0, 1000.0);
 DEFINE_PARAMETER_RANGE(float, net_height, 0.914, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, net_thickness, DEPENDENCY(ball_radius), 0.0, 10.0);
+DEFINE_PARAMETER_RANGE(float, player_move_smooth_factor, 0.2, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, racket_radius, DEPENDENCY(ball_cartoon_factor) * 0.1155, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, racket_speed, 0.15, 0.0, 10.0);
 DEFINE_PARAMETER(ofVec2f, racket1_high_hit_direction, ofVec2f(1.0, 1.0).normalized());
@@ -65,5 +66,5 @@ DEFINE_PARAMETER(ofMatrix4x4, view_matrix,
                                                    DEPENDENCY(window_height), 0.0));
 DEFINE_PARAMETER(ofMatrix4x4, view_matrix_inverse,
                  ofMatrix4x4::getInverseOf(DEPENDENCY(view_matrix)));
-DEFINE_PARAMETER(int, window_height, 600);
-DEFINE_PARAMETER(int, window_width, 1200);
+DEFINE_PARAMETER(int, window_height, 640);
+DEFINE_PARAMETER(int, window_width, 1024);

@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "scene2model.h"
 #include "texttennis.h"
+#include "utilities.h"
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
 : Controller(scene_manager), model_(model), low_music(), high_music() {
@@ -155,11 +156,12 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 }
 
 void Scene2Controller::UpdateRackets() {
-  if (keys['a'] && model_.racket1.x > -half_court_length) {
-    model_.racket1.x -= racket_speed;
+  model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
+  if (keys['a'] && model_.racket1_target.x > -half_court_length) {
+    model_.racket1_target.x -= racket_speed;
   }
-  if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
-    model_.racket1.x += racket_speed;
+  if (keys['d'] && model_.racket1_target.x < -racket_speed - racket_radius) {
+    model_.racket1_target.x += racket_speed;
   }
   if (keys['w'] && !previous_keys['w']) {
     RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, 'a', 'd');

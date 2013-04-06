@@ -164,27 +164,29 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 }
 
 void Scene3Controller::UpdateRackets() {
-  if (keys['a'] && model_.racket1.x > -half_court_length) {
-    model_.racket1.x -= racket_speed;
+  model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
+  model_.opponent = Lerp(model_.opponent, model_.opponent_target, player_move_smooth_factor);
+  if (keys['a'] && model_.racket1_target.x > -half_court_length) {
+    model_.racket1_target.x -= racket_speed;
   }
-  if (keys['d'] && model_.racket1.x < -racket_speed - racket_radius) {
-    model_.racket1.x += racket_speed;
+  if (keys['d'] && model_.racket1_target.x < -racket_speed - racket_radius) {
+    model_.racket1_target.x += racket_speed;
   }
   // opponent
   if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
-    const float dx = model_.ball_body->GetPosition().x - model_.opponent.x;
+    const float dx = model_.ball_body->GetPosition().x - model_.opponent_target.x;
     if (dx > racket_radius + ball_radius) {
-      model_.opponent.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.opponent_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     } else if (dx < -racket_radius - ball_radius) {
-      model_.opponent.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.opponent_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     }
   } else {
     const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
-    if (dx > 0 && model_.opponent.x < half_court_length) {
-      model_.opponent.x += dx;
+    if (dx > 0 && model_.opponent_target.x < half_court_length) {
+      model_.opponent_target.x += dx;
     }
-    if (dx < 0 && model_.opponent.x > dx + racket_radius) {
-      model_.opponent.x += dx;
+    if (dx < 0 && model_.opponent_target.x > dx + racket_radius) {
+      model_.opponent_target.x += dx;
     }
   }
   if (keys['w'] && !previous_keys['w']) {
