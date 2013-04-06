@@ -142,12 +142,12 @@ bool Scene3Controller::MouseButtonIsPressed(int button) {
 }
 
 void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
-                               float hit_mean, int key_left, int key_right) {
+                                     float hit_mean, int key_left, int key_right) {
   if (model_.ball_body) {
     const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x,
                                      model_.ball_body->GetPosition().y);
     const float dx = model_.ball_body->GetLinearVelocity().x;
-    if ((position - racket_position).length() < ball_radius + 2.0 * racket_radius) {
+    if (ofRandomuf() < 0.1 && (position - racket_position).length() < ball_radius + 2.0 * racket_radius) {
       float variance = 0.0;
       float angular_velocity = 0.0;
       if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
@@ -189,15 +189,6 @@ void Scene3Controller::UpdateRackets() {
       model_.opponent_target.x += dx;
     }
   }
-  if (keys[OF_KEY_UP] && !previous_keys[OF_KEY_UP]) {
-    RacketCollide(model_.racket1, racket1_high_hit_direction, high_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  } else if (keys[OF_KEY_DOWN] && !previous_keys[OF_KEY_DOWN]) {
-    RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  }
-  if (model_.ball_body) {
-    const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x, model_.ball_body->GetPosition().y);
-    if ((position - model_.opponent).length() < ball_radius + 2.0 * racket_radius && ofRandomuf() < 0.1) {
-      RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-    }
-  }
+  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
 }
