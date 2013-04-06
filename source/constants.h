@@ -51,6 +51,7 @@ extern Parameter<ofVec2f> racket1_start_position;
 extern Parameter<ofVec2f> racket2_high_hit_direction;
 extern Parameter<ofVec2f> racket2_low_hit_direction;
 extern Parameter<ofVec2f> racket2_start_position;
+extern Parameter<float> rect_line_width;
 extern Parameter<float> restitution;
 extern Parameter<int> save_every_n_frames;
 extern Parameter<ofMatrix4x4> view_matrix;
