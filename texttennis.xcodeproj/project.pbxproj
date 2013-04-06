@@ -1294,6 +1294,7 @@
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69B5B0A3A1756003C02F2 /* texttennisDebug.app */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
 		};
 		E4EEC9E9138DF44700A80321 /* openFrameworks */ = {

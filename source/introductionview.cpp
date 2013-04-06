@@ -28,6 +28,8 @@ void IntroductionView::DrawBox(ofVec2f position, float angle) const {
   ofPushMatrix();
   ofTranslate(position.x, position.y);
   ofRotateZ(ofRadToDeg(angle));
+  ofNoFill();
+  ofSetLineWidth(rect_line_width);
   ofSetColor(ofColor::black);
   ofRect(ofPoint(), 0.5, 0.5);
   ofPopMatrix();
