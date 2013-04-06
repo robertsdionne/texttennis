@@ -15,7 +15,6 @@ public:
   
 public:
   b2World world;
-
   b2Body *ball_body, *court_body, *border_body, *net_body;
   b2Body *tree_people[5];
   
