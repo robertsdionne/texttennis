@@ -56,6 +56,7 @@ DEFINE_PARAMETER(ofVec2f, racket2_high_hit_direction, ofVec2f(-1.0, 1.0).normali
 DEFINE_PARAMETER(ofVec2f, racket2_low_hit_direction, ofVec2f(-1.0, 0.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket2_start_position,
                  ofVec2f(8, DEPENDENCY(court_thickness) + DEPENDENCY(racket_radius)));
+DEFINE_PARAMETER_RANGE(float, rect_line_width, .1, 0, 10);
 DEFINE_PARAMETER_RANGE(float, restitution, 0.728, 0.0, 2.0);
 DEFINE_PARAMETER_RANGE(int, save_every_n_frames, 2, 1, 60);
 DEFINE_PARAMETER(ofMatrix4x4, view_matrix,
