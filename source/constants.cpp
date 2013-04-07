@@ -10,7 +10,7 @@ DEFINE_PARAMETER_RANGE(float, aspect_ratio,
                  static_cast<float>(DEPENDENCY(window_width)) /
                  static_cast<float>(DEPENDENCY(window_height)), 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, ball_cartoon_factor, 2.0, 0.0, 5.0);
-DEFINE_PARAMETER(ofVec2f, ball_initial_position, ofVec2f(11, 1));
+DEFINE_PARAMETER(ofVec2f, ball_initial_position, ofVec2f(11.8, 2));
 DEFINE_PARAMETER(ofVec2f, ball_initial_velocity,
                  (DEPENDENCY(low_hit_mean) + 0.25) * (ofVec2f(0, DEPENDENCY(half_court_height)) -
                                                      DEPENDENCY(ball_initial_position)).normalized());

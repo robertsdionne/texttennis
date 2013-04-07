@@ -17,7 +17,7 @@ public:
   virtual void Draw(Model &model) override;
   
 private:
-  void DrawBall(ofVec2f position, float angle) const;
+  void DrawBall(ofVec2f position, float radius, float angle) const;
   
   void DrawCourt() const;
   

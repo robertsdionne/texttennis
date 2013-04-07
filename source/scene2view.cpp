@@ -37,18 +37,18 @@ void Scene2View::Draw(Model &model) {
   DrawNet();
   DrawRacket(scene2_model.racket1);
   for (auto ball : scene2_model.ball_body) {
-    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
+    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetFixtureList()->GetShape()->m_radius, ball->GetAngle());
   }
   DrawFrameRate();
   ofPopMatrix();
 }
 
-void Scene2View::DrawBall(ofVec2f position, float angle) const {
+void Scene2View::DrawBall(ofVec2f position, float radius, float angle) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofCircle(position, ball_radius);
+  ofCircle(position, radius);
   ofSetColor(ofColor::white);
-  ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
+  ofLine(position, position + radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }
 
