@@ -40,12 +40,22 @@ void FlipSceneView::Draw(Model &model) {
     }
   }();
   const ofVec3f rotated_normal = normal.rotated(flipscene_model.angle, ofVec3f(1, 0, 0));
-  const ofVec3f light = ofVec3f(1, -1, -10).normalized();
+  const ofVec3f light = ofVec3f(0, 0, -1).normalized();
   ofImage &image = flipscene_model.angle < 90 ? top[flipscene_model.score] : bottom[(flipscene_model.score + 1) % 10];
   const float offset = flipscene_model.angle < 90 ? half_court_height : 0.0;
   const float negate = flipscene_model.angle < 90 ? -1.0 : 1.0;
-  ofSetColor(HalfLambert(light, rotated_normal) * 255.0);
-  image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+  ofSetColor(ofColor::white);
+  if (flipscene_model.angle > 90) {
+    ofRect(0.0, half_court_height, half_court_length, half_court_height);
+    ofEnableAlphaBlending();
+    const float alpha = 1 + ofVec3f(0, -1, 0).dot(rotated_normal);
+    ofSetColor(ofColor::white, alpha * 255.0);
+    image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+    ofDisableAlphaBlending();
+  } else {
+    ofSetColor(HalfLambert(light, rotated_normal) * 255.0);
+    image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+  }
   ofPopMatrix();
   ofPopMatrix();
 }
