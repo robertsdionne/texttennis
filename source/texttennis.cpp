@@ -3,7 +3,6 @@
 #include "constants.h"
 #include "introduction.h"
 #include "parameter.h"
-#include "flipscene.h"
 #include "scene.h"
 #include "scene1.h"
 #include "scene2.h"
@@ -20,7 +19,6 @@ TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
   show_sliders(false), float_panel(), int_panel() {
   scene_factory_functions.push_back(Introduction::Create);
-  scene_factory_functions.push_back(FlipScene::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene3::Create);

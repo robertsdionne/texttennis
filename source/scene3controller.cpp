@@ -28,8 +28,12 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   if (ball && court && ball->GetPosition().x > 0) {
     model_.bounces += 1;
     if (model_.bounces == 2) {
+      model_.angle = 0.0;
       model_.score += 1;
     }
+  }
+  if (ball && court && ball->GetPosition().x < 0) {
+    model_.bounces = 0;
   }
 }
 
@@ -61,6 +65,13 @@ void Scene3Controller::Update() {
       DestroyBall(model_.ball_body);
       model_.ball_body = nullptr;
     }
+  }
+  if (model_.angle <= 180.0 - 180.0 / 60.0) {
+    model_.angle += 180.0 / 60.0;
+  }
+  if (keys[' '] && !previous_keys[' ']) {
+    model_.angle = 0.0;
+    model_.score = (model_.score + 1) % 10;
   }
   Controller::Update();
 }

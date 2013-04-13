@@ -92,10 +92,6 @@
 		46D141D016F6A3F4009A2AD3 /* LinearTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140B616F6A3F4009A2AD3 /* LinearTexture.cpp */; };
 		46D141D116F6A3F4009A2AD3 /* ofxSpriteSheetRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140B816F6A3F4009A2AD3 /* ofxSpriteSheetRenderer.cpp */; };
 		46D141D216F6A3F4009A2AD3 /* PixelTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140BA16F6A3F4009A2AD3 /* PixelTexture.cpp */; };
-		46E769471714BEE60097270D /* flipsceneview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E769401714BEE60097270D /* flipsceneview.cpp */; };
-		46E769481714BEE60097270D /* flipscenemodel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E769411714BEE60097270D /* flipscenemodel.cpp */; };
-		46E769491714BEE60097270D /* flipscenecontroller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E769441714BEE60097270D /* flipscenecontroller.cpp */; };
-		46E7694A1714BEE60097270D /* flipscene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E769461714BEE60097270D /* flipscene.cpp */; };
 		46E7762E16F76B5F0011A27F /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E7762C16F76B5F0011A27F /* utilities.cpp */; };
 		46E8C3BB16F95CCA0033523B /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3B916F95CCA0033523B /* scene.cpp */; };
 		46E8C3BE16F95D940033523B /* scene1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3BC16F95D940033523B /* scene1.cpp */; };
@@ -558,14 +554,6 @@
 		46D1419F16F6A3F4009A2AD3 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		46D141A116F6A3F4009A2AD3 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
 		46D8F90E16F7D3BA001857BC /* parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameter.h; sourceTree = "<group>"; };
-		46E7693F1714BEE60097270D /* flipsceneview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flipsceneview.h; sourceTree = "<group>"; };
-		46E769401714BEE60097270D /* flipsceneview.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flipsceneview.cpp; sourceTree = "<group>"; };
-		46E769411714BEE60097270D /* flipscenemodel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flipscenemodel.cpp; sourceTree = "<group>"; };
-		46E769421714BEE60097270D /* flipscenemodel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flipscenemodel.h; sourceTree = "<group>"; };
-		46E769431714BEE60097270D /* flipscenecontroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flipscenecontroller.h; sourceTree = "<group>"; };
-		46E769441714BEE60097270D /* flipscenecontroller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flipscenecontroller.cpp; sourceTree = "<group>"; };
-		46E769451714BEE60097270D /* flipscene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flipscene.h; sourceTree = "<group>"; };
-		46E769461714BEE60097270D /* flipscene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flipscene.cpp; sourceTree = "<group>"; };
 		46E7762C16F76B5F0011A27F /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		46E7762D16F76B5F0011A27F /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
 		46E7762F16F76C400011A27F /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
@@ -723,14 +711,6 @@
 				46E7762F16F76C400011A27F /* constants.h */,
 				46CE39C216FF465E00D77873 /* controller.cpp */,
 				46CE39C316FF465E00D77873 /* controller.h */,
-				46E769461714BEE60097270D /* flipscene.cpp */,
-				46E769451714BEE60097270D /* flipscene.h */,
-				46E769441714BEE60097270D /* flipscenecontroller.cpp */,
-				46E769431714BEE60097270D /* flipscenecontroller.h */,
-				46E769411714BEE60097270D /* flipscenemodel.cpp */,
-				46E769421714BEE60097270D /* flipscenemodel.h */,
-				46E769401714BEE60097270D /* flipsceneview.cpp */,
-				46E7693F1714BEE60097270D /* flipsceneview.h */,
 				46E8C3CB16F967C30033523B /* introduction.cpp */,
 				46E8C3CC16F967C30033523B /* introduction.h */,
 				46CE39CC16FF5E0B00D77873 /* introductioncontroller.cpp */,
@@ -1506,10 +1486,6 @@
 				463DA5C7170103720065BA6A /* scene5controller.cpp in Sources */,
 				463DA5CA1701037F0065BA6A /* scene5model.cpp in Sources */,
 				463DA5CD1701038C0065BA6A /* scene5view.cpp in Sources */,
-				46E769471714BEE60097270D /* flipsceneview.cpp in Sources */,
-				46E769481714BEE60097270D /* flipscenemodel.cpp in Sources */,
-				46E769491714BEE60097270D /* flipscenecontroller.cpp in Sources */,
-				46E7694A1714BEE60097270D /* flipscene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

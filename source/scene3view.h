@@ -28,6 +28,11 @@ private:
   void DrawRacket(ofVec2f position) const;
 
 private:
+  float HalfLambert(ofVec3f light, ofVec3f normal);
+
+  ofImage top[10];
+  ofImage bottom[10];
+  
   ofTrueTypeFont font;
 };
 
