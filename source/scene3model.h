@@ -20,9 +20,12 @@ public:
   ofVec2f racket1, opponent;
   ofVec2f racket1_target, opponent_target;
 
-  float score;
+  int score;
 
   int bounces;
+
+
+  float angle;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_
