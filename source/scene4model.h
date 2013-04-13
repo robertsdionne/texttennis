@@ -21,10 +21,11 @@ public:
   ofVec2f racket1;
   ofVec2f racket1_target;
 
-  bool score[5];
+  int score;
 
   int bounces;
   float time_scale;
+  bool reset_ball;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

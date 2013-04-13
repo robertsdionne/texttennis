@@ -30,13 +30,16 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
   if (ball && other) {
     if (other == model_.court_body && ball->GetPosition().x > 0) {
       model_.bounces += 1;
+    } else if (other == model_.court_body && ball->GetPosition().x < 0) {
+      model_.bounces = 0;
     }
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
-        model_.score[i] = true;
+        model_.score += 1;
+        model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
           music.play();
-          model_.time_scale = 0.1;
+          model_.time_scale = 0.25;
         }
       }
     }
@@ -53,17 +56,25 @@ void Scene4Controller::Setup() {
 }
 
 void Scene4Controller::Update() {
-  int score = 0;
-  for (auto hit : model_.score) {
-    if (hit) {
-      score += 1;
+  if (model_.reset_ball) {
+    if (model_.ball_body) {
+      DestroyBall(model_.ball_body);
+      model_.ball_body = nullptr;
+    }
+    model_.reset_ball = false;
+  }
+  for (int i = 0; i < 5; ++i) {
+    if (4 - i == model_.score) {
+      model_.tree_people[i]->SetActive(true);
+    } else {
+      model_.tree_people[i]->SetActive(false);
     }
   }
-  if (score >= 5) {
+  if (model_.score >= 5) {
     scene_manager.NextScene();
     return;
   }
-  if (model_.bounces >= 2) {
+  if (model_.bounces >= max(2, model_.score)) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
     model_.bounces = 0;
@@ -118,6 +129,7 @@ void Scene4Controller::CreateTreePeople() {
 
     b2BodyDef person_definition;
     person_definition.position.Set(offset, court_thickness + radius);
+    person_definition.active = false;
     model_.tree_people[i] = model_.world.CreateBody(&person_definition);
     b2CircleShape person_shape;
     person_shape.m_radius = radius;
@@ -196,6 +208,7 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      model_.bounces = 0;
     }
   }
 }
