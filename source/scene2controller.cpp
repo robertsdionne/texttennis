@@ -81,7 +81,8 @@ void Scene2Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_body_definition.angularDamping = angular_damping;
   model_.ball_body.push_back(model_.world.CreateBody(&ball_body_definition));
   b2CircleShape ball_shape;
-  ball_shape.m_radius = ball_radius + 2.0 * ball_radius * model_.ball_body.size() / 500.0;
+//  ball_shape.m_radius = ball_radius + 2.0 * ball_radius * model_.ball_body.size() / 500.0;
+  ball_shape.m_radius = ball_radius;
   b2FixtureDef ball_fixture_definition;
   ball_fixture_definition.shape = &ball_shape;
   ball_fixture_definition.density = density;

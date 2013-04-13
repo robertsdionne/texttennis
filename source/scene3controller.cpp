@@ -31,8 +31,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
       model_.angle = 0.0;
       model_.score += 1;
     }
-  }
-  if (ball && court && ball->GetPosition().x < 0) {
+  } else if (ball && court && ball->GetPosition().x < 0) {
     model_.bounces = 0;
   }
 }
@@ -171,6 +170,7 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      model_.bounces = 0;
     }
   }
 }
