@@ -74,6 +74,12 @@ void Scene4Controller::Update() {
     scene_manager.NextScene();
     return;
   }
+  if (keys['-'] && !previous_keys['-']) {
+    model_.points.clear();
+  }
+  if (buttons[0] && !previous_buttons[0]) {
+    model_.points.push_back(model_.mouse_position);
+  }
   if (model_.bounces >= max(2, model_.score)) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
@@ -120,6 +126,72 @@ void Scene4Controller::CreateBall(ofVec2f position, ofVec2f velocity,
   ball_fixture_definition.friction = friction;
   model_.ball_body->CreateFixture(&ball_fixture_definition);
 }
+
+
+/*
+ Tree1 bounding polygon:
+ (8.68527, 0.464453)
+ (8.47627, 6.6649)
+ (8.61561, 9.75352)
+ (9.61418, 11.054)
+ (10.7289, 11.0075)
+ (11.5881, 9.9393)
+ (11.7739, 7.77959)
+ (11.8203, 2.80994)
+ (11.7042, 0.487676)
+ */
+
+/*
+ Tree2 bounding polygon:
+ (7.31514, 0.510899)
+ (6.71135, 3.73885)
+ (6.61846, 7.4777)
+ (6.89713, 9.10328)
+ (7.1758, 9.54451)
+ (7.73314, 10.1251)
+ (8.49949, 10.1483)
+ (9.2194, 9.03361)
+ (9.40518, 7.4777)
+ (9.52129, 3.87818)
+ (9.26584, 0.510899)
+ */
+
+/*
+ Tree3 bounding polygon:
+ (5.66633, 0.464453)
+ (4.89998, 2.80994)
+ (4.59809, 6.29334)
+ (4.78387, 7.40803)
+ (5.45732, 8.31371)
+ (6.13078, 8.4066)
+ (6.64168, 7.70992)
+ (7.12936, 6.52557)
+ (7.33836, 4.38908)
+ (6.99002, 2.09004)
+ (6.47912, 0.487676)
+ */
+
+/*
+ Tree4 bounding polygon:
+ (2.67061, 0.464453)
+ (2.92605, 5.80566)
+ (3.01895, 7.24547)
+ (3.9943, 7.8957)
+ (4.73742, 7.77959)
+ (5.34121, 5.736)
+ (5.75922, 1.81137)
+ (5.736, 0.510899)
+ */
+
+/*
+ Tree5 bounding polygon:
+ (0.232226, 6.06111)
+ (3.13506, 6.03789)
+ (3.13506, 0.673457)
+ (2.32227, 0.487676)
+ (1.09146, 0.464453)
+ (0.0696678, 1.16113)
+ */
 
 void Scene4Controller::CreateTreePeople() {
   float offset = 4.0;
