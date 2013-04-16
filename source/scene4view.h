@@ -28,6 +28,8 @@ private:
   void DrawRacket(ofVec2f position) const;
 
   void DrawTreePeople(Scene4Model &model) const;
+
+  ofImage background;
 };
 
 #endif  // TEXTTENNIS_SCENE4VIEW_H_

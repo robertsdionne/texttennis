@@ -1,8 +1,13 @@
 #include "constants.h"
 #include "introductionmodel.h"
 #include "introductionview.h"
+#include "ofMain.h"
 #include "model.h"
 #include "utilities.h"
+
+IntroductionView::IntroductionView() : background() {
+  background.loadImage("intro_drivingScreen.png");
+}
 
 void IntroductionView::Setup() const {
   ofSetFrameRate(frame_rate);
@@ -12,8 +17,11 @@ void IntroductionView::Setup() const {
   ofBackground(ofColor::white);
 }
 
-void IntroductionView::Draw(Model &model) const {
+void IntroductionView::Draw(Model &model) {
   IntroductionModel &introduction_model = dynamic_cast<IntroductionModel &>(model);
+  ofSetRectMode(OF_RECTMODE_CORNER);
+  ofSetColor(ofColor::white);
+  background.draw(0, 0);
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
