@@ -4,7 +4,9 @@
 #include "scene4view.h"
 #include "utilities.h"
 
-Scene4View::Scene4View() {}
+Scene4View::Scene4View() : background() {
+  background.loadImage("tree_bg_final.png");
+}
 
 void Scene4View::Setup() {
   ofSetFrameRate(frame_rate);
@@ -17,6 +19,8 @@ void Scene4View::Setup() {
 void Scene4View::Draw(Model &model) {
   Scene4Model &scene4_model = dynamic_cast<Scene4Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
+  ofSetColor(ofColor::white);
+  background.draw(0, 0);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();
