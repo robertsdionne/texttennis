@@ -30,6 +30,7 @@ private:
   void DrawTreePeople(Scene4Model &model) const;
 
   ofImage background;
+  ofImage trees[5];
 };
 
 #endif  // TEXTTENNIS_SCENE4VIEW_H_

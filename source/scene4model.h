@@ -26,6 +26,8 @@ public:
   int bounces;
   float time_scale;
   bool reset_ball;
+
+  std::vector<ofPoint> points;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

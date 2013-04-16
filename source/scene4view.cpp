@@ -6,6 +6,11 @@
 
 Scene4View::Scene4View() : background() {
   background.loadImage("tree_bg_final.png");
+  for (int i = 0; i < 5; ++i) {
+    std::stringstream filename;
+    filename << "tree" << (i + 1) << "_final.png";
+    trees[i].loadImage(filename.str());
+  }
 }
 
 void Scene4View::Setup() {
@@ -21,12 +26,42 @@ void Scene4View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);
   background.draw(0, 0);
+  const int offset = 54;
+  ofSetColor(ofColor::darkGray, 25);
+  if (scene4_model.score == 5) {
+    ofSetColor(ofColor::white);
+  }
+  trees[4].draw(274+4*offset, 334);
+  if (scene4_model.score == 4) {
+    ofSetColor(ofColor::white);
+  }
+  trees[3].draw(434+3*offset, 273);
+  if (scene4_model.score == 3) {
+    ofSetColor(ofColor::white);
+  }
+  trees[2].draw(598+2*offset, 272);
+  if (scene4_model.score == 2) {
+    ofSetColor(ofColor::white);
+  }
+  trees[1].draw(731+offset, 201);
+  if (scene4_model.score == 1) {
+    ofSetColor(ofColor::white);
+  }
+  trees[0].draw(870, 157);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);
-  DrawTreePeople(scene4_model);
+  ofSetColor(ofColor::yellow);
+  ofBeginShape();
+  ofVertices(scene4_model.points);
+  ofEndShape();
+  for (auto point : scene4_model.points) {
+    std::cout << "(" << point.x << ", " << point.y << ")" << std::endl;
+  }
+  std::cout << "//" << std::endl;
+  //DrawTreePeople(scene4_model);
   if (scene4_model.ball_body) {
     DrawBall(ofVec2f(scene4_model.ball_body->GetPosition().x,
                      scene4_model.ball_body->GetPosition().y),

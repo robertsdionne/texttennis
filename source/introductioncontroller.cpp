@@ -36,7 +36,7 @@ void IntroductionController::Update() {
     }
   }
   while (ofGetElapsedTimef() > model_.last_create_time + IntroductionModel::create_delay) {
-    CreateBox(ofVec2f(ofRandomf(), court_height + 1.0), ofVec2f(),
+    CreateBox(ofVec2f(1.0, half_court_height - 1 - ofRandomf()), ofVec2f(),
               ofRandomuf() * M_PI, ofRandomf() * 10.0);
     model_.last_create_time = ofGetElapsedTimef();
   }
