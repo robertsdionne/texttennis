@@ -142,31 +142,31 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 }
 
 void Scene1Controller::UpdateRackets() {
-  model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
   model_.racket2 = Lerp(model_.racket2, model_.racket2_target, player_move_smooth_factor);
-  if (keys[OF_KEY_LEFT] && model_.racket1_target.x > -half_court_length) {
-    model_.racket1_target.x -= racket_speed;
+  model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
+  if (keys[OF_KEY_LEFT] && model_.racket2_target.x >  racket_speed + racket_radius) {
+    model_.racket2_target.x -= racket_speed;
   }
-  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed - racket_radius) {
-    model_.racket1_target.x += racket_speed;
+  if (keys[OF_KEY_RIGHT] && model_.racket2_target.x < half_court_length) {
+    model_.racket2_target.x += racket_speed;
   }
   // opponent
-  if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
-    const float dx = model_.ball_body->GetPosition().x - model_.racket2_target.x;
+  if (model_.ball_body && model_.ball_body->GetPosition().x < 0) {
+    const float dx = model_.ball_body->GetPosition().x - model_.racket1_target.x;
     if (dx > racket_radius + ball_radius) {
-      model_.racket2_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.racket1_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     } else if (dx < -racket_radius - ball_radius) {
-      model_.racket2_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      model_.racket1_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
     }
   } else {
     const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
-    if (dx > 0 && model_.racket2_target.x < half_court_length) {
-      model_.racket2_target.x += dx;
+    if (dx > 0 && model_.racket1_target.x < 0 - dx - racket_radius) {
+      model_.racket1_target.x += dx;
     }
-    if (dx < 0 && model_.racket2_target.x > dx + racket_radius) {
-      model_.racket2_target.x += dx;
+    if (dx < 0 && model_.racket1_target.x > -half_court_length) {
+      model_.racket1_target.x += dx;
     }
   }
-  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
 }
