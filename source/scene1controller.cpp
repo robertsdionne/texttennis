@@ -33,6 +33,16 @@ void Scene1Controller::Setup() {
   model_.scene_start_time = ofGetElapsedTimef();
   model_.rotation = 0;
   model_.world.SetContactListener(this);
+  const ofPoint left(256-64, 320);
+  const ofPoint right(768-64, 320);
+  const float pause = 0.5;
+  model_.dialogue
+      .Speed(100.0)
+      .Message("Hey let’s play tennis.", left).Pause(pause)
+      .Message("Okay cool.", right).Pause(pause)
+      .Pop().Message("You remember how to play right?", left).Pause(pause)
+      .Pop().Message("Just press left and right.", right).Pause(pause)
+      .Clear();
 }
 
 void Scene1Controller::BeginContact(b2Contact* contact) {
@@ -52,6 +62,7 @@ void Scene1Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene1Controller::Update() {
+  model_.dialogue.Update();
   UpdateRackets();
   if (model_.ball_body) {
     if (model_.rotation < 0.999) {

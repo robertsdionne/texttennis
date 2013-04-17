@@ -13,20 +13,21 @@ void Scene1View::Setup() {
 }
 
 void Scene1View::Draw(Model &model) {
-  Scene1Model &scene2_model = dynamic_cast<Scene1Model &>(model);
+  Scene1Model &scene1_model = dynamic_cast<Scene1Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
+  scene1_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   ofTranslate(0.0, court_height / 2.0);
-  ofRotateZ(H01(scene2_model.rotation) * 180.0);
+  ofRotateZ(H01(scene1_model.rotation) * 180.0);
   ofTranslate(0.0, -court_height / 2.0);
   DrawCourt();
   DrawNet();
-  DrawRacket(scene2_model.racket1);
-  DrawRacket(scene2_model.racket2);
-  if (scene2_model.ball_body) {
-    DrawBall(ofVec2f(scene2_model.ball_body->GetPosition().x,
-                     scene2_model.ball_body->GetPosition().y), scene2_model.ball_body->GetAngle());
+  DrawRacket(scene1_model.racket1);
+  DrawRacket(scene1_model.racket2);
+  if (scene1_model.ball_body) {
+    DrawBall(ofVec2f(scene1_model.ball_body->GetPosition().x,
+                     scene1_model.ball_body->GetPosition().y), scene1_model.ball_body->GetAngle());
   }
   DrawFrameRate();
   ofPopMatrix();

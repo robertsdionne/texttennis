@@ -11,28 +11,28 @@ Dialogue::~Dialogue() {
   events.clear();
 }
 
-Dialogue &Dialogue::AddClear() {
-  events.push_back(new Clear());
+Dialogue &Dialogue::Clear() {
+  events.push_back(new ClearEvent());
   return *this;
 }
 
-Dialogue &Dialogue::AddMessage(const std::string &message, ofPoint position) {
-  events.push_back(new Message(message, position));
+Dialogue &Dialogue::Message(const std::string &message, ofPoint position) {
+  events.push_back(new MessageEvent(message, position));
   return *this;
 }
 
-Dialogue &Dialogue::AddPause(float duration) {
-  events.push_back(new Pause(duration));
+Dialogue &Dialogue::Pause(float duration) {
+  events.push_back(new PauseEvent(duration));
   return *this;
 }
 
-Dialogue &Dialogue::AddPop() {
-  events.push_back(new Pop());
+Dialogue &Dialogue::Pop() {
+  events.push_back(new PopEvent());
   return *this;
 }
 
-Dialogue &Dialogue::AddSpeed(float speed) {
-  events.push_back(new Speed(speed));
+Dialogue &Dialogue::Speed(float speed) {
+  events.push_back(new SpeedEvent(speed));
   return *this;
 }
 
@@ -73,18 +73,18 @@ void Dialogue::Update() {
         Event *event = events[event_index];
         current_delay = 0;
         if (event->type == Event::Type::MESSAGE) {
-          Message *message = dynamic_cast<Message *>(event);
+          MessageEvent *message = dynamic_cast<MessageEvent *>(event);
           last_messages.push_back(message);
           message_index = 0;
         } else if (event->type == Event::Type::PAUSE) {
-          Pause *pause = dynamic_cast<Pause *>(event);
+          PauseEvent *pause = dynamic_cast<PauseEvent *>(event);
           current_delay = pause->duration;
         } else if (event->type == Event::Type::POP) {
           last_messages.pop_front();
         } else if (event->type == Event::Type::CLEAR) {
           last_messages.clear();
         } else {
-          Speed *new_speed = dynamic_cast<Speed *>(event);
+          SpeedEvent *new_speed = dynamic_cast<SpeedEvent *>(event);
           speed = new_speed->speed;
         }
         event_index += 1;

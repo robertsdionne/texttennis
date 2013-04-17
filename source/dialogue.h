@@ -25,50 +25,50 @@ public:
     Type type;
   };
 
-  class Clear : public Event {
+  class ClearEvent : public Event {
   public:
-    Clear() : Event(Event::Type::CLEAR) {}
-    virtual ~Clear() {}
+    ClearEvent() : Event(Event::Type::CLEAR) {}
+    virtual ~ClearEvent() {}
   };
 
-  class Message : public Event {
+  class MessageEvent : public Event {
   public:
-    Message(const std::string &message, ofPoint position)
+    MessageEvent(const std::string &message, ofPoint position)
     : message(message), position(position), Event(Event::Type::MESSAGE) {}
-    virtual ~Message() {}
+    virtual ~MessageEvent() {}
     std::string message;
     ofPoint position;
   };
 
-  class Pause : public Event {
+  class PauseEvent : public Event {
   public:
-    Pause(float duration) : duration(duration), Event(Event::Type::PAUSE) {}
-    virtual ~Pause() {}
+    PauseEvent(float duration) : duration(duration), Event(Event::Type::PAUSE) {}
+    virtual ~PauseEvent() {}
     float duration;
   };
 
-  class Pop : public Event {
+  class PopEvent : public Event {
   public:
-    Pop() : Event(Event::Type::POP) {}
-    virtual ~Pop() {}
+    PopEvent() : Event(Event::Type::POP) {}
+    virtual ~PopEvent() {}
   };
 
-  class Speed : public Event {
+  class SpeedEvent : public Event {
   public:
-    Speed(float speed) : speed(speed), Event(Event::Type::SPEED) {}
-    virtual ~Speed() {}
+    SpeedEvent(float speed) : speed(speed), Event(Event::Type::SPEED) {}
+    virtual ~SpeedEvent() {}
     float speed;
   };
 
-  Dialogue &AddClear();
+  Dialogue &Clear();
 
-  Dialogue &AddMessage(const std::string &message, ofPoint position);
+  Dialogue &Message(const std::string &message, ofPoint position);
 
-  Dialogue &AddPause(float duration);
+  Dialogue &Pause(float duration);
 
-  Dialogue &AddPop();
+  Dialogue &Pop();
 
-  Dialogue &AddSpeed(float speed);
+  Dialogue &Speed(float speed);
 
   void Draw();
 
@@ -81,7 +81,7 @@ public:
 private:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
-  std::deque<Message *> last_messages;
+  std::deque<MessageEvent *> last_messages;
   int event_index, message_index;
 };
 
