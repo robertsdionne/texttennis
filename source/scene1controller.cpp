@@ -58,12 +58,10 @@ void Scene1Controller::Update() {
       b2Vec2 force = gravity_vector.GetValue();
       force *= ball_mass;
       model_.ball_body->ApplyForceToCenter(force);
-      std::cout << "one " << model_.rotation << std::endl;
     } else {
       b2Vec2 force = gravity_vector.GetValue();
       force *= ball_mass * (model_.ball_body->GetPosition().x > 0 ? -1 : 1);
       model_.ball_body->ApplyForceToCenter(force);
-      std::cout << "two" << std::endl;
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
