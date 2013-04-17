@@ -7,9 +7,15 @@
 #include "utilities.h"
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
-: Controller(scene_manager), model_(model), rhythm_music(), shiny_music() {
+: Controller(scene_manager), model_(model), rhythm_music(), shiny_music(), hit1(), hit2() {
   rhythm_music.loadSound("music/scene01_rhythm.wav", true);
   shiny_music.loadSound("music/scene01_shiny.wav", true);
+  hit1.loadSound("hit1.mp3");
+  hit2.loadSound("hit2.mp3");
+  bounce1.loadSound("bounce1.wav");
+  bounce2.loadSound("bounce2.wav");
+  bounce3.loadSound("bounce3.wav");
+  bounce4.loadSound("bounce4.wav");
 }
 
 Scene1Controller::~Scene1Controller() {
@@ -24,13 +30,48 @@ void Scene1Controller::Setup() {
   CreateNet();
   rhythm_music.play();
   shiny_music.play();
+  model_.scene_start_time = ofGetElapsedTimef();
+  model_.rotation = 0;
+  model_.world.SetContactListener(this);
+}
+
+void Scene1Controller::BeginContact(b2Contact* contact) {
+  if (ofRandomuf() < 0.5) {
+    if (ofRandomuf() < 0.5) {
+      bounce1.play();
+    } else {
+      bounce2.play();
+    }
+  } else {
+    if (ofRandomuf() < 0.5) {
+      bounce3.play();
+    } else {
+      bounce4.play();
+    }
+  }
 }
 
 void Scene1Controller::Update() {
   UpdateRackets();
+  if (model_.ball_body) {
+    if (model_.rotation < 0.999) {
+      b2Vec2 force = gravity_vector.GetValue();
+      force *= ball_mass;
+      model_.ball_body->ApplyForceToCenter(force);
+      std::cout << "one " << model_.rotation << std::endl;
+    } else {
+      b2Vec2 force = gravity_vector.GetValue();
+      force *= ball_mass * (model_.ball_body->GetPosition().x > 0 ? -1 : 1);
+      model_.ball_body->ApplyForceToCenter(force);
+      std::cout << "two" << std::endl;
+    }
+  }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 20.0) {
+    model_.rotation += 0.001;
+  }
   if (!model_.ball_body) {
-    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
+    CreateBall(ofVec2f(6, court_thickness + ball_radius + 1), ofVec2f(), 0.0, 0.0);
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
     if (model_.ball_body) {
@@ -76,8 +117,8 @@ void Scene1Controller::CreateBorder() {
   model_.border_body = model_.world.CreateBody(&border_body_definition);
   b2Vec2 vertices[4];
   vertices[0].Set(-half_court_length, 0.0);
-  vertices[1].Set(-half_court_length, ceiling_height);
-  vertices[2].Set(half_court_length, ceiling_height);
+  vertices[1].Set(-half_court_length, court_height);
+  vertices[2].Set(half_court_length, court_height);
   vertices[3].Set(half_court_length, 0.0);
   b2ChainShape border_shape;
   border_shape.CreateChain(vertices, 4);
@@ -137,6 +178,7 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }

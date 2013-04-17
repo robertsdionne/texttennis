@@ -47,6 +47,8 @@ private:
 
 private:
   Scene3Model &model_;
+  ofSoundPlayer hit1, hit2;
+  ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };
 
 #endif  // TEXTTENNIS_SCENE3CONTROLLER_H_

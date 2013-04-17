@@ -5,6 +5,8 @@
 
 #include "constants.h"
 #include "controller.h"
+#include <Box2D/Box2D.h>
+
 #include "ofMain.h"
 
 class b2Body;
@@ -12,7 +14,7 @@ class Model;
 class Scene2Model;
 class TextTennis;
 
-class Scene2Controller : public Controller {
+class Scene2Controller : public Controller, b2ContactListener {
 public:
   Scene2Controller(TextTennis &scene_manager, Scene2Model &model);
   
@@ -23,6 +25,8 @@ public:
   virtual void Update();
 
   virtual Model &model();
+
+  virtual void BeginContact(b2Contact* contact);
   
 private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
@@ -48,6 +52,8 @@ private:
   ofSoundPlayer low_music;
   ofSoundPlayer high_music;
   float scene_begin_time;
+  ofSoundPlayer hit1, hit2;
+  ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };
 
 #endif  // TEXTTENNIS_SCENE2CONTROLLER_H_

@@ -1,6 +1,7 @@
 #ifndef TEXTTENNIS_SCENE1CONTROLLER_H_
 #define TEXTTENNIS_SCENE1CONTROLLER_H_
 
+#include <Box2D/Box2D.h>
 #include <map>
 
 #include "constants.h"
@@ -12,7 +13,7 @@ class Model;
 class Scene1Model;
 class TextTennis;
 
-class Scene1Controller : public Controller {
+class Scene1Controller : public Controller, b2ContactListener {
 public:
   Scene1Controller(TextTennis &scene_manager, Scene1Model &model);
   
@@ -23,6 +24,8 @@ public:
   virtual void Update();
 
   virtual Model &model();
+
+  virtual void BeginContact(b2Contact* contact);
   
 private:
   void CreateBall(ofVec2f position = ofVec2f(), ofVec2f velocity = ofVec2f(),
@@ -45,8 +48,9 @@ private:
 
 private:
   Scene1Model &model_;
-  ofSoundPlayer rhythm_music;
-  ofSoundPlayer shiny_music;
+  ofSoundPlayer rhythm_music, shiny_music;
+  ofSoundPlayer hit1, hit2;
+  ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };
 
 #endif  // TEXTTENNIS_SCENE1CONTROLLER_H_

@@ -2,6 +2,7 @@
 #include "model.h"
 #include "scene1model.h"
 #include "scene1view.h"
+#include "utilities.h"
 
 void Scene1View::Setup() {
   ofSetFrameRate(frame_rate);
@@ -16,6 +17,9 @@ void Scene1View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
+  ofTranslate(0.0, court_height / 2.0);
+  ofRotateZ(H01(scene2_model.rotation) * 180.0);
+  ofTranslate(0.0, -court_height / 2.0);
   DrawCourt();
   DrawNet();
   DrawRacket(scene2_model.racket1);
@@ -24,8 +28,15 @@ void Scene1View::Draw(Model &model) {
     DrawBall(ofVec2f(scene2_model.ball_body->GetPosition().x,
                      scene2_model.ball_body->GetPosition().y), scene2_model.ball_body->GetAngle());
   }
+  ofSetColor(ofColor::black);
+  ofDrawBitmapString("test string", scene2_model.racket1 + ofVec2f(1, 2));
+  ofLine(scene2_model.racket1, scene2_model.racket1 + ofVec2f(1, 2));
   DrawFrameRate();
   ofPopMatrix();
+}
+
+float Scene1View::H01(float t) {
+  return -2 * t * t * t + 3 * t * t;
 }
 
 void Scene1View::DrawBall(ofVec2f position, float angle) const {

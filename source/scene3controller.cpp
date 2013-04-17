@@ -7,7 +7,14 @@
 #include "utilities.h"
 
 Scene3Controller::Scene3Controller(TextTennis &scene_manager, Scene3Model &model)
-: Controller(scene_manager), model_(model) {}
+: Controller(scene_manager), model_(model) {
+  hit1.loadSound("hit1.mp3");
+  hit2.loadSound("hit2.mp3");
+  bounce1.loadSound("bounce1.wav");
+  bounce2.loadSound("bounce2.wav");
+  bounce3.loadSound("bounce3.wav");
+  bounce4.loadSound("bounce4.wav");
+}
 
 void Scene3Controller::BeginContact(b2Contact* contact) {
   const b2Body *body_a = contact->GetFixtureA()->GetBody();
@@ -33,6 +40,20 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
     }
   } else if (ball && court && ball->GetPosition().x < 0) {
     model_.bounces = 0;
+  }
+
+  if (ofRandomuf() < 0.5) {
+    if (ofRandomuf() < 0.5) {
+      bounce1.play();
+    } else {
+      bounce2.play();
+    }
+  } else {
+    if (ofRandomuf() < 0.5) {
+      bounce3.play();
+    } else {
+      bounce4.play();
+    }
   }
 }
 
@@ -171,6 +192,7 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
       model_.bounces = 0;
+      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }
