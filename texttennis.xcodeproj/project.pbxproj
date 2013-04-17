@@ -41,6 +41,7 @@
 		46CE39DE16FFC93A00D77873 /* scene3controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39D816FFC93400D77873 /* scene3controller.cpp */; };
 		46CE39DF16FFC93A00D77873 /* scene3view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39DB16FFC93700D77873 /* scene3view.cpp */; };
 		46CE39E016FFC93A00D77873 /* scene3model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39DC16FFC93800D77873 /* scene3model.cpp */; };
+		46D027AF171F2C01004136B2 /* dialogue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D027AD171F2C01004136B2 /* dialogue.cpp */; };
 		46D1404B16F6A377009A2AD3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404416F6A377009A2AD3 /* main.cpp */; };
 		46D1404C16F6A377009A2AD3 /* texttennis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1404516F6A377009A2AD3 /* texttennis.cpp */; };
 		46D141A216F6A3F4009A2AD3 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D1405316F6A3F4009A2AD3 /* b2BroadPhase.cpp */; };
@@ -225,6 +226,8 @@
 		46CE39DB16FFC93700D77873 /* scene3view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3view.cpp; sourceTree = "<group>"; };
 		46CE39DC16FFC93800D77873 /* scene3model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene3model.cpp; sourceTree = "<group>"; };
 		46CE39DD16FFC93900D77873 /* scene3model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene3model.h; sourceTree = "<group>"; };
+		46D027AD171F2C01004136B2 /* dialogue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dialogue.cpp; sourceTree = "<group>"; };
+		46D027AE171F2C01004136B2 /* dialogue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dialogue.h; sourceTree = "<group>"; };
 		46D1404416F6A377009A2AD3 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		46D1404516F6A377009A2AD3 /* texttennis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texttennis.cpp; sourceTree = "<group>"; };
 		46D1404616F6A377009A2AD3 /* texttennis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texttennis.h; sourceTree = "<group>"; };
@@ -711,6 +714,8 @@
 				46E7762F16F76C400011A27F /* constants.h */,
 				46CE39C216FF465E00D77873 /* controller.cpp */,
 				46CE39C316FF465E00D77873 /* controller.h */,
+				46D027AD171F2C01004136B2 /* dialogue.cpp */,
+				46D027AE171F2C01004136B2 /* dialogue.h */,
 				46E8C3CB16F967C30033523B /* introduction.cpp */,
 				46E8C3CC16F967C30033523B /* introduction.h */,
 				46CE39CC16FF5E0B00D77873 /* introductioncontroller.cpp */,
@@ -1486,6 +1491,7 @@
 				463DA5C7170103720065BA6A /* scene5controller.cpp in Sources */,
 				463DA5CA1701037F0065BA6A /* scene5model.cpp in Sources */,
 				463DA5CD1701038C0065BA6A /* scene5view.cpp in Sources */,
+				46D027AF171F2C01004136B2 /* dialogue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,7 @@ void IntroductionView::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);
   background.draw(0, 0);
+  introduction_model.dialogue.Draw();
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
