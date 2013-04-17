@@ -19,6 +19,9 @@ public:
   
   ofVec2f racket1, racket2;
   ofVec2f racket1_target, racket2_target;
+
+  float scene_start_time;
+  float rotation;
 };
 
 #endif  // TEXTTENNIS_SCENE1MODEL_H_

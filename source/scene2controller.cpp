@@ -7,14 +7,38 @@
 #include "utilities.h"
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
-: Controller(scene_manager), model_(model), low_music(), high_music() {
+: Controller(scene_manager), model_(model), low_music(), high_music(), hit1(), hit2() {
   low_music.loadSound("music/scene02_lows.wav", true);
   high_music.loadSound("music/scene02_highs.wav", true);
+  hit1.loadSound("hit1.mp3");
+  hit1.setMultiPlay(true);
+  hit2.loadSound("hit2.mp3");
+  hit2.setMultiPlay(true);
+  bounce1.loadSound("bounce1.wav");
+  bounce2.loadSound("bounce2.wav");
+  bounce3.loadSound("bounce3.wav");
+  bounce4.loadSound("bounce4.wav");
 }
 
 Scene2Controller::~Scene2Controller() {
   low_music.stop();
   high_music.stop();
+}
+
+void Scene2Controller::BeginContact(b2Contact* contact) {
+  if (ofRandomuf() < 0.5) {
+    if (ofRandomuf() < 0.5) {
+      bounce1.play();
+    } else {
+      bounce2.play();
+    }
+  } else {
+    if (ofRandomuf() < 0.5) {
+      bounce3.play();
+    } else {
+      bounce4.play();
+    }
+  }
 }
 
 void Scene2Controller::Setup() {
@@ -158,6 +182,7 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }

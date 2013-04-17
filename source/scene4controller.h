@@ -50,6 +50,8 @@ private:
 private:
   Scene4Model &model_;
   ofSoundPlayer music;
+  ofSoundPlayer hit1, hit2;
+  ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };
 
 #endif  // TEXTTENNIS_SCENE4CONTROLLER_H_
