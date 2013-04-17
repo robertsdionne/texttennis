@@ -28,9 +28,6 @@ void Scene1View::Draw(Model &model) {
     DrawBall(ofVec2f(scene2_model.ball_body->GetPosition().x,
                      scene2_model.ball_body->GetPosition().y), scene2_model.ball_body->GetAngle());
   }
-  ofSetColor(ofColor::black);
-  ofDrawBitmapString("test string", scene2_model.racket1 + ofVec2f(1, 2));
-  ofLine(scene2_model.racket1, scene2_model.racket1 + ofVec2f(1, 2));
   DrawFrameRate();
   ofPopMatrix();
 }

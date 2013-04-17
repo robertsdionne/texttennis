@@ -15,18 +15,9 @@ IntroductionController::~IntroductionController() {
 
 void IntroductionController::Setup() {
   introduction_music.play();
-  model_.dialogue
-      .AddSpeed(100.0)
-      .AddMessage("Hello world!\nHello world!\nHello world!\nHello world!\nHello world!\nHello world!", ofPoint(10, 10)).AddPause(2)
-      .AddMessage("Hi again!", ofPoint(10, 100)).AddPause(2)
-      .AddPop()
-      .AddSpeed(10.0)
-      .AddMessage("Final message", ofPoint(10, 10)).AddPause(2)
-      .AddClear();
 }
 
 void IntroductionController::Update() {
-  model_.dialogue.Update();
   if (buttons[0] && !previous_buttons[0]) {
     b2AABB aabb;
     aabb.lowerBound = Box2dVector(model_.mouse_position);

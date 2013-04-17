@@ -4,7 +4,6 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
-#include "dialogue.h"
 #include "model.h"
 #include "parameter.h"
 
@@ -20,8 +19,6 @@ public:
   std::list<b2Body *> boxes;
 
   float last_create_time;
-
-  Dialogue dialogue;
 
 public:
   static Parameter<float> create_delay;
