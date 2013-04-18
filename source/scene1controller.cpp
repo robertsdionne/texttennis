@@ -42,16 +42,16 @@ void Scene1Controller::Setup() {
       .Position("right", right)
       .Message("Hey let’s play tennis.", "left").Pause(pause)
       .Message("Okay cool.", "right").Pause(pause)
-      .Pop().Message("You remember how to play right?", "left").Pause(pause)
-      .Pop().Message("Just press left and right.", "right").Pause(pause)
-      .Pop().Message("Cool, you serve.", "left").Pause(pause)
+      .Message("You remember how to play right?", "left").Pause(pause)
+      .Message("Just press left and right.", "right").Pause(pause)
+      .Message("Cool, you serve.", "left").Pause(pause)
       .Clear().Pause(10.0)
       .Message("Hey, sorry. Let's stop, I got a cramp.", "left").Pause(pause)
       .Message("Okay... what are you thinking about?", "right").Pause(pause)
-      .Pop().Message("I don't know, what are you thinking about?", "left").Pause(pause)
-      .Pop().Pop().Message("Oh, cool that's interesting...", "left").Pause(pause)
-      .Pop().Message("Okay. I'm good. I'll serve.", "left").Pause(pause)
-      .Pop().Message("I'll get it!", "right").Pause(pause);
+      .Message("I don't know, what are you thinking about?", "left").Pause(pause)
+      .Message("Oh, cool that's interesting...", "left").Pause(pause)
+      .Message("Okay. I'm good. I'll serve.", "left").Pause(pause)
+      .Message("I'll get it!", "right").Pause(pause);
 }
 
 void Scene1Controller::BeginContact(b2Contact* contact) {

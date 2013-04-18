@@ -50,12 +50,6 @@ public:
     float duration;
   };
 
-  class PopEvent : public Event {
-  public:
-    PopEvent() : Event(Event::Type::POP) {}
-    virtual ~PopEvent() {}
-  };
-
   class PositionEvent : public Event {
   public:
     PositionEvent(const std::string &label, ofPoint position)
@@ -78,8 +72,6 @@ public:
 
   Dialogue &Pause(float duration);
 
-  Dialogue &Pop();
-
   Dialogue &Position(const std::string &message, ofPoint position);
 
   Dialogue &Speed(float speed);
@@ -95,9 +87,10 @@ public:
 private:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
-  std::deque<MessageEvent *> last_messages;
   int event_index, message_index;
   std::map<std::string, ofPoint> positions;
+  std::map<std::string, MessageEvent *> messages;
+  std::string last_message_label;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

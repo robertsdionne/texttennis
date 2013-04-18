@@ -58,7 +58,7 @@ void Scene2Controller::Setup() {
       .Position("right", right)
       .Message("You know why you're here, right?", "right").Pause(pause)
       .Message("No, why am I here?", "left").Pause(pause)
-      .Pop().Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(pause)
+      .Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(pause)
       .Clear();
 }
 

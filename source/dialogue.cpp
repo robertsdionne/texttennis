@@ -2,7 +2,7 @@
 
 Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
-  last_messages(), event_index(), message_index() {}
+  event_index(), message_index() {}
 
 Dialogue::~Dialogue() {
   for (auto *event : events) {
@@ -26,11 +26,6 @@ Dialogue &Dialogue::Pause(float duration) {
   return *this;
 }
 
-Dialogue &Dialogue::Pop() {
-  events.push_back(new PopEvent());
-  return *this;
-}
-
 Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   events.push_back(new PositionEvent(label, position));
   return *this;
@@ -42,16 +37,17 @@ Dialogue &Dialogue::Speed(float speed) {
 }
 
 void Dialogue::Draw() {
-  if (last_messages.size()) {
-    for (int i = 0; i < last_messages.size() - 1; ++i) {
-      if (last_messages[i] && positions.find(last_messages[i]->label) != positions.end()) {
+  for (auto element : messages) {
+    if (element.first != last_message_label) {
+      if (positions.find(element.first) != positions.end()) {
         ofSetColor(ofColor::black);
-        ofDrawBitmapString(last_messages[i]->message, positions[last_messages[i]->label]);
+        ofDrawBitmapString(element.second->message, positions[element.first]);
       }
-    }
-    if (last_messages.back() && positions.find(last_messages.back()->label) != positions.end()) {
-      ofSetColor(ofColor::black);
-      ofDrawBitmapString(last_messages.back()->message.substr(0, message_index), positions[last_messages.back()->label]);
+    } else {
+      if (positions.find(last_message_label) != positions.end()) {
+        ofSetColor(ofColor::black);
+        ofDrawBitmapString(element.second->message.substr(0, message_index), positions[element.first]);
+      }
     }
   }
 }
@@ -69,7 +65,7 @@ void Dialogue::Setup() {
 
 void Dialogue::Update() {
   if (ofGetElapsedTimef() > last_event_time + current_delay) {
-    if (last_messages.size() && message_index < last_messages.back()->message.size()) {
+    if (messages.size() && message_index < messages[last_message_label]->message.size()) {
       message_index += 1;
       current_delay = 2.0 * ofRandomuf() / speed;
       last_event_time = ofGetElapsedTimef();
@@ -80,7 +76,8 @@ void Dialogue::Update() {
         switch (event->type) {
           case Event::Type::MESSAGE: {
             MessageEvent *message = dynamic_cast<MessageEvent *>(event);
-            last_messages.push_back(message);
+            messages[message->label] = message;
+            last_message_label = message->label;
             message_index = 0;
             break;
           }
@@ -89,16 +86,13 @@ void Dialogue::Update() {
             current_delay = pause->duration;
             break;
           }
-          case Event::Type::POP:
-            last_messages.pop_front();
-            break;
           case Event::Type::POSITION: {
             PositionEvent *position_event = dynamic_cast<PositionEvent *>(event);
             positions[position_event->label] = position_event->position;
             break;
           }
           case Event::Type::CLEAR:
-            last_messages.clear();
+            messages.clear();
             break;
           case Event::Type::SPEED: {
             SpeedEvent *new_speed = dynamic_cast<SpeedEvent *>(event);
