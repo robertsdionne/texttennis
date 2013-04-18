@@ -16,16 +16,23 @@ public:
   class Event {
   public:
     enum class Type {
+      BARRIER,
       CLEAR,
       MESSAGE,
       PAUSE,
-      POP,
       POSITION,
       SPEED
     };
     Event(Type type) : type(type) {}
     virtual ~Event() {}
     Type type;
+  };
+
+  class BarrierEvent : public Event {
+  public:
+    BarrierEvent(const std::string &barrier) : Event(Event::Type::BARRIER), barrier(barrier) {}
+    virtual ~BarrierEvent() {}
+    std::string barrier;
   };
 
   class ClearEvent : public Event {
@@ -66,6 +73,8 @@ public:
     float speed;
   };
 
+  Dialogue &Barrier(const std::string &barrier);
+
   Dialogue &Clear();
 
   Dialogue &Message(const std::string &message, const std::string &label);
@@ -76,6 +85,8 @@ public:
 
   Dialogue &Speed(float speed);
 
+  void Trigger(const std::string &barrier);
+
   void Draw();
 
   bool IsDone() const;
@@ -85,12 +96,16 @@ public:
   void Update();
 
 private:
+  bool IsBlocked() const;
+
+private:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
   int event_index, message_index;
   std::map<std::string, ofPoint> positions;
   std::map<std::string, MessageEvent *> messages;
   std::string last_message_label;
+  std::map<std::string, bool> barriers;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

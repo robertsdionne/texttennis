@@ -45,7 +45,7 @@ void Scene1Controller::Setup() {
       .Message("You remember how to play right?", "left").Pause(pause)
       .Message("Just press left and right.", "right").Pause(pause)
       .Message("Cool, you serve.", "left").Pause(pause)
-      .Clear().Pause(10.0)
+      .Clear()
       .Message("Hey, sorry. Let's stop, I got a cramp.", "left").Pause(pause)
       .Message("Okay... what are you thinking about?", "right").Pause(pause)
       .Message("I don't know, what are you thinking about?", "left").Pause(pause)
