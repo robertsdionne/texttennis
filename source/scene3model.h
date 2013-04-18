@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -24,8 +25,9 @@ public:
 
   int bounces;
 
-
   float angle;
+
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

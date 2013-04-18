@@ -40,7 +40,12 @@ void Scene3View::Draw(Model &model) {
   DrawNet();
   DrawRacket(scene3_model.racket1);
   DrawRacket(scene3_model.opponent);
+  ofPopMatrix();
 
+  scene3_model.dialogue.Draw();
+
+  ofPushMatrix();
+  ofMultMatrix(view_matrix);
   if (0.0 <= scene3_model.angle && scene3_model.angle < 180.0) {
     ofPushMatrix();
     ofTranslate(0, half_court_height);

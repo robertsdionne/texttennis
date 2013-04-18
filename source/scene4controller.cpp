@@ -41,6 +41,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
+        model_.dialogue.Trigger("collide");
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
@@ -73,9 +74,28 @@ void Scene4Controller::Setup() {
   CreateNet();
   CreateTreePeople();
   model_.world.SetContactListener(this);
+  model_.dialogue
+      .Speed(100.0)
+      .Foreground(ofColor::white)
+      .Position("tree0", ofPoint(835, 100))
+      .Position("tree1", ofPoint(750, 165))
+      .Position("tree2", ofPoint(650, 250))
+      .Position("tree3", ofPoint(550, 300))
+      .Position("tree4", ofPoint(450, 350))
+      .Barrier("collide")
+      .Message("Ladies and gentlemen,\nwe are proud to present\na short story,\n\"Nothing is Real.\"", "tree0")
+      .Barrier("collide")
+      .Message("The trees and\nthe tree people\nwere in disagreement.", "tree1")
+      .Barrier("collide")
+      .Message("\"Let's work it out,\"\none person said.", "tree2")
+      .Barrier("collide")
+      .Message("But nothing changed.", "tree3")
+      .Barrier("collide")
+      .Message("The end.", "tree4");
 }
 
 void Scene4Controller::Update() {
+  model_.dialogue.Update();
   if (model_.reset_ball) {
     if (model_.ball_body) {
       DestroyBall(model_.ball_body);
@@ -90,7 +110,7 @@ void Scene4Controller::Update() {
       model_.tree_people[i]->SetActive(false);
     }
   }
-  if (model_.score >= 5) {
+  if (model_.score >= 6) {
     scene_manager.NextScene();
     return;
   }
@@ -106,7 +126,7 @@ void Scene4Controller::Update() {
     model_.bounces = 0;
   }
   UpdateRackets();
-  model_.world.Step(delta_time * model_.time_scale, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(delta_time /* model_.time_scale*/, box2d_velocity_iterations, box2d_position_iterations);
   if (!model_.ball_body) {
     CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
@@ -309,10 +329,10 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 void Scene4Controller::UpdateRackets() {
   model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
   if (keys[OF_KEY_LEFT] && model_.racket1_target.x > -half_court_length) {
-    model_.racket1_target.x -= racket_speed * model_.time_scale;
+    model_.racket1_target.x -= racket_speed /* model_.time_scale*/;
   }
-  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
-    model_.racket1_target.x += racket_speed * model_.time_scale;
+  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed /* model_.time_scale*/ - racket_radius) {
+    model_.racket1_target.x += racket_speed /* model_.time_scale*/;
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
 }

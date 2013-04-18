@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -28,6 +29,7 @@ public:
   bool reset_ball;
 
   std::vector<ofPoint> points;
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

@@ -37,6 +37,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
     if (model_.bounces == 2) {
       model_.angle = 0.0;
       model_.score += 1;
+      model_.dialogue.Trigger("point");
     }
   } else if (ball && court && ball->GetPosition().x < 0) {
     model_.bounces = 0;
@@ -63,9 +64,35 @@ void Scene3Controller::Setup() {
   CreateCourt();
   CreateNet();
   model_.world.SetContactListener(this);
+  const ofPoint right(768-256, 550);
+  const float pause = 1.0;
+  model_.dialogue
+      .Speed(100.0)
+      .Position("right", right)
+      .Message("I don't believe in gravity, I will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I have time, I will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I have many racquets, I will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("We're playing a whole different game,\nwe will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I'm made of glass, I will surely win this match!", "right")
+      .Barrier("point").Clear()
+      .Barrier("point")
+      .Message("I'm la...", "right").Pause(0.5).Clear().Pause(0.5)
+      .Message("I've spent my life studying this game,\nI will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I'm the score itself, I will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I have no money, I will surely win this match!", "right")
+      .Barrier("point").Clear().Pause(pause)
+      .Message("I'm you, I will surely win this match!", "right")
+      .Barrier("point").Clear();
 }
 
 void Scene3Controller::Update() {
+  model_.dialogue.Update();
   if (model_.score >= 10) {
     scene_manager.NextScene();
     return;

@@ -16,8 +16,10 @@ public:
   class Event {
   public:
     enum class Type {
+      BACKGROUND,
       BARRIER,
       CLEAR,
+      FOREGROUND,
       MESSAGE,
       PAUSE,
       POSITION,
@@ -26,6 +28,13 @@ public:
     Event(Type type) : type(type) {}
     virtual ~Event() {}
     Type type;
+  };
+
+  class BackgroundEvent : public Event {
+  public:
+    BackgroundEvent(ofColor color) : Event(Event::Type::BACKGROUND), color(color) {}
+    virtual ~BackgroundEvent() {}
+    ofColor color;
   };
 
   class BarrierEvent : public Event {
@@ -39,6 +48,13 @@ public:
   public:
     ClearEvent() : Event(Event::Type::CLEAR) {}
     virtual ~ClearEvent() {}
+  };
+
+  class ForegroundEvent : public Event {
+  public:
+    ForegroundEvent(ofColor color) : Event(Event::Type::FOREGROUND), color(color) {}
+    virtual ~ForegroundEvent() {}
+    ofColor color;
   };
 
   class MessageEvent : public Event {
@@ -73,9 +89,13 @@ public:
     float speed;
   };
 
+  Dialogue &Background(ofColor color);
+
   Dialogue &Barrier(const std::string &barrier);
 
   Dialogue &Clear();
+
+  Dialogue &Foreground(ofColor color);
 
   Dialogue &Message(const std::string &message, const std::string &label);
 
@@ -106,6 +126,7 @@ private:
   std::map<std::string, MessageEvent *> messages;
   std::string last_message_label;
   std::map<std::string, bool> barriers;
+  ofColor background, foreground;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

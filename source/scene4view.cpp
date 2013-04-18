@@ -48,6 +48,7 @@ void Scene4View::Draw(Model &model) {
     ofSetColor(ofColor::white);
   }
   trees[0].draw(870, 157);
+  scene4_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   DrawCourt();
@@ -57,10 +58,10 @@ void Scene4View::Draw(Model &model) {
   ofBeginShape();
   ofVertices(scene4_model.points);
   ofEndShape();
-  for (auto point : scene4_model.points) {
-    std::cout << "(" << point.x << ", " << point.y << ")" << std::endl;
-  }
-  std::cout << "//" << std::endl;
+//  for (auto point : scene4_model.points) {
+//    std::cout << "(" << point.x << ", " << point.y << ")" << std::endl;
+//  }
+//  std::cout << "//" << std::endl;
   //DrawTreePeople(scene4_model);
   if (scene4_model.ball_body) {
     DrawBall(ofVec2f(scene4_model.ball_body->GetPosition().x,
