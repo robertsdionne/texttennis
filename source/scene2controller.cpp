@@ -49,9 +49,21 @@ void Scene2Controller::Setup() {
   low_music.play();
   high_music.play();
   scene_begin_time = ofGetElapsedTimef();
+  const ofPoint left(256-64, 400);
+  const ofPoint right(768-64, 400);
+  const float pause = 0.5;
+  model_.dialogue
+      .Speed(20.0)
+      .Position("left", left)
+      .Position("right", right)
+      .Message("You know why you're here, right?", "right").Pause(pause)
+      .Message("No, why am I here?", "left").Pause(pause)
+      .Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(pause)
+      .Clear();
 }
 
 void Scene2Controller::Update() {
+  model_.dialogue.Update();
   UpdateRackets();
   model_.world.Step(delta_time * 0.5, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.score >= 500.0) {

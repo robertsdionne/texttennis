@@ -19,6 +19,7 @@ void Scene2View::Setup() {
 void Scene2View::Draw(Model &model) {
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
+  scene2_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   ofPushMatrix();

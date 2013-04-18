@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -22,6 +23,8 @@ public:
 
   float scene_start_time;
   float rotation;
+
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE1MODEL_H_

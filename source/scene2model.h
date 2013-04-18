@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -24,6 +25,8 @@ public:
   ofVec2f racket1_target;
 
   float score;
+  
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE2MODEL_H_

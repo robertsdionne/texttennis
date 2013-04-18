@@ -2,6 +2,8 @@
 #define TEXTTENNIS_DIALOGUE_H_
 
 #include <deque>
+#include <map>
+#include <vector>
 
 #include "ofMain.h"
 
@@ -14,10 +16,11 @@ public:
   class Event {
   public:
     enum class Type {
+      BARRIER,
       CLEAR,
       MESSAGE,
       PAUSE,
-      POP,
+      POSITION,
       SPEED
     };
     Event(Type type) : type(type) {}
@@ -25,50 +28,64 @@ public:
     Type type;
   };
 
-  class Clear : public Event {
+  class BarrierEvent : public Event {
   public:
-    Clear() : Event(Event::Type::CLEAR) {}
-    virtual ~Clear() {}
+    BarrierEvent(const std::string &barrier) : Event(Event::Type::BARRIER), barrier(barrier) {}
+    virtual ~BarrierEvent() {}
+    std::string barrier;
   };
 
-  class Message : public Event {
+  class ClearEvent : public Event {
   public:
-    Message(const std::string &message, ofPoint position)
-    : message(message), position(position), Event(Event::Type::MESSAGE) {}
-    virtual ~Message() {}
+    ClearEvent() : Event(Event::Type::CLEAR) {}
+    virtual ~ClearEvent() {}
+  };
+
+  class MessageEvent : public Event {
+  public:
+    MessageEvent(const std::string &message, const std::string &label)
+    : Event(Event::Type::MESSAGE), message(message), label(label) {}
+    virtual ~MessageEvent() {}
     std::string message;
-    ofPoint position;
+    std::string label;
   };
 
-  class Pause : public Event {
+  class PauseEvent : public Event {
   public:
-    Pause(float duration) : duration(duration), Event(Event::Type::PAUSE) {}
-    virtual ~Pause() {}
+    PauseEvent(float duration) : Event(Event::Type::PAUSE), duration(duration) {}
+    virtual ~PauseEvent() {}
     float duration;
   };
 
-  class Pop : public Event {
+  class PositionEvent : public Event {
   public:
-    Pop() : Event(Event::Type::POP) {}
-    virtual ~Pop() {}
+    PositionEvent(const std::string &label, ofPoint position)
+    : Event(Event::Type::POSITION), label(label), position(position) {}
+    virtual ~PositionEvent() {}
+    std::string label;
+    ofPoint position;
   };
 
-  class Speed : public Event {
+  class SpeedEvent : public Event {
   public:
-    Speed(float speed) : speed(speed), Event(Event::Type::SPEED) {}
-    virtual ~Speed() {}
+    SpeedEvent(float speed) : Event(Event::Type::SPEED), speed(speed) {}
+    virtual ~SpeedEvent() {}
     float speed;
   };
 
-  Dialogue &AddClear();
+  Dialogue &Barrier(const std::string &barrier);
 
-  Dialogue &AddMessage(const std::string &message, ofPoint position);
+  Dialogue &Clear();
 
-  Dialogue &AddPause(float duration);
+  Dialogue &Message(const std::string &message, const std::string &label);
 
-  Dialogue &AddPop();
+  Dialogue &Pause(float duration);
 
-  Dialogue &AddSpeed(float speed);
+  Dialogue &Position(const std::string &message, ofPoint position);
+
+  Dialogue &Speed(float speed);
+
+  void Trigger(const std::string &barrier);
 
   void Draw();
 
@@ -79,10 +96,16 @@ public:
   void Update();
 
 private:
+  bool IsBlocked() const;
+
+private:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
-  std::deque<Message *> last_messages;
   int event_index, message_index;
+  std::map<std::string, ofPoint> positions;
+  std::map<std::string, MessageEvent *> messages;
+  std::string last_message_label;
+  std::map<std::string, bool> barriers;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_
