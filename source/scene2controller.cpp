@@ -54,9 +54,11 @@ void Scene2Controller::Setup() {
   const float pause = 0.5;
   model_.dialogue
       .Speed(20.0)
-      .Message("You know why you're here, right?", right).Pause(pause)
-      .Message("No, why am I here?", left).Pause(pause)
-      .Pop().Message("Because you're bad at tennis.\nI'm gonna make you good.", right).Pause(pause)
+      .Position("left", left)
+      .Position("right", right)
+      .Message("You know why you're here, right?", "right").Pause(pause)
+      .Message("No, why am I here?", "left").Pause(pause)
+      .Pop().Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(pause)
       .Clear();
 }
 

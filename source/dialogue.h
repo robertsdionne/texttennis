@@ -2,6 +2,8 @@
 #define TEXTTENNIS_DIALOGUE_H_
 
 #include <deque>
+#include <map>
+#include <vector>
 
 #include "ofMain.h"
 
@@ -18,6 +20,7 @@ public:
       MESSAGE,
       PAUSE,
       POP,
+      POSITION,
       SPEED
     };
     Event(Type type) : type(type) {}
@@ -33,16 +36,16 @@ public:
 
   class MessageEvent : public Event {
   public:
-    MessageEvent(const std::string &message, ofPoint position)
-    : message(message), position(position), Event(Event::Type::MESSAGE) {}
+    MessageEvent(const std::string &message, const std::string &label)
+    : Event(Event::Type::MESSAGE), message(message), label(label) {}
     virtual ~MessageEvent() {}
     std::string message;
-    ofPoint position;
+    std::string label;
   };
 
   class PauseEvent : public Event {
   public:
-    PauseEvent(float duration) : duration(duration), Event(Event::Type::PAUSE) {}
+    PauseEvent(float duration) : Event(Event::Type::PAUSE), duration(duration) {}
     virtual ~PauseEvent() {}
     float duration;
   };
@@ -53,20 +56,31 @@ public:
     virtual ~PopEvent() {}
   };
 
+  class PositionEvent : public Event {
+  public:
+    PositionEvent(const std::string &label, ofPoint position)
+    : Event(Event::Type::POSITION), label(label), position(position) {}
+    virtual ~PositionEvent() {}
+    std::string label;
+    ofPoint position;
+  };
+
   class SpeedEvent : public Event {
   public:
-    SpeedEvent(float speed) : speed(speed), Event(Event::Type::SPEED) {}
+    SpeedEvent(float speed) : Event(Event::Type::SPEED), speed(speed) {}
     virtual ~SpeedEvent() {}
     float speed;
   };
 
   Dialogue &Clear();
 
-  Dialogue &Message(const std::string &message, ofPoint position);
+  Dialogue &Message(const std::string &message, const std::string &label);
 
   Dialogue &Pause(float duration);
 
   Dialogue &Pop();
+
+  Dialogue &Position(const std::string &message, ofPoint position);
 
   Dialogue &Speed(float speed);
 
@@ -83,6 +97,7 @@ private:
   float last_event_time, current_delay, speed;
   std::deque<MessageEvent *> last_messages;
   int event_index, message_index;
+  std::map<std::string, ofPoint> positions;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_
