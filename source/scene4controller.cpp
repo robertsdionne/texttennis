@@ -46,7 +46,13 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
           music.play();
-          model_.time_scale = 0.25;
+          model_.time_scale = 0.125;
+          hit1.setSpeed(0.5);
+          hit2.setSpeed(0.5);
+          bounce1.setSpeed(0.5);
+          bounce2.setSpeed(0.5);
+          bounce3.setSpeed(0.5);
+          bounce4.setSpeed(0.5);
         }
       }
     }
@@ -74,24 +80,25 @@ void Scene4Controller::Setup() {
   CreateNet();
   CreateTreePeople();
   model_.world.SetContactListener(this);
+  const float duration = 15.0;
   model_.dialogue
-      .Speed(100.0)
+      .Speed(10.0)
       .Foreground(ofColor::white)
-      .Position("tree0", ofPoint(835, 100))
-      .Position("tree1", ofPoint(750, 165))
-      .Position("tree2", ofPoint(650, 250))
-      .Position("tree3", ofPoint(550, 300))
-      .Position("tree4", ofPoint(450, 350))
-      .Barrier("collide")
-      .Message("Ladies and gentlemen,\nwe are proud to present\na short story,\n\"Nothing is Real.\"", "tree0")
-      .Barrier("collide")
-      .Message("The trees and\nthe tree people\nwere in disagreement.", "tree1")
-      .Barrier("collide")
-      .Message("\"Let's work it out,\"\none person said.", "tree2")
-      .Barrier("collide")
-      .Message("But nothing changed.", "tree3")
-      .Barrier("collide")
-      .Message("The end.", "tree4");
+      .Position("tree0", ofPoint(512, 100))
+      .Position("tree1", ofPoint(512, 180))
+      .Position("tree2", ofPoint(512, 245))
+      .Position("tree3", ofPoint(512, 295))
+      .Position("tree4", ofPoint(512, 330))
+      .Barrier("collide").Speed(69.0 / duration)
+      .Message("Ladies and gentlemen,\nwe are proud to present\na short story,\n\"Nothing is real.\"", "tree0") // 69
+      .Barrier("collide").Speed(51.0 / duration)
+      .Message("The trees and\nthe tree people\nwere in disagreement.", "tree1") // 51
+      .Barrier("collide").Speed(37.0 / duration)
+      .Message("\"Let's work it out,\"\none person said.", "tree2") // 37
+      .Barrier("collide").Speed(20.0 / duration)
+      .Message("But nothing changed.", "tree3") // 20
+      .Barrier("collide").Speed(8.0 / duration)
+      .Message("The end.", "tree4"); // 8
 }
 
 void Scene4Controller::Update() {
@@ -126,7 +133,7 @@ void Scene4Controller::Update() {
     model_.bounces = 0;
   }
   UpdateRackets();
-  model_.world.Step(delta_time /* model_.time_scale*/, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(delta_time * model_.time_scale, box2d_velocity_iterations, box2d_position_iterations);
   if (!model_.ball_body) {
     CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
@@ -329,10 +336,10 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 void Scene4Controller::UpdateRackets() {
   model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
   if (keys[OF_KEY_LEFT] && model_.racket1_target.x > -half_court_length) {
-    model_.racket1_target.x -= racket_speed /* model_.time_scale*/;
+    model_.racket1_target.x -= racket_speed * model_.time_scale;
   }
-  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed /* model_.time_scale*/ - racket_radius) {
-    model_.racket1_target.x += racket_speed /* model_.time_scale*/;
+  if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
+    model_.racket1_target.x += racket_speed * model_.time_scale;
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
 }

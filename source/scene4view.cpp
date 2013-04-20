@@ -58,11 +58,6 @@ void Scene4View::Draw(Model &model) {
   ofBeginShape();
   ofVertices(scene4_model.points);
   ofEndShape();
-//  for (auto point : scene4_model.points) {
-//    std::cout << "(" << point.x << ", " << point.y << ")" << std::endl;
-//  }
-//  std::cout << "//" << std::endl;
-  //DrawTreePeople(scene4_model);
   if (scene4_model.ball_body) {
     DrawBall(ofVec2f(scene4_model.ball_body->GetPosition().x,
                      scene4_model.ball_body->GetPosition().y),
