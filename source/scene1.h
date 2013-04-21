@@ -24,7 +24,11 @@ public:
   virtual void Update();
 
   virtual ofPoint GetPlayerPosition() {
-    return ofVec2f(0, court_height) - model.racket2;
+    if (model.rotation < 0.999) {
+      return ofVec2f(-model.racket2.x, model.racket2.y);
+    } else {
+      return ofVec2f(0, court_height) - model.racket2;
+    }
   }
 
 private:
