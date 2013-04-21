@@ -18,4 +18,5 @@ void Scene5View::Draw(Model &model) {
   ofBackground(ofColor::black);
   Scene5Model &scene5_model = dynamic_cast<Scene5Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
+  scene5_model.dialogue.Draw();
 }

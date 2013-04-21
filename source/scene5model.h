@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -12,6 +13,8 @@ public:
   Scene5Model();
   
   virtual ~Scene5Model() {}
+
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE5MODEL_H_

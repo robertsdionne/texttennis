@@ -20,7 +20,7 @@ Scene *Scene4::Create(TextTennis &scene_manager, ofPoint player_position) {
 void Scene4::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 4\nTree people.\n\nLEFT - left\nRIGHT - right", 100, 100);
+  //ofDrawBitmapString("Scene 4\nTree people.\n\nLEFT - left\nRIGHT - right", 100, 100);
 }
 
 void Scene4::Setup() {
