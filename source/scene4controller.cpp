@@ -108,6 +108,7 @@ void Scene4Controller::Update() {
       DestroyBall(model_.ball_body);
       model_.ball_body = nullptr;
     }
+    //model_.ball_trail.clear();
     model_.reset_ball = false;
   }
   for (int i = 0; i < 5; ++i) {
@@ -134,6 +135,16 @@ void Scene4Controller::Update() {
   }
   UpdateRackets();
   model_.world.Step(delta_time * model_.time_scale, box2d_velocity_iterations, box2d_position_iterations);
+  if (model_.ball_trail.size() > ball_trail_length) {
+    model_.ball_trail.pop_front();
+    model_.noise.pop_front();
+    model_.time_scales.pop_front();
+  }
+  if (model_.ball_body) {
+    model_.ball_trail.push_back(OpenFrameworksVector(model_.ball_body->GetPosition()));
+    model_.noise.push_back(2.0 * ofVec2f(ofSignedNoise(8.0 * ofGetElapsedTimef()), ofSignedNoise(-8.0 * ofGetElapsedTimef())));
+    model_.time_scales.push_back(model_.time_scale);
+  }
   if (!model_.ball_body) {
     CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }

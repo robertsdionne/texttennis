@@ -155,6 +155,11 @@ void Scene1Controller::CreateCourt() {
   court_fixture_definition.shape = &court_shape;
   court_fixture_definition.friction = friction;
   model_.court_body->CreateFixture(&court_fixture_definition);
+
+  court_shape.SetAsBox(half_court_length, court_thickness,
+                       b2Vec2(0.0, court_height - half_court_thickness), 0.0);
+  court_fixture_definition.shape = &court_shape;
+  model_.court_body->CreateFixture(&court_fixture_definition);
 }
 
 void Scene1Controller::CreateNet() {

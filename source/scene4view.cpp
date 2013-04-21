@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "constants.h"
 #include "model.h"
 #include "scene4model.h"
@@ -59,7 +61,7 @@ void Scene4View::Draw(Model &model) {
   ofVertices(scene4_model.points);
   ofEndShape();
   if (scene4_model.ball_body) {
-    DrawBall(ofVec2f(scene4_model.ball_body->GetPosition().x,
+    DrawBall(scene4_model, ofVec2f(scene4_model.ball_body->GetPosition().x,
                      scene4_model.ball_body->GetPosition().y),
              scene4_model.ball_body->GetAngle());
   }
@@ -67,11 +69,30 @@ void Scene4View::Draw(Model &model) {
   ofPopMatrix();
 }
 
-void Scene4View::DrawBall(ofVec2f position, float angle) const {
+void Scene4View::DrawBall(Scene4Model &model, ofVec2f position, float angle) {
   ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, ball_radius);
+  ofNoFill();
+  int index = 0;
+  ofPoint *previous = nullptr;
+  for (auto &point : model.ball_trail) {
+    if (previous) {
+      ofVec2f offset0 = ofVec2f(0.0, 2.0 * delta_time * model.time_scales[index - 1] * (model.ball_trail.size() - index));
+      ofVec2f offset1 = ofVec2f(0.0, 2.0 * delta_time * model.time_scales[index - 1] * (model.ball_trail.size() - (index + 1)));
+      ofVec2f noise0 = model.noise[index] * static_cast<float>(model.ball_trail.size() - index) / ball_trail_length;
+      ofVec2f noise1 = model.noise[index + 1] * static_cast<float>(model.ball_trail.size() - (index + 1)) / ball_trail_length;
+      ofSetColor(ofColor::white, static_cast<float>(index) / ball_trail_length * 255.0);
+      if ((point - *previous).lengthSquared() < 5.0) {
+        ofLine(*previous + offset0 + noise0, point + offset1 + noise1);
+      }
+    }
+    index += 1;
+    previous = &point;
+  }
+  ofFill();
   ofSetColor(ofColor::white);
+  ofCircle(position, ball_radius);
+  ofSetColor(ofColor::black);
+  ofLine(position, position - ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }

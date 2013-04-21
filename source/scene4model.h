@@ -2,6 +2,7 @@
 #define TEXTTENNIS_SCENE4MODEL_H_
 
 #include <Box2D/Box2D.h>
+#include <deque>
 #include <list>
 
 #include "dialogue.h"
@@ -27,6 +28,9 @@ public:
   int bounces;
   float time_scale;
   bool reset_ball;
+
+  std::deque<ofPoint> ball_trail, noise;
+  std::deque<float> time_scales;
 
   std::vector<ofPoint> points;
   Dialogue dialogue;
