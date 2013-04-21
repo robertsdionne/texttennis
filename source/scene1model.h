@@ -24,6 +24,7 @@ public:
 
   float scene_start_time;
   float rotation;
+  float title;
 
   Dialogue dialogue;
 };

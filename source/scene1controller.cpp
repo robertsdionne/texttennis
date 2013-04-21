@@ -85,8 +85,11 @@ void Scene1Controller::Update() {
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 20.0) {
+  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 2.0) {
     model_.rotation += 0.001;
+  }
+  if (model_.rotation >= 0.999 && model_.title < 1.0) {
+    model_.title += 0.001;
   }
   if (!model_.ball_body) {
     CreateBall(ofVec2f(6, court_thickness + ball_radius + 1), ofVec2f(), 0.0, 0.0);

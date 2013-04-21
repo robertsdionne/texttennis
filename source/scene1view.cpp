@@ -15,6 +15,8 @@ void Scene1View::Setup() {
   bg[2].loadImage("bg3.png");
   bg[3].loadImage("bg4.png");
   spiral.loadImage("spiral.png");
+  text.loadImage("scene1_titleImage_text.png");
+  tennis.loadImage("scene1_titleImage_Tennis.png");
 }
 
 void Scene1View::Draw(Model &model) {
@@ -22,6 +24,17 @@ void Scene1View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);
   bg[0].draw(ofPoint());
+  ofPushMatrix();
+  float scale = scene1_model.title;
+  ofTranslate(window_width / 2.0, window_height / 2.0);
+  ofScale(scale, scale);
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  ofSetColor(ofColor::white, scene1_model.title * 255.0);
+  text.draw(Lerp(ofVec2f(0, 0), ofVec2f(0, -window_height / 4.0), scene1_model.title));
+  tennis.draw(Lerp(ofVec2f(0, 0), ofVec2f(0.0, window_height / 4.0), scene1_model.title));
+  ofSetRectMode(OF_RECTMODE_CORNER);
+  ofPopMatrix();
+  ofSetColor(ofColor::white);
   scene1_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
@@ -31,7 +44,7 @@ void Scene1View::Draw(Model &model) {
   ofSetColor(ofColor::white, H01(1.0 - ofClamp(scene1_model.rotation - 0.9, 0, 1.0) * 10.0) * 128.0);
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofPushMatrix();
-  const float scale = court_length / window_width;
+  scale = court_length / window_width;
   ofScale(scale, -scale);
   spiral.draw(0, -half_court_height / scale);
   ofPopMatrix();

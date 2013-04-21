@@ -30,7 +30,7 @@ private:
   float H01(float t) const;
 
   ofImage bg[4];
-  ofImage spiral;
+  ofImage spiral, text, tennis;
 };
 
 #endif  // TEXTTENNIS_SCENE1VIEW_H_
