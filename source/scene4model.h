@@ -11,7 +11,7 @@
 
 class Scene4Model : public Model {
 public:
-  Scene4Model();
+  Scene4Model(ofPoint player_position);
   
   virtual ~Scene4Model() {}
   

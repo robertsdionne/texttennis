@@ -10,7 +10,7 @@
 
 class Scene3Model : public Model {
 public:
-  Scene3Model();
+  Scene3Model(ofPoint player_position);
   
   virtual ~Scene3Model() {}
   

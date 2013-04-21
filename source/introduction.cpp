@@ -13,7 +13,7 @@ Introduction::~Introduction() {
   ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
-Scene *Introduction::Create(TextTennis &scene_manager) {
+Scene *Introduction::Create(TextTennis &scene_manager, ofPoint player_position) {
   return new Introduction(scene_manager);
 }
 

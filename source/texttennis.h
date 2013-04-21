@@ -42,7 +42,7 @@ private:
 
   void DeleteCurrentScene();
 
-  typedef std::tr1::function<Scene *(TextTennis &)> SceneFactoryFunction;
+  typedef std::tr1::function<Scene *(TextTennis &, ofPoint)> SceneFactoryFunction;
 
   std::vector<SceneFactoryFunction> scene_factory_functions;
   int scene_index;

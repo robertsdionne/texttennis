@@ -12,7 +12,7 @@ Scene5::~Scene5() {
   ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
-Scene *Scene5::Create(TextTennis &scene_manager) {
+Scene *Scene5::Create(TextTennis &scene_manager, ofPoint player_position) {
   return new Scene5(scene_manager);
 }
 

@@ -86,8 +86,14 @@ void TextTennis::ToggleSettings() {
 }
 
 void TextTennis::CreateScene() {
+  ofPoint player_position;
+  if (current_scene) {
+    player_position = current_scene->GetPlayerPosition();
+  } else {
+    player_position = racket1_start_position.GetValue();
+  }
   DeleteCurrentScene();
-  current_scene = scene_factory_functions[scene_index](*this);
+  current_scene = scene_factory_functions[scene_index](*this, player_position);
   current_scene->Setup();
 }
 

@@ -1,6 +1,7 @@
 #ifndef TEXTTENNIS_SCENE5_H_
 #define TEXTTENNIS_SCENE5_H_
 
+#include "ofMain.h"
 #include "scene5controller.h"
 #include "scene5model.h"
 #include "scene.h"
@@ -14,13 +15,17 @@ public:
 
   virtual ~Scene5();
 
-  static Scene *Create(TextTennis &scene_manager);
+  static Scene *Create(TextTennis &scene_manager, ofPoint player_position);
 
   virtual void Draw();
 
   virtual void Setup();
 
   virtual void Update();
+
+  virtual ofPoint GetPlayerPosition() {
+    return racket1_start_position.GetValue();
+  }
 
 private:
   Scene5Model model;
