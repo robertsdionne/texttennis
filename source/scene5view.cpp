@@ -18,9 +18,4 @@ void Scene5View::Setup() {
 void Scene5View::Draw(Model &model) {
   Scene5Model &scene5_model = dynamic_cast<Scene5Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
-  ofPushMatrix();
-  std::string hi = std::string("Test test test");
-  //font.drawStringAsShapes(hi, 20, 20);
-  ofPopMatrix();
-
 }
