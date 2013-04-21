@@ -19,7 +19,7 @@ void Scene2View::Setup() {
 void Scene2View::Draw(Model &model) {
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
-  ofBackground(ofColor(255, 0, 0).lerp(ofColor::white, scene2_model.score / 500.0));
+  ofBackground(ofColor(255, 0, 0).lerp(ofColor::black, scene2_model.score / 500.0));
   scene2_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
@@ -41,7 +41,7 @@ void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, fl
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofCircle(position, radius);
-  ofSetColor(ofColor(255, 0, 0).lerp(ofColor::white, model.score / 500.0));
+  ofSetColor(ofColor(255, 0, 0).lerp(ofColor::black, model.score / 500.0));
   const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
   ofLine(position, position - beam);
   ofLine(position, position + beam);
