@@ -84,6 +84,7 @@ void Scene4Controller::Setup() {
   model_.dialogue
       .Speed(10.0)
       .Foreground(ofColor::white)
+      .Background(ofColor(255, 255, 255, 32))
       .Position("tree0", ofPoint(512, 100))
       .Position("tree1", ofPoint(512, 180))
       .Position("tree2", ofPoint(512, 245))
@@ -142,7 +143,7 @@ void Scene4Controller::Update() {
   }
   if (model_.ball_body) {
     model_.ball_trail.push_back(OpenFrameworksVector(model_.ball_body->GetPosition()));
-    model_.noise.push_back(2.0 * ofVec2f(ofSignedNoise(8.0 * ofGetElapsedTimef()), ofSignedNoise(-8.0 * ofGetElapsedTimef())));
+    model_.noise.push_back(2.0 * ofVec2f(ofSignedNoise(model_.time_scale * 8.0 * ofGetElapsedTimef()), ofSignedNoise(model_.time_scale * -8.0 * ofGetElapsedTimef())));
     model_.time_scales.push_back(model_.time_scale);
   }
   if (!model_.ball_body) {

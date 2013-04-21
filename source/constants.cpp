@@ -16,7 +16,7 @@ DEFINE_PARAMETER(ofVec2f, ball_initial_velocity,
                                                      DEPENDENCY(ball_initial_position)).normalized());
 DEFINE_PARAMETER_RANGE(float, ball_mass, 0.056, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, ball_radius, DEPENDENCY(ball_cartoon_factor) * 0.03429, 0.0, 10.0);
-DEFINE_PARAMETER(int, ball_trail_length, 512);
+DEFINE_PARAMETER(int, ball_trail_length, 256);
 DEFINE_PARAMETER_RANGE(int, box2d_velocity_iterations, 8, 1, 10);
 DEFINE_PARAMETER_RANGE(int, box2d_position_iterations, 3, 1, 10);
 DEFINE_PARAMETER_RANGE(float, ceiling_height, 100.0, 0.0, 100.0);

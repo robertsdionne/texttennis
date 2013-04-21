@@ -20,9 +20,9 @@ TextTennis::TextTennis()
   show_sliders(false), float_panel(), int_panel() {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
-  scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene3::Create);
   scene_factory_functions.push_back(Scene4::Create);
+  scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
 }
 
