@@ -85,7 +85,7 @@ void Scene1Controller::Update() {
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 20.0) {
+  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 2.0) {
     model_.rotation += 0.001;
   }
   if (!model_.ball_body) {
@@ -164,11 +164,15 @@ void Scene1Controller::CreateCourt() {
 
 void Scene1Controller::CreateNet() {
   b2BodyDef net_body_definition;
-  net_body_definition.position.Set(0.0, court_thickness);
+  net_body_definition.position.Set(0.0, 0.0);
   model_.net_body = model_.world.CreateBody(&net_body_definition);
   b2EdgeShape net_shape;
-  net_shape.Set(b2Vec2(), b2Vec2(0.0, net_height));
+  net_shape.Set(b2Vec2(0.0, court_thickness), b2Vec2(0.0, court_thickness + net_height));
   b2FixtureDef net_fixture_definition;
+  net_fixture_definition.shape = &net_shape;
+  model_.net_body->CreateFixture(&net_fixture_definition);
+
+  net_shape.Set(b2Vec2(0.0, court_height - court_thickness), b2Vec2(0.0, court_height - court_thickness - net_height));
   net_fixture_definition.shape = &net_shape;
   model_.net_body->CreateFixture(&net_fixture_definition);
 }
@@ -209,11 +213,27 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 void Scene1Controller::UpdateRackets() {
   model_.racket2 = Lerp(model_.racket2, model_.racket2_target, player_move_smooth_factor);
   model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
-  if (keys[OF_KEY_LEFT] && model_.racket2_target.x >  racket_speed + racket_radius) {
-    model_.racket2_target.x -= racket_speed;
-  }
-  if (keys[OF_KEY_RIGHT] && model_.racket2_target.x < half_court_length) {
-    model_.racket2_target.x += racket_speed;
+  if (model_.rotation < 0.999) {
+    if (keys[OF_KEY_LEFT] && model_.racket2_target.x >  racket_speed + racket_radius) {
+      model_.racket2_target.x -= racket_speed;
+    }
+    if (keys[OF_KEY_RIGHT] && model_.racket2_target.x < half_court_length) {
+      model_.racket2_target.x += racket_speed;
+    }
+  } else {
+    if (model_.racket2_target.y < court_height - court_thickness - racket_radius) {
+      const ofVec2f gravity_force = -OpenFrameworksVector(gravity_vector.GetValue());
+      model_.racket2_velocity += gravity_force * delta_time;
+      model_.racket2_target += model_.racket2_velocity * delta_time;
+    } else {
+      model_.racket2_target.y = court_height - court_thickness - racket_radius;
+    }
+    if (keys[OF_KEY_LEFT] && model_.racket2_target.x < half_court_length) {
+      model_.racket2_target.x += racket_speed;
+    }
+    if (keys[OF_KEY_RIGHT] && model_.racket2_target.x > racket_speed + racket_radius) {
+      model_.racket2_target.x -= racket_speed;
+    }
   }
   // opponent
   if (model_.ball_body && model_.ball_body->GetPosition().x < 0) {
@@ -232,6 +252,11 @@ void Scene1Controller::UpdateRackets() {
       model_.racket1_target.x += dx;
     }
   }
-  RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  if (model_.rotation < 0.999) {
+    RacketCollide(model_.racket2, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  } else {
+    RacketCollide(model_.racket2, -racket_diagonal_hit_direction.GetValue(), low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    RacketCollide(model_.racket1, racket_diagonal_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  }
 }

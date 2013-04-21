@@ -46,6 +46,7 @@ extern Parameter<float> net_thickness;
 extern Parameter<float> player_move_smooth_factor;
 extern Parameter<float> racket_radius;
 extern Parameter<float> racket_speed;
+extern Parameter<ofVec2f> racket_diagonal_hit_direction;
 extern Parameter<ofVec2f> racket1_high_hit_direction;
 extern Parameter<ofVec2f> racket1_low_hit_direction;
 extern Parameter<ofVec2f> racket1_start_position;

@@ -50,6 +50,7 @@ DEFINE_PARAMETER_RANGE(float, net_thickness, DEPENDENCY(ball_radius), 0.0, 10.0)
 DEFINE_PARAMETER_RANGE(float, player_move_smooth_factor, 0.2, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, racket_radius, DEPENDENCY(ball_cartoon_factor) * 0.1155, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, racket_speed, 0.15, 0.0, 10.0);
+DEFINE_PARAMETER(ofVec2f, racket_diagonal_hit_direction, ofVec2f(1.0, 1.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_high_hit_direction, ofVec2f(1.0, 1.0).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_low_hit_direction, ofVec2f(1.0, 0.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_start_position,
