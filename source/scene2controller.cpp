@@ -26,19 +26,6 @@ Scene2Controller::~Scene2Controller() {
 }
 
 void Scene2Controller::BeginContact(b2Contact* contact) {
-  if (ofRandomuf() < 0.5) {
-    if (ofRandomuf() < 0.5) {
-      bounce1.play();
-    } else {
-      bounce2.play();
-    }
-  } else {
-    if (ofRandomuf() < 0.5) {
-      bounce3.play();
-    } else {
-      bounce4.play();
-    }
-  }
 }
 
 void Scene2Controller::Setup() {
@@ -194,7 +181,6 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }
