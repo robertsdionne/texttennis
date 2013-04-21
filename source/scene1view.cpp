@@ -14,6 +14,7 @@ void Scene1View::Setup() {
   bg[1].loadImage("bg2.png");
   bg[2].loadImage("bg3.png");
   bg[3].loadImage("bg4.png");
+  spiral.loadImage("spiral.png");
 }
 
 void Scene1View::Draw(Model &model) {
@@ -27,6 +28,14 @@ void Scene1View::Draw(Model &model) {
   ofTranslate(0.0, court_height / 2.0);
   ofRotateZ(H01(scene1_model.rotation) * 180.0);
   ofTranslate(0.0, -court_height / 2.0);
+  ofSetColor(ofColor::white, H01(1.0 - ofClamp(scene1_model.rotation - 0.9, 0, 1.0) * 10.0) * 128.0);
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  ofPushMatrix();
+  const float scale = court_length / window_width;
+  ofScale(scale, -scale);
+  spiral.draw(0, -half_court_height / scale);
+  ofPopMatrix();
+  ofSetRectMode(OF_RECTMODE_CORNER);
   DrawCourt(scene1_model);
   DrawNet(scene1_model);
   DrawRacket(scene1_model.racket1);

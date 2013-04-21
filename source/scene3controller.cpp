@@ -68,6 +68,7 @@ void Scene3Controller::Setup() {
   const float pause = 1.0;
   model_.dialogue
       .Speed(100.0)
+      .Foreground(ofColor::white)
       .Position("right", right)
       .Message("I don't believe in gravity, I will surely win this match!", "right")
       .Barrier("point").Clear().Pause(pause)

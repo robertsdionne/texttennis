@@ -327,19 +327,23 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const float dx = model_.ball_body->GetLinearVelocity().x;
     if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
         && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
-      float variance = 0.0;
-      float angular_velocity = 0.0;
-      if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
-        variance = -hit_variance * ofRandomuf();
-      } else if ((keys[key_left] && dx > 0) || (keys[key_right] && dx < 0)) {
-        variance = hit_variance * ofRandomuf();
-      } else {
-        variance = hit_variance * ofRandomf();
+      if (4 - model_.score > -1) {
+        const float angle[] = {
+          80.0,
+          50.0,
+          40.0,
+          30.0,
+          20.0
+        };
+        const ofVec2f target = OpenFrameworksVector(model_.tree_people[4 - model_.score]->GetPosition());
+        const float range = target.x - model_.ball_body->GetPosition().x;
+        const float speed = sqrt(range * gravity / sin(2.0 * ofDegToRad(angle[4 - model_.score])));
+        std::cout << speed << std::endl;
+        const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
+        model_.ball_body->SetLinearVelocity(velocity);
+        model_.bounces = 0;
+        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
       }
-      const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
-      model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
-      model_.bounces = 0;
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }
@@ -352,5 +356,5 @@ void Scene4Controller::UpdateRackets() {
   if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
     model_.racket1_target.x += racket_speed * model_.time_scale;
   }
-  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  RacketCollide(model_.racket1, racket1_low_hit_direction, 16.0, OF_KEY_LEFT, OF_KEY_RIGHT);
 }

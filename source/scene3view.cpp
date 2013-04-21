@@ -13,11 +13,11 @@ void Scene3View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
+  ofBackground(ofColor::black);
   for (int i = 0; i < 10; ++i) {
     std::stringstream top_filename, bottom_filename;
-    top_filename << i << "_top.png";
-    bottom_filename << i << "_bottom.png";
+    top_filename << i << "_top_inverted.png";
+    bottom_filename << i << "_bottom_inverted.png";
     top[i].loadImage(top_filename.str());
     bottom[i].loadImage(bottom_filename.str());
   }
@@ -82,16 +82,16 @@ void Scene3View::Draw(Model &model) {
 
 void Scene3View::DrawBall(ofVec2f position, float angle) const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, ball_radius);
   ofSetColor(ofColor::white);
+  ofCircle(position, ball_radius);
+  ofSetColor(ofColor::black);
   ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }
 
 void Scene3View::DrawCourt() const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -court_thickness);
   ofPopStyle();
 }
@@ -100,21 +100,21 @@ void Scene3View::DrawFrameRate() const {
   std::stringstream out;
   out << ofGetFrameRate();
   ofPushStyle();
-  ofSetColor(ofColor::white);
+  ofSetColor(ofColor::black);
   ofDrawBitmapString(out.str(), -half_court_length, half_court_thickness);
   ofPopStyle();
 }
 
 void Scene3View::DrawNet() const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofRect(ofVec2f(-half_net_thickness, net_height + court_thickness), net_thickness, -net_height);
   ofPopStyle();
 }
 
 void Scene3View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofCircle(position, racket_radius);
   ofPopStyle();
 }

@@ -85,7 +85,7 @@ void Scene1Controller::Update() {
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 2.0) {
+  if (model_.rotation <= 0.999 && ofGetElapsedTimef() > model_.scene_start_time + 20.0) {
     model_.rotation += 0.001;
   }
   if (!model_.ball_body) {
