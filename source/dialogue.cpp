@@ -5,7 +5,7 @@
 Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
-  last_message_label(), barriers(), background(0, 0, 0, 0), foreground(0, 0, 0, 255) {}
+  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255) {}
 
 Dialogue::~Dialogue() {
   for (auto *event : events) {

@@ -13,6 +13,7 @@
 #include "ofxGui.h"
 #include "scene.h"
 #include "scene2view.h"
+#include "transition.h"
 
 class TextTennis : public ofBaseApp {
 public:
@@ -47,10 +48,12 @@ private:
   std::vector<SceneFactoryFunction> scene_factory_functions;
   int scene_index;
   Scene *current_scene;
+  Transition *transition;
 
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
+  ofImage bg1, bg2;
 };
 
 #endif  // TEXTTENNIS_H_

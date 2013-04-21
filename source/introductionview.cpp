@@ -14,10 +14,10 @@ void IntroductionView::Setup() const {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
 }
 
 void IntroductionView::Draw(Model &model) {
+  ofBackground(ofColor::white);
   IntroductionModel &introduction_model = dynamic_cast<IntroductionModel &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);

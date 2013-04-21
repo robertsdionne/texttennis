@@ -9,6 +9,8 @@ public:
 
   virtual void Draw() = 0;
 
+  virtual ofImage DrawImage();
+
   virtual void Setup() = 0;
 
   virtual void Update() = 0;
@@ -17,6 +19,9 @@ public:
 
 protected:
   Scene() {}
+
+private:
+  ofFbo fbo;
 };
 
 #endif  // TEXTTENNIS_SCENE_H_

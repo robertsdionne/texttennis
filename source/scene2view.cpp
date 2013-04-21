@@ -13,10 +13,10 @@ void Scene2View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::red);
 }
 
 void Scene2View::Draw(Model &model) {
+  ofBackground(ofColor::red);
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofBackground(ofColor(255, 0, 0).lerp(ofColor::black, scene2_model.score / 500.0));

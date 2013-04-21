@@ -20,10 +20,10 @@ void Scene4View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
 }
 
 void Scene4View::Draw(Model &model) {
+  ofBackground(ofColor::white);
   Scene4Model &scene4_model = dynamic_cast<Scene4Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);

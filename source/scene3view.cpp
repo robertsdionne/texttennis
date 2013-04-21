@@ -13,7 +13,6 @@ void Scene3View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::black);
   for (int i = 0; i < 10; ++i) {
     std::stringstream top_filename, bottom_filename;
     top_filename << i << "_top_inverted.png";
@@ -24,6 +23,7 @@ void Scene3View::Setup() {
 }
 
 void Scene3View::Draw(Model &model) {
+  ofBackground(ofColor::black);
   Scene3Model &scene3_model = dynamic_cast<Scene3Model &>(model);
 
   ofSetRectMode(OF_RECTMODE_CORNER);

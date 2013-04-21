@@ -9,7 +9,6 @@ void Scene1View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
   bg[0].loadImage("bg1.png");
   bg[1].loadImage("bg2.png");
   bg[2].loadImage("bg3.png");
@@ -20,6 +19,7 @@ void Scene1View::Setup() {
 }
 
 void Scene1View::Draw(Model &model) {
+  ofBackground(ofColor::white);
   Scene1Model &scene1_model = dynamic_cast<Scene1Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);

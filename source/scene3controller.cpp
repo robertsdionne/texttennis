@@ -117,10 +117,6 @@ void Scene3Controller::Update() {
   if (model_.angle <= 180.0 - 180.0 / 60.0) {
     model_.angle += 180.0 / 60.0;
   }
-  if (keys[' '] && !previous_keys[' ']) {
-    model_.angle = 0.0;
-    model_.score = (model_.score + 1) % 10;
-  }
   Controller::Update();
 }
 
