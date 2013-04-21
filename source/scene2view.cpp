@@ -42,8 +42,9 @@ void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, fl
   ofSetColor(ofColor::black);
   ofCircle(position, radius);
   ofSetColor(ofColor(255, 0, 0).lerp(ofColor::white, model.score / 500.0));
-  ofLine(position, position - radius * ofVec2f(cos(angle), sin(angle)));
-  ofLine(position, position + radius * ofVec2f(cos(angle), sin(angle)));
+  const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
+  ofLine(position, position - beam);
+  ofLine(position, position + beam);
   ofPopStyle();
 }
 

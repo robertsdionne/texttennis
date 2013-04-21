@@ -168,8 +168,8 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const ofVec2f position = ofVec2f(ball->GetPosition().x,
                                      ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
-    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
-        && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
+    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < racket_speed + racket_radius
+        && abs((position - racket_position).y) < racket_speed + 2.0 * racket_radius) {
       float variance = 0.0;
       float angular_velocity = 0.0;
       if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
