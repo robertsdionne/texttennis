@@ -5,6 +5,7 @@
 
 Scene2View::Scene2View()
 : font() {
+  bg.loadImage("ballscene.png");
   font.loadFont(font_filename, 2, true, false, true, 0.0);
 }
 
@@ -16,10 +17,10 @@ void Scene2View::Setup() {
 }
 
 void Scene2View::Draw(Model &model) {
-  ofBackground(ofColor::red);
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
-  ofBackground(ofColor(255, 0, 0).lerp(ofColor::black, scene2_model.score / 500.0));
+  ofSetColor(ofColor(255, 255, 255).lerp(ofColor::black, scene2_model.score / 500.0));
+  bg.draw(0, 0);
   scene2_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);

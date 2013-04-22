@@ -28,6 +28,7 @@ private:
   void DrawRacket(ofVec2f position) const;
 
 private:
+  ofImage bg;
   ofTrueTypeFont font;
 };
 

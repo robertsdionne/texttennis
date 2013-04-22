@@ -53,7 +53,7 @@ void Scene2Controller::Update() {
   model_.dialogue.Update();
   UpdateRackets();
   model_.world.Step(delta_time * 0.5, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.score >= 500.0) {
+  if (model_.score >= 450.0) {
     scene_manager.NextScene();
     return;
   }
