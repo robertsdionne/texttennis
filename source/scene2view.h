@@ -17,7 +17,7 @@ public:
   virtual void Draw(Model &model) override;
   
 private:
-  void DrawBall(ofVec2f position, float radius, float angle) const;
+  void DrawBall(Scene2Model &model, ofVec2f position, float radius, float angle) const;
   
   void DrawCourt() const;
   
@@ -28,6 +28,7 @@ private:
   void DrawRacket(ofVec2f position) const;
 
 private:
+  ofImage bg;
   ofTrueTypeFont font;
 };
 

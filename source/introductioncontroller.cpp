@@ -6,7 +6,8 @@
 
 IntroductionController::IntroductionController(TextTennis &scene_manager, IntroductionModel &model)
 : Controller(scene_manager), model_(model), introduction_music() {
-  introduction_music.loadSound("music/scene00_intro.wav", true);
+  introduction_music.loadSound("intro_loop.wav", true);
+  introduction_music.setLoop(true);
 }
 
 IntroductionController::~IntroductionController() {
@@ -36,7 +37,7 @@ void IntroductionController::Update() {
     }
   }
   while (ofGetElapsedTimef() > model_.last_create_time + IntroductionModel::create_delay) {
-    CreateBox(ofVec2f(1.0, half_court_height - 1 - ofRandomf()), ofVec2f(),
+    CreateBox(ofVec2f(1.0, court_height + 1 + ofRandomf()), ofVec2f(),
               ofRandomuf() * M_PI, ofRandomf() * 10.0);
     model_.last_create_time = ofGetElapsedTimef();
   }

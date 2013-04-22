@@ -26,19 +26,6 @@ Scene2Controller::~Scene2Controller() {
 }
 
 void Scene2Controller::BeginContact(b2Contact* contact) {
-  if (ofRandomuf() < 0.5) {
-    if (ofRandomuf() < 0.5) {
-      bounce1.play();
-    } else {
-      bounce2.play();
-    }
-  } else {
-    if (ofRandomuf() < 0.5) {
-      bounce3.play();
-    } else {
-      bounce4.play();
-    }
-  }
 }
 
 void Scene2Controller::Setup() {
@@ -58,7 +45,7 @@ void Scene2Controller::Setup() {
       .Position("right", right)
       .Message("You know why you're here, right?", "right").Pause(pause)
       .Message("No, why am I here?", "left").Pause(pause)
-      .Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(pause)
+      .Message("Because you're bad at tennis.\nI'm gonna make you good.", "right").Pause(2.0)
       .Clear();
 }
 
@@ -66,7 +53,7 @@ void Scene2Controller::Update() {
   model_.dialogue.Update();
   UpdateRackets();
   model_.world.Step(delta_time * 0.5, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.score >= 500.0) {
+  if (model_.score >= 450.0) {
     scene_manager.NextScene();
     return;
   }
@@ -181,8 +168,8 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const ofVec2f position = ofVec2f(ball->GetPosition().x,
                                      ball->GetPosition().y);
     const float dx = ball->GetLinearVelocity().x;
-    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
-        && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
+    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < racket_speed + racket_radius
+        && abs((position - racket_position).y) < racket_speed + 2.0 * racket_radius) {
       float variance = 0.0;
       float angular_velocity = 0.0;
       if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
@@ -194,7 +181,6 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }

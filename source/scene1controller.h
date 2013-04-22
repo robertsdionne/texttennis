@@ -48,7 +48,7 @@ private:
 
 private:
   Scene1Model &model_;
-  ofSoundPlayer rhythm_music, shiny_music;
+  ofSoundPlayer music;
   ofSoundPlayer hit1, hit2;
   ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };

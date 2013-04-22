@@ -4,12 +4,13 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
 class Scene3Model : public Model {
 public:
-  Scene3Model();
+  Scene3Model(ofPoint player_position);
   
   virtual ~Scene3Model() {}
   
@@ -24,8 +25,9 @@ public:
 
   int bounces;
 
-
   float angle;
+
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

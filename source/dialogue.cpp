@@ -5,13 +5,18 @@
 Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
-  last_message_label(), barriers() {}
+  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255) {}
 
 Dialogue::~Dialogue() {
   for (auto *event : events) {
     delete event;
   }
   events.clear();
+}
+
+Dialogue &Dialogue::Background(ofColor color) {
+  events.push_back(new BackgroundEvent(color));
+  return *this;
 }
 
 Dialogue &Dialogue::Barrier(const std::string &barrier) {
@@ -21,6 +26,11 @@ Dialogue &Dialogue::Barrier(const std::string &barrier) {
 
 Dialogue &Dialogue::Clear() {
   events.push_back(new ClearEvent());
+  return *this;
+}
+
+Dialogue &Dialogue::Foreground(ofColor color) {
+  events.push_back(new ForegroundEvent(color));
   return *this;
 }
 
@@ -39,8 +49,17 @@ Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   return *this;
 }
 
+void Dialogue::SetPosition(const std::string &label, ofPoint position) {
+  positions[label] = position;
+}
+
 Dialogue &Dialogue::Speed(float speed) {
   events.push_back(new SpeedEvent(speed));
+  return *this;
+}
+
+Dialogue &Dialogue::Then(std::tr1::function<void()> then) {
+  events.push_back(new ThenEvent(then));
   return *this;
 }
 
@@ -53,12 +72,14 @@ void Dialogue::Draw() {
     if (element.first != last_message_label) {
       if (positions.find(element.first) != positions.end()) {
         ofSetColor(ofColor::black);
-        ofDrawBitmapString(element.second->message, positions[element.first]);
+        ofDrawBitmapStringHighlight(element.second->message,
+                                    positions[element.first], background, foreground);
       }
     } else {
       if (positions.find(last_message_label) != positions.end()) {
         ofSetColor(ofColor::black);
-        ofDrawBitmapString(element.second->message.substr(0, message_index), positions[element.first]);
+        ofDrawBitmapStringHighlight(element.second->message.substr(0, message_index),
+                                    positions[element.first], background, foreground);
       }
     }
   }
@@ -87,9 +108,22 @@ void Dialogue::Update() {
           Event *event = events[event_index];
           current_delay = 0;
           switch (event->type) {
+            case Event::Type::BACKGROUND: {
+              BackgroundEvent *background_event = dynamic_cast<BackgroundEvent *>(event);
+              background = background_event->color;
+              break;
+            }
             case Event::Type::BARRIER: {
               BarrierEvent *barrier = dynamic_cast<BarrierEvent *>(event);
               barriers[barrier->barrier] = true;
+              break;
+            }
+            case Event::Type::CLEAR:
+              messages.clear();
+              break;
+            case Event::Type::FOREGROUND: {
+              ForegroundEvent *foreground_event = dynamic_cast<ForegroundEvent *>(event);
+              foreground = foreground_event->color;
               break;
             }
             case Event::Type::MESSAGE: {
@@ -109,12 +143,14 @@ void Dialogue::Update() {
               positions[position_event->label] = position_event->position;
               break;
             }
-            case Event::Type::CLEAR:
-              messages.clear();
-              break;
             case Event::Type::SPEED: {
               SpeedEvent *new_speed = dynamic_cast<SpeedEvent *>(event);
               speed = new_speed->speed;
+              break;
+            }
+            case Event::Type::THEN: {
+              ThenEvent *then_event = dynamic_cast<ThenEvent *>(event);
+              then_event->then();
               break;
             }
             default:
@@ -135,4 +171,12 @@ bool Dialogue::IsBlocked() const {
     }
   }
   return false;
+}
+
+bool Dialogue::IsBlocked(const std::string &barrier) {
+  if (barriers[barrier]) {
+    return true;
+  } else {
+    return false;
+  }
 }

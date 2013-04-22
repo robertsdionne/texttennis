@@ -16,6 +16,7 @@ DEFINE_PARAMETER(ofVec2f, ball_initial_velocity,
                                                      DEPENDENCY(ball_initial_position)).normalized());
 DEFINE_PARAMETER_RANGE(float, ball_mass, 0.056, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, ball_radius, DEPENDENCY(ball_cartoon_factor) * 0.03429, 0.0, 10.0);
+DEFINE_PARAMETER(int, ball_trail_length, 256);
 DEFINE_PARAMETER_RANGE(int, box2d_velocity_iterations, 8, 1, 10);
 DEFINE_PARAMETER_RANGE(int, box2d_position_iterations, 3, 1, 10);
 DEFINE_PARAMETER_RANGE(float, ceiling_height, 100.0, 0.0, 100.0);
@@ -49,6 +50,7 @@ DEFINE_PARAMETER_RANGE(float, net_thickness, DEPENDENCY(ball_radius), 0.0, 10.0)
 DEFINE_PARAMETER_RANGE(float, player_move_smooth_factor, 0.2, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, racket_radius, DEPENDENCY(ball_cartoon_factor) * 0.1155, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, racket_speed, 0.15, 0.0, 10.0);
+DEFINE_PARAMETER(ofVec2f, racket_diagonal_hit_direction, ofVec2f(1.0, 1.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_high_hit_direction, ofVec2f(1.0, 1.0).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_low_hit_direction, ofVec2f(1.0, 0.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_start_position,
@@ -62,7 +64,7 @@ DEFINE_PARAMETER_RANGE(float, restitution, 0.728, 0.0, 2.0);
 DEFINE_PARAMETER_RANGE(int, save_every_n_frames, 2, 1, 60);
 DEFINE_PARAMETER(ofMatrix4x4, view_matrix,
                  ofMatrix4x4::newScaleMatrix(DEPENDENCY(window_width) / DEPENDENCY(court_length),
-                                             -DEPENDENCY(window_width) / DEPENDENCY(court_length), 1) *
+                                             -DEPENDENCY(window_height) / DEPENDENCY(court_height), 1) *
                  ofMatrix4x4::newTranslationMatrix(DEPENDENCY(half_window_width),
                                                    DEPENDENCY(window_height), 0.0));
 DEFINE_PARAMETER(ofMatrix4x4, view_matrix_inverse,

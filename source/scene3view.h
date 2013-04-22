@@ -32,6 +32,7 @@ private:
 
   ofImage top[10];
   ofImage bottom[10];
+  ofImage left[10];
   
   ofTrueTypeFont font;
 };

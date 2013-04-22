@@ -10,17 +10,21 @@ class TextTennis;
 
 class Scene4 : public Scene {
 public:
-  Scene4(TextTennis &scene_manager);
+  Scene4(TextTennis &scene_manager, ofPoint player_position);
 
   virtual ~Scene4();
 
-  static Scene *Create(TextTennis &scene_manager);
+  static Scene *Create(TextTennis &scene_manager, ofPoint player_position);
 
   virtual void Draw();
 
   virtual void Setup();
 
   virtual void Update();
+
+  virtual ofPoint GetPlayerPosition() {
+    return model.racket1;
+  }
 
 private:
   Scene4Model model;

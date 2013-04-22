@@ -13,6 +13,7 @@
 #include "ofxGui.h"
 #include "scene.h"
 #include "scene2view.h"
+#include "transition.h"
 
 class TextTennis : public ofBaseApp {
 public:
@@ -42,15 +43,17 @@ private:
 
   void DeleteCurrentScene();
 
-  typedef std::tr1::function<Scene *(TextTennis &)> SceneFactoryFunction;
+  typedef std::tr1::function<Scene *(TextTennis &, ofPoint)> SceneFactoryFunction;
 
   std::vector<SceneFactoryFunction> scene_factory_functions;
   int scene_index;
   Scene *current_scene;
+  Transition *transition;
 
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
+  ofSoundPlayer transition_sound;
 };
 
 #endif  // TEXTTENNIS_H_

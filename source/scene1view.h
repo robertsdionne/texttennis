@@ -19,15 +19,17 @@ public:
 private:
   void DrawBall(ofVec2f position, float angle) const;
   
-  void DrawCourt() const;
+  void DrawCourt(Scene1Model &model) const;
   
   void DrawFrameRate() const;
   
-  void DrawNet() const;
+  void DrawNet(Scene1Model &model) const;
   
   void DrawRacket(ofVec2f position) const;
 
-  float H01(float t);
+  float H01(float t) const;
+
+  ofImage bg, text, tennis;
 };
 
 #endif  // TEXTTENNIS_SCENE1VIEW_H_

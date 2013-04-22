@@ -7,8 +7,22 @@
 #include "utilities.h"
 
 Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model)
-: Controller(scene_manager), model_(model), music() {
-  music.loadSound("music/scene04_trees.wav");
+: Controller(scene_manager), model_(model), loop1(), loop2(), loop3() {
+  loop1.loadSound("treeloop1.wav");
+  loop2.setVolume(2.0);
+  loop1.setLoop(true);
+  loop2.loadSound("treeloop2.wav");
+  loop2.setVolume(2.0);
+  loop2.setLoop(true);
+  loop3.loadSound("treeloop3.wav");
+  loop3.setVolume(2.0);
+  loop3.setLoop(true);
+  for (int i = 0; i < 5; ++i) {
+    std::stringstream out;
+    out << "tree" << (i + 1) << ".wav";
+    tree[i].loadSound(out.str());
+    tree[i].setVolume(2.0);
+  }
   hit1.loadSound("hit1.mp3");
   hit2.loadSound("hit2.mp3");
   bounce1.loadSound("bounce1.wav");
@@ -18,7 +32,12 @@ Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model
 }
 
 Scene4Controller::~Scene4Controller() {
-  music.stop();
+  loop1.stop();
+  loop2.stop();
+  loop3.stop();
+  for (int i = 0; i < 5; ++i) {
+    tree[i].stop();
+  }
 }
 
 void Scene4Controller::BeginContact(b2Contact* contact) {
@@ -41,11 +60,18 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
+        model_.dialogue.Trigger("collide");
+        tree[model_.score].play();
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
-          music.play();
-          model_.time_scale = 0.25;
+          model_.time_scale = 0.125;
+          hit1.setSpeed(0.5);
+          hit2.setSpeed(0.5);
+          bounce1.setSpeed(0.5);
+          bounce2.setSpeed(0.5);
+          bounce3.setSpeed(0.5);
+          bounce4.setSpeed(0.5);
         }
       }
     }
@@ -67,20 +93,45 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
+  loop1.play();
+  loop2.play();
+  loop3.play();
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
   CreateTreePeople();
   model_.world.SetContactListener(this);
+  const float duration = 15.0;
+  model_.dialogue
+      .Speed(10.0)
+      .Foreground(ofColor::white)
+      .Background(ofColor(255, 255, 255, 32))
+      .Position("tree0", ofPoint(512, 100))
+      .Position("tree1", ofPoint(512, 180))
+      .Position("tree2", ofPoint(512, 245))
+      .Position("tree3", ofPoint(512, 295))
+      .Position("tree4", ofPoint(512, 330))
+      .Barrier("collide").Speed(69.0 / duration)
+      .Message("Ladies and gentlemen,\nwe are proud to present\na short story,\n\"Nothing is real.\"", "tree0") // 69
+      .Barrier("collide").Speed(51.0 / duration)
+      .Message("The trees and\nthe tree people\nwere in disagreement.", "tree1") // 51
+      .Barrier("collide").Speed(37.0 / duration)
+      .Message("\"Let's work it out,\"\none person said.", "tree2") // 37
+      .Barrier("collide").Speed(20.0 / duration)
+      .Message("But nothing changed.", "tree3") // 20
+      .Barrier("collide").Speed(8.0 / duration)
+      .Message("The end.", "tree4"); // 8
 }
 
 void Scene4Controller::Update() {
+  model_.dialogue.Update();
   if (model_.reset_ball) {
     if (model_.ball_body) {
       DestroyBall(model_.ball_body);
       model_.ball_body = nullptr;
     }
+    //model_.ball_trail.clear();
     model_.reset_ball = false;
   }
   for (int i = 0; i < 5; ++i) {
@@ -90,7 +141,7 @@ void Scene4Controller::Update() {
       model_.tree_people[i]->SetActive(false);
     }
   }
-  if (model_.score >= 5) {
+  if (model_.score >= 6) {
     scene_manager.NextScene();
     return;
   }
@@ -107,6 +158,16 @@ void Scene4Controller::Update() {
   }
   UpdateRackets();
   model_.world.Step(delta_time * model_.time_scale, box2d_velocity_iterations, box2d_position_iterations);
+  if (model_.ball_trail.size() > ball_trail_length) {
+    model_.ball_trail.pop_front();
+    model_.noise.pop_front();
+    model_.time_scales.pop_front();
+  }
+  if (model_.ball_body) {
+    model_.ball_trail.push_back(OpenFrameworksVector(model_.ball_body->GetPosition()));
+    model_.noise.push_back(2.0 * ofVec2f(ofSignedNoise(model_.time_scale * 8.0 * ofGetElapsedTimef()), ofSignedNoise(model_.time_scale * -8.0 * ofGetElapsedTimef())));
+    model_.time_scales.push_back(model_.time_scale);
+  }
   if (!model_.ball_body) {
     CreateBall(ofVec2f(0.0, 2.0) + ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
   }
@@ -214,10 +275,10 @@ void Scene4Controller::CreateBall(ofVec2f position, ofVec2f velocity,
  */
 
 void Scene4Controller::CreateTreePeople() {
-  float offset = 4.0;
+  float offset = 2.0;
   for (int i = 0; i < 5; ++i) {
-    const float radius = 0.5 + 0.1 * i;
-    const float next_radius = 0.5 + 0.1 * (i + 1);
+    const float radius = 1.0;
+    const float next_radius = 1.0;
 
     b2BodyDef person_definition;
     person_definition.position.Set(offset, court_thickness + radius);
@@ -289,19 +350,23 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const float dx = model_.ball_body->GetLinearVelocity().x;
     if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
         && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
-      float variance = 0.0;
-      float angular_velocity = 0.0;
-      if ((keys[key_left] && dx < 0) || (keys[key_right] && dx > 0)) {
-        variance = -hit_variance * ofRandomuf();
-      } else if ((keys[key_left] && dx > 0) || (keys[key_right] && dx < 0)) {
-        variance = hit_variance * ofRandomuf();
-      } else {
-        variance = hit_variance * ofRandomf();
+      if (4 - model_.score > -1) {
+        const float angle[] = {
+          80.0,
+          50.0,
+          40.0,
+          30.0,
+          20.0
+        };
+        const ofVec2f target = OpenFrameworksVector(model_.tree_people[4 - model_.score]->GetPosition());
+        const float range = target.x - model_.ball_body->GetPosition().x;
+        const float speed = sqrt(range * gravity / sin(2.0 * ofDegToRad(angle[4 - model_.score])));
+        std::cout << speed << std::endl;
+        const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
+        model_.ball_body->SetLinearVelocity(velocity);
+        model_.bounces = 0;
+        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
       }
-      const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
-      model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
-      model_.bounces = 0;
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
     }
   }
 }
@@ -314,5 +379,5 @@ void Scene4Controller::UpdateRackets() {
   if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed * model_.time_scale - racket_radius) {
     model_.racket1_target.x += racket_speed * model_.time_scale;
   }
-  RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  RacketCollide(model_.racket1, racket1_low_hit_direction, 16.0, OF_KEY_LEFT, OF_KEY_RIGHT);
 }

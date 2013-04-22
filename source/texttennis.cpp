@@ -17,13 +17,14 @@
  */
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
-  show_sliders(false), float_panel(), int_panel() {
+  show_sliders(false), float_panel(), int_panel(), transition(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
-  scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene3::Create);
   scene_factory_functions.push_back(Scene4::Create);
+  scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
+  transition_sound.loadSound("apr21_2.wav");
 }
 
 TextTennis::~TextTennis() {
@@ -38,6 +39,7 @@ TextTennis::~TextTennis() {
 }
 
 void TextTennis::setup() {
+  ofSetFrameRate(60.0);
   CreateScene();
   float_panel.setup("float parameters");
   for (auto parameter : Parameter<float>::GetParameters()) {
@@ -51,13 +53,17 @@ void TextTennis::setup() {
 }
 
 void TextTennis::update() {
-  if (current_scene) {
+  if (transition && !transition->IsDone()) {
+    transition->Update();
+  } else if (current_scene) {
     current_scene->Update();
   }
 }
 
 void TextTennis::draw() {
-  if (current_scene) {
+  if (transition && !transition->IsDone()) {
+    transition->Draw();
+  } else if (current_scene) {
     current_scene->Draw();
   }
   if (show_sliders) {
@@ -70,6 +76,7 @@ void TextTennis::draw() {
 void TextTennis::NextScene() {
   scene_index = (scene_index + 1) % scene_factory_functions.size();
   CreateScene();
+  transition_sound.play();
 }
 
 void TextTennis::PreviousScene() {
@@ -86,9 +93,33 @@ void TextTennis::ToggleSettings() {
 }
 
 void TextTennis::CreateScene() {
+  ofPoint player_position;
+  bool needs_transition = current_scene;
+  if (current_scene) {
+    player_position = current_scene->GetPlayerPosition();
+  } else {
+    player_position = racket1_start_position.GetValue();
+  }
+  ofImage from;
+  if (current_scene) {
+    from = current_scene->DrawImage();
+  }
   DeleteCurrentScene();
-  current_scene = scene_factory_functions[scene_index](*this);
+  current_scene = scene_factory_functions[scene_index](*this, player_position);
   current_scene->Setup();
+  current_scene->Update();
+  ofImage to = current_scene->DrawImage();
+  if (needs_transition) {
+    if (transition) {
+      delete transition;
+      transition = nullptr;
+    }
+    transition = new Transition(from, to);
+    transition->Setup();
+  } else if (transition) {
+    delete transition;
+    transition = nullptr;
+  }
 }
 
 void TextTennis::DeleteCurrentScene() {

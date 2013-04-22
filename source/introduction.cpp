@@ -13,14 +13,14 @@ Introduction::~Introduction() {
   ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
-Scene *Introduction::Create(TextTennis &scene_manager) {
+Scene *Introduction::Create(TextTennis &scene_manager, ofPoint player_position) {
   return new Introduction(scene_manager);
 }
 
 void Introduction::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Introduction\nClick a box.\n\n", 100, 100);
+  //ofDrawBitmapString("Introduction\nClick a box.\n\n", 100, 100);
 }
 
 void Introduction::Setup() {

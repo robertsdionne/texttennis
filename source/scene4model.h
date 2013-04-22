@@ -2,14 +2,16 @@
 #define TEXTTENNIS_SCENE4MODEL_H_
 
 #include <Box2D/Box2D.h>
+#include <deque>
 #include <list>
 
+#include "dialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
 class Scene4Model : public Model {
 public:
-  Scene4Model();
+  Scene4Model(ofPoint player_position);
   
   virtual ~Scene4Model() {}
   
@@ -27,7 +29,11 @@ public:
   float time_scale;
   bool reset_ball;
 
+  std::deque<ofPoint> ball_trail, noise;
+  std::deque<float> time_scales;
+
   std::vector<ofPoint> points;
+  Dialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

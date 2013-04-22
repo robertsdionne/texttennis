@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46003C4F1724676B00D4768F /* transition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46003C4D1724676A00D4768F /* transition.cpp */; };
 		4607F84716F7E1EF00DC0B1B /* constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4607F84616F7E1EF00DC0B1B /* constants.cpp */; };
 		463DA5BE1701025A0065BA6A /* scene4controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463DA5BD1701025A0065BA6A /* scene4controller.cpp */; };
 		463DA5C1170102690065BA6A /* scene4model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463DA5C0170102690065BA6A /* scene4model.cpp */; };
@@ -152,6 +153,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		46003C4D1724676A00D4768F /* transition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transition.cpp; sourceTree = "<group>"; };
+		46003C4E1724676A00D4768F /* transition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transition.h; sourceTree = "<group>"; };
 		4607F84616F7E1EF00DC0B1B /* constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = constants.cpp; sourceTree = "<group>"; };
 		463DA5BD1701025A0065BA6A /* scene4controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene4controller.cpp; sourceTree = "<group>"; };
 		463DA5BF170102630065BA6A /* scene4controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene4controller.h; sourceTree = "<group>"; };
@@ -775,6 +778,8 @@
 				469D7B1016FC12AC00CB1D33 /* slider.h */,
 				46D1404516F6A377009A2AD3 /* texttennis.cpp */,
 				46D1404616F6A377009A2AD3 /* texttennis.h */,
+				46003C4D1724676A00D4768F /* transition.cpp */,
+				46003C4E1724676A00D4768F /* transition.h */,
 				46E7762C16F76B5F0011A27F /* utilities.cpp */,
 				46E7762D16F76B5F0011A27F /* utilities.h */,
 				46CE39BF16FF465600D77873 /* view.cpp */,
@@ -1492,6 +1497,7 @@
 				463DA5CA1701037F0065BA6A /* scene5model.cpp in Sources */,
 				463DA5CD1701038C0065BA6A /* scene5view.cpp in Sources */,
 				46D027AF171F2C01004136B2 /* dialogue.cpp in Sources */,
+				46003C4F1724676B00D4768F /* transition.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

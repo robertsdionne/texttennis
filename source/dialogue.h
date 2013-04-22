@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <map>
+#include <tr1/functional>
 #include <vector>
 
 #include "ofMain.h"
@@ -16,16 +17,26 @@ public:
   class Event {
   public:
     enum class Type {
+      BACKGROUND,
       BARRIER,
       CLEAR,
+      FOREGROUND,
       MESSAGE,
       PAUSE,
       POSITION,
-      SPEED
+      SPEED,
+      THEN
     };
     Event(Type type) : type(type) {}
     virtual ~Event() {}
     Type type;
+  };
+
+  class BackgroundEvent : public Event {
+  public:
+    BackgroundEvent(ofColor color) : Event(Event::Type::BACKGROUND), color(color) {}
+    virtual ~BackgroundEvent() {}
+    ofColor color;
   };
 
   class BarrierEvent : public Event {
@@ -39,6 +50,13 @@ public:
   public:
     ClearEvent() : Event(Event::Type::CLEAR) {}
     virtual ~ClearEvent() {}
+  };
+
+  class ForegroundEvent : public Event {
+  public:
+    ForegroundEvent(ofColor color) : Event(Event::Type::FOREGROUND), color(color) {}
+    virtual ~ForegroundEvent() {}
+    ofColor color;
   };
 
   class MessageEvent : public Event {
@@ -73,17 +91,32 @@ public:
     float speed;
   };
 
+  class ThenEvent : public Event {
+  public:
+    ThenEvent(std::tr1::function<void()> then) : Event(Event::Type::THEN), then(then) {}
+    virtual ~ThenEvent() {}
+    std::tr1::function<void()> then;
+  };
+
+  Dialogue &Background(ofColor color);
+
   Dialogue &Barrier(const std::string &barrier);
 
   Dialogue &Clear();
+
+  Dialogue &Foreground(ofColor color);
 
   Dialogue &Message(const std::string &message, const std::string &label);
 
   Dialogue &Pause(float duration);
 
-  Dialogue &Position(const std::string &message, ofPoint position);
+  Dialogue &Position(const std::string &label, ofPoint position);
+
+  void SetPosition(const std::string &label, ofPoint position);
 
   Dialogue &Speed(float speed);
+
+  Dialogue &Then(std::tr1::function<void()> then);
 
   void Trigger(const std::string &barrier);
 
@@ -95,8 +128,9 @@ public:
 
   void Update();
 
-private:
   bool IsBlocked() const;
+
+  bool IsBlocked(const std::string &barrier);
 
 private:
   std::vector<Event *> events;
@@ -106,6 +140,7 @@ private:
   std::map<std::string, MessageEvent *> messages;
   std::string last_message_label;
   std::map<std::string, bool> barriers;
+  ofColor background, foreground;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

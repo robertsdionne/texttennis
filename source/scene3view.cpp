@@ -13,17 +13,18 @@ void Scene3View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
   for (int i = 0; i < 10; ++i) {
-    std::stringstream top_filename, bottom_filename;
-    top_filename << i << "_top.png";
-    bottom_filename << i << "_bottom.png";
-    top[i].loadImage(top_filename.str());
-    bottom[i].loadImage(bottom_filename.str());
+    std::stringstream filename;
+    filename << i << ".png";
+    ofImage image;
+    image.loadImage(filename.str());
+    top[i].cropFrom(image, 0, 0, 1024, 320);
+    bottom[i].cropFrom(image, 0, 320, 1024, 320);
   }
 }
 
 void Scene3View::Draw(Model &model) {
+  ofBackground(ofColor::black);
   Scene3Model &scene3_model = dynamic_cast<Scene3Model &>(model);
 
   ofSetRectMode(OF_RECTMODE_CORNER);
@@ -33,14 +34,19 @@ void Scene3View::Draw(Model &model) {
   int index = scene3_model.angle >= 180.0 ? 1 : 0;
   ofImage &bottom_image = bottom[(scene3_model.score + index - 1) % 10];
   ofSetColor(ofColor::white);
-  top_image.draw(0.0, 2.0 * half_court_height, half_court_length, -half_court_height);
-  bottom_image.draw(0.0, half_court_height, half_court_length, -half_court_height);
+  top_image.draw(-half_court_length, court_height, court_length, -half_court_height);
+  bottom_image.draw(-half_court_length, half_court_height, court_length, -half_court_height);
 
   DrawCourt();
   DrawNet();
   DrawRacket(scene3_model.racket1);
   DrawRacket(scene3_model.opponent);
+  ofPopMatrix();
 
+  scene3_model.dialogue.Draw();
+
+  ofPushMatrix();
+  ofMultMatrix(view_matrix);
   if (0.0 <= scene3_model.angle && scene3_model.angle < 180.0) {
     ofPushMatrix();
     ofTranslate(0, half_court_height);
@@ -54,15 +60,15 @@ void Scene3View::Draw(Model &model) {
     const float negate = scene3_model.angle < 90 ? -1.0 : 1.0;
     ofSetColor(ofColor::white);
     if (scene3_model.angle > 90) {
-      ofRect(0.0, half_court_height, half_court_length, half_court_height);
+      ofRect(-half_court_length, half_court_height, court_length, half_court_height);
       ofEnableAlphaBlending();
       const float alpha = 1 + ofVec3f(0, -1, 0).dot(rotated_normal);
       ofSetColor(ofColor::white, alpha * 255.0);
-      image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+      image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
       ofDisableAlphaBlending();
     } else {
       ofSetColor(HalfLambert(light, rotated_normal) * 255.0);
-      image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+      image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
     }
     ofPopMatrix();
   }
@@ -77,16 +83,16 @@ void Scene3View::Draw(Model &model) {
 
 void Scene3View::DrawBall(ofVec2f position, float angle) const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
-  ofCircle(position, ball_radius);
   ofSetColor(ofColor::white);
+  ofCircle(position, ball_radius);
+  ofSetColor(ofColor::black);
   ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }
 
 void Scene3View::DrawCourt() const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -court_thickness);
   ofPopStyle();
 }
@@ -95,21 +101,21 @@ void Scene3View::DrawFrameRate() const {
   std::stringstream out;
   out << ofGetFrameRate();
   ofPushStyle();
-  ofSetColor(ofColor::white);
+  ofSetColor(ofColor::black);
   ofDrawBitmapString(out.str(), -half_court_length, half_court_thickness);
   ofPopStyle();
 }
 
 void Scene3View::DrawNet() const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofRect(ofVec2f(-half_net_thickness, net_height + court_thickness), net_thickness, -net_height);
   ofPopStyle();
 }
 
 void Scene3View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofCircle(position, racket_radius);
   ofPopStyle();
 }

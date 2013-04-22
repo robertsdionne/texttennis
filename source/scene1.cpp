@@ -12,14 +12,14 @@ Scene1::~Scene1() {
   ofUnregisterMouseEvents(static_cast<Controller *>(&controller));
 }
 
-Scene *Scene1::Create(TextTennis &scene_manager) {
+Scene *Scene1::Create(TextTennis &scene_manager, ofPoint player_position) {
   return new Scene1(scene_manager);
 }
 
 void Scene1::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  ofDrawBitmapString("Scene 1\nA friendly game.\n\nLEFT - left\nRIGHT - right", 100, 100);
+  //ofDrawBitmapString("Scene 1\nA friendly game.\n\nLEFT - left\nRIGHT - right", 100, 100);
 }
 
 void Scene1::Setup() {

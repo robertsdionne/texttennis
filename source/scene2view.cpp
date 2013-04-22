@@ -5,6 +5,7 @@
 
 Scene2View::Scene2View()
 : font() {
+  bg.loadImage("ballscene.png");
   font.loadFont(font_filename, 2, true, false, true, 0.0);
 }
 
@@ -13,43 +14,38 @@ void Scene2View::Setup() {
   ofSetVerticalSync(true);
   ofEnableAlphaBlending();
   ofEnableSmoothing();
-  ofBackground(ofColor::white);
 }
 
 void Scene2View::Draw(Model &model) {
   Scene2Model &scene2_model = dynamic_cast<Scene2Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
+  ofSetColor(ofColor(255, 255, 255).lerp(ofColor::black, scene2_model.score / 500.0));
+  bg.draw(0, 0);
   scene2_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
   ofPushMatrix();
   ofScale(1, -1);
-  std::stringstream out;
-  if (scene2_model.score < 100) {
-    out << ' ';
-  }
-  if (scene2_model.score < 10) {
-    out << ' ';
-  }
-  out << scene2_model.score << "/" << scene2_model.ball_body.size();
-  font.drawStringAsShapes(out.str(), -2, -half_court_height);
   ofPopMatrix();
   DrawCourt();
   DrawNet();
   DrawRacket(scene2_model.racket1);
   for (auto ball : scene2_model.ball_body) {
-    DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetFixtureList()->GetShape()->m_radius, ball->GetAngle());
+    DrawBall(scene2_model, ofVec2f(ball->GetPosition().x, ball->GetPosition().y),
+             ball->GetFixtureList()->GetShape()->m_radius, ball->GetAngle());
   }
   DrawFrameRate();
   ofPopMatrix();
 }
 
-void Scene2View::DrawBall(ofVec2f position, float radius, float angle) const {
+void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, float angle) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofCircle(position, radius);
-  ofSetColor(ofColor::white);
-  ofLine(position, position + radius * ofVec2f(cos(angle), sin(angle)));
+  ofSetColor(ofColor(255, 0, 0).lerp(ofColor::black, model.score / 500.0));
+  const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
+  ofLine(position, position - beam);
+  ofLine(position, position + beam);
   ofPopStyle();
 }
 
