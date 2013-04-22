@@ -24,6 +24,7 @@ TextTennis::TextTennis()
   scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
+  transition_sound.loadSound("apr21_2.wav");
 }
 
 TextTennis::~TextTennis() {
@@ -75,6 +76,7 @@ void TextTennis::draw() {
 void TextTennis::NextScene() {
   scene_index = (scene_index + 1) % scene_factory_functions.size();
   CreateScene();
+  transition_sound.play();
 }
 
 void TextTennis::PreviousScene() {

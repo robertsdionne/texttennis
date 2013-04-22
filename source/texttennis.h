@@ -53,6 +53,7 @@ private:
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
+  ofSoundPlayer transition_sound;
 };
 
 #endif  // TEXTTENNIS_H_
