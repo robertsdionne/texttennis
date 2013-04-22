@@ -7,9 +7,9 @@
 #include "utilities.h"
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
-: Controller(scene_manager), model_(model), rhythm_music(), shiny_music(), hit1(), hit2() {
-  rhythm_music.loadSound("music/scene01_rhythm.wav", true);
-  shiny_music.loadSound("music/scene01_shiny.wav", true);
+: Controller(scene_manager), model_(model), music(), hit1(), hit2() {
+  music.loadSound("main_theme.wav", true);
+  music.setLoop(true);
   hit1.loadSound("hit1.mp3");
   hit2.loadSound("hit2.mp3");
   bounce1.loadSound("bounce1.wav");
@@ -19,8 +19,7 @@ Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model
 }
 
 Scene1Controller::~Scene1Controller() {
-  rhythm_music.stop();
-  shiny_music.stop();
+  music.stop();
 }
 
 void Scene1Controller::Setup() {
@@ -28,8 +27,7 @@ void Scene1Controller::Setup() {
   CreateBorder();
   CreateCourt();
   CreateNet();
-  rhythm_music.play();
-  shiny_music.play();
+  music.play();
   model_.scene_start_time = ofGetElapsedTimef();
   model_.rotation = 0;
   model_.world.SetContactListener(this);

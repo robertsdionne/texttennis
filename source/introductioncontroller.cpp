@@ -6,7 +6,8 @@
 
 IntroductionController::IntroductionController(TextTennis &scene_manager, IntroductionModel &model)
 : Controller(scene_manager), model_(model), introduction_music() {
-  introduction_music.loadSound("music/scene00_intro.wav", true);
+  introduction_music.loadSound("intro_loop.wav", true);
+  introduction_music.setLoop(true);
 }
 
 IntroductionController::~IntroductionController() {
