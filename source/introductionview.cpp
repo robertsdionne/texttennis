@@ -6,7 +6,7 @@
 #include "utilities.h"
 
 IntroductionView::IntroductionView() : background() {
-  background.loadImage("introscene.png");
+  background.loadImage("intro_drivingScreen2.png");
 }
 
 void IntroductionView::Setup() const {
