@@ -24,8 +24,6 @@ TextTennis::TextTennis()
   scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
-  bg1.loadImage("bg1.png");
-  bg2.loadImage("bg2.png");
 }
 
 TextTennis::~TextTennis() {

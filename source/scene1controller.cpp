@@ -100,7 +100,8 @@ void Scene1Controller::Update() {
     UpdateRackets();
   }
   if (model_.ball_body) {
-    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < 0) {
+    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < 0
+        && model_.ball_body->GetLinearVelocity().x < 0) {
       model_.dialogue.Trigger("opponent_has_ball");
     }
     if (model_.flipped && model_.dialogue.IsBlocked("ball_below") && model_.ball_body->GetPosition().y > 0.9 * court_height) {

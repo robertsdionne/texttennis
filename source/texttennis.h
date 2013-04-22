@@ -53,7 +53,6 @@ private:
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
-  ofImage bg1, bg2;
 };
 
 #endif  // TEXTTENNIS_H_
