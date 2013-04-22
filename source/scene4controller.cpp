@@ -7,8 +7,18 @@
 #include "utilities.h"
 
 Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model)
-: Controller(scene_manager), model_(model), music() {
-  music.loadSound("music/scene04_trees.wav");
+: Controller(scene_manager), model_(model), loop1(), loop2(), loop3() {
+  loop1.loadSound("treeloop1.wav");
+  loop1.setLoop(true);
+  loop2.loadSound("treeloop2.wav");
+  loop2.setLoop(true);
+  loop3.loadSound("treeloop3.wav");
+  loop3.setLoop(true);
+  for (int i = 0; i < 5; ++i) {
+    std::stringstream out;
+    out << "tree" << (i + 1) << ".wav";
+    tree[i].loadSound(out.str());
+  }
   hit1.loadSound("hit1.mp3");
   hit2.loadSound("hit2.mp3");
   bounce1.loadSound("bounce1.wav");
@@ -18,7 +28,12 @@ Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model
 }
 
 Scene4Controller::~Scene4Controller() {
-  music.stop();
+  loop1.stop();
+  loop2.stop();
+  loop3.stop();
+  for (int i = 0; i < 5; ++i) {
+    tree[i].stop();
+  }
 }
 
 void Scene4Controller::BeginContact(b2Contact* contact) {
@@ -42,10 +57,10 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
         model_.dialogue.Trigger("collide");
+        tree[4 - model_.score].play();
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
-          music.play();
           model_.time_scale = 0.125;
           hit1.setSpeed(0.5);
           hit2.setSpeed(0.5);
@@ -74,6 +89,9 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
+  loop1.play();
+  loop2.play();
+  loop3.play();
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -253,10 +271,10 @@ void Scene4Controller::CreateBall(ofVec2f position, ofVec2f velocity,
  */
 
 void Scene4Controller::CreateTreePeople() {
-  float offset = 4.0;
+  float offset = 2.0;
   for (int i = 0; i < 5; ++i) {
-    const float radius = 0.5 + 0.1 * i;
-    const float next_radius = 0.5 + 0.1 * (i + 1);
+    const float radius = 1.0;
+    const float next_radius = 1.0;
 
     b2BodyDef person_definition;
     person_definition.position.Set(offset, court_thickness + radius);

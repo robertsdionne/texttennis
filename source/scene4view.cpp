@@ -60,6 +60,7 @@ void Scene4View::Draw(Model &model) {
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);
+  //DrawTreePeople(scene4_model);
   ofSetColor(ofColor::yellow);
   ofBeginShape();
   ofVertices(scene4_model.points);

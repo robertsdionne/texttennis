@@ -49,7 +49,8 @@ private:
 
 private:
   Scene4Model &model_;
-  ofSoundPlayer music;
+  ofSoundPlayer loop1, loop2, loop3;
+  ofSoundPlayer tree[5];
   ofSoundPlayer hit1, hit2;
   ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
 };
