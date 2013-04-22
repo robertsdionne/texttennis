@@ -18,9 +18,8 @@ void Scene3View::Setup() {
     filename << i << ".png";
     ofImage image;
     image.loadImage(filename.str());
-    top[i].cropFrom(image, 512, 0, 512, 320);
-    bottom[i].cropFrom(image, 512, 320, 512, 320);
-    left[i].cropFrom(image, 0, 0, 512, 640);
+    top[i].cropFrom(image, 0, 0, 1024, 320);
+    bottom[i].cropFrom(image, 0, 320, 1024, 320);
   }
 }
 
@@ -35,8 +34,8 @@ void Scene3View::Draw(Model &model) {
   int index = scene3_model.angle >= 180.0 ? 1 : 0;
   ofImage &bottom_image = bottom[(scene3_model.score + index - 1) % 10];
   ofSetColor(ofColor::white);
-  top_image.draw(0.0, 2.0 * half_court_height, half_court_length, -half_court_height);
-  bottom_image.draw(0.0, half_court_height, half_court_length, -half_court_height);
+  top_image.draw(-half_court_length, court_height, court_length, -half_court_height);
+  bottom_image.draw(-half_court_length, half_court_height, court_length, -half_court_height);
 
   DrawCourt();
   DrawNet();
@@ -61,15 +60,15 @@ void Scene3View::Draw(Model &model) {
     const float negate = scene3_model.angle < 90 ? -1.0 : 1.0;
     ofSetColor(ofColor::white);
     if (scene3_model.angle > 90) {
-      ofRect(0.0, half_court_height, half_court_length, half_court_height);
+      ofRect(-half_court_length, half_court_height, court_length, half_court_height);
       ofEnableAlphaBlending();
       const float alpha = 1 + ofVec3f(0, -1, 0).dot(rotated_normal);
       ofSetColor(ofColor::white, alpha * 255.0);
-      image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+      image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
       ofDisableAlphaBlending();
     } else {
       ofSetColor(HalfLambert(light, rotated_normal) * 255.0);
-      image.draw(0.0, half_court_height + offset, half_court_length, negate * half_court_height);
+      image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
     }
     ofPopMatrix();
   }
