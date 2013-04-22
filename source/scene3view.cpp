@@ -14,11 +14,13 @@ void Scene3View::Setup() {
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   for (int i = 0; i < 10; ++i) {
-    std::stringstream top_filename, bottom_filename;
-    top_filename << i << "_top_inverted.png";
-    bottom_filename << i << "_bottom_inverted.png";
-    top[i].loadImage(top_filename.str());
-    bottom[i].loadImage(bottom_filename.str());
+    std::stringstream filename;
+    filename << i << ".png";
+    ofImage image;
+    image.loadImage(filename.str());
+    top[i].cropFrom(image, 512, 0, 512, 320);
+    bottom[i].cropFrom(image, 512, 320, 512, 320);
+    left[i].cropFrom(image, 0, 0, 512, 640);
   }
 }
 
