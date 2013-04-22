@@ -79,9 +79,9 @@ void Scene1View::DrawCourt(Scene1Model &model) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-court_length + half_net_thickness, court_thickness), court_length, -10.0);
-  ofSetColor(ofColor::black, H01(1.0 - ofClamp(model.rotation - 0.9, 0, 1.0) * 10.0) * 255.0);
+  ofSetColor(ofColor::black, H01(1.0 - model.platform) * 255.0);
   ofRect(ofVec2f(half_net_thickness, court_thickness), court_length, -10.0);
-  ofSetColor(ofColor::black, H01(model.rotation) * 255.0);
+  ofSetColor(ofColor::black, H01(model.platform) * 255.0);
   ofRect(ofVec2f(-half_net_thickness, court_height - court_thickness), court_length, 10.0);
   ofPopStyle();
 }
@@ -99,7 +99,7 @@ void Scene1View::DrawNet(Scene1Model &model) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-half_net_thickness, net_height + court_thickness), net_thickness, -net_height);
-  ofSetColor(ofColor::black, H01(model.rotation) * 255.0);
+  ofSetColor(ofColor::black, H01(model.platform) * 255.0);
   ofRect(ofVec2f(-half_net_thickness, court_height - net_height - court_thickness), net_thickness, net_height);
   ofPopStyle();
 }

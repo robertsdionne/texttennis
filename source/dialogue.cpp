@@ -49,8 +49,17 @@ Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   return *this;
 }
 
+void Dialogue::SetPosition(const std::string &label, ofPoint position) {
+  positions[label] = position;
+}
+
 Dialogue &Dialogue::Speed(float speed) {
   events.push_back(new SpeedEvent(speed));
+  return *this;
+}
+
+Dialogue &Dialogue::Then(std::tr1::function<void()> then) {
+  events.push_back(new ThenEvent(then));
   return *this;
 }
 
@@ -139,6 +148,11 @@ void Dialogue::Update() {
               speed = new_speed->speed;
               break;
             }
+            case Event::Type::THEN: {
+              ThenEvent *then_event = dynamic_cast<ThenEvent *>(event);
+              then_event->then();
+              break;
+            }
             default:
               break;
           }
@@ -157,4 +171,12 @@ bool Dialogue::IsBlocked() const {
     }
   }
   return false;
+}
+
+bool Dialogue::IsBlocked(const std::string &barrier) {
+  if (barriers[barrier]) {
+    return true;
+  } else {
+    return false;
+  }
 }

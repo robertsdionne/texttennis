@@ -23,8 +23,10 @@ public:
   ofVec2f racket2_velocity;
 
   float scene_start_time;
-  float rotation;
-  float title;
+  float rotation, title, platform;
+  bool frozen, fallen, flipped;
+  bool player_released, title_started, rotating;
+  bool platform_appearing;
 
   Dialogue dialogue;
 };

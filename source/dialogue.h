@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <map>
+#include <tr1/functional>
 #include <vector>
 
 #include "ofMain.h"
@@ -23,7 +24,8 @@ public:
       MESSAGE,
       PAUSE,
       POSITION,
-      SPEED
+      SPEED,
+      THEN
     };
     Event(Type type) : type(type) {}
     virtual ~Event() {}
@@ -89,6 +91,13 @@ public:
     float speed;
   };
 
+  class ThenEvent : public Event {
+  public:
+    ThenEvent(std::tr1::function<void()> then) : Event(Event::Type::THEN), then(then) {}
+    virtual ~ThenEvent() {}
+    std::tr1::function<void()> then;
+  };
+
   Dialogue &Background(ofColor color);
 
   Dialogue &Barrier(const std::string &barrier);
@@ -101,9 +110,13 @@ public:
 
   Dialogue &Pause(float duration);
 
-  Dialogue &Position(const std::string &message, ofPoint position);
+  Dialogue &Position(const std::string &label, ofPoint position);
+
+  void SetPosition(const std::string &label, ofPoint position);
 
   Dialogue &Speed(float speed);
+
+  Dialogue &Then(std::tr1::function<void()> then);
 
   void Trigger(const std::string &barrier);
 
@@ -115,8 +128,9 @@ public:
 
   void Update();
 
-private:
   bool IsBlocked() const;
+
+  bool IsBlocked(const std::string &barrier);
 
 private:
   std::vector<Event *> events;
