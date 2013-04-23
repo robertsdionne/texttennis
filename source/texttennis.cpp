@@ -76,7 +76,6 @@ void TextTennis::draw() {
 void TextTennis::NextScene() {
   scene_index = (scene_index + 1) % scene_factory_functions.size();
   CreateScene();
-  transition_sound.play();
 }
 
 void TextTennis::PreviousScene() {
