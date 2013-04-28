@@ -5,7 +5,7 @@
 
 Scene2View::Scene2View()
 : font() {
-  bg.loadImage("ballscene.png");
+  bg.loadImage("500ball.png");
   font.loadFont(font_filename, 2, true, false, true, 0.0);
 }
 
@@ -43,9 +43,9 @@ void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, fl
   ofSetColor(ofColor::black);
   ofCircle(position, radius);
   ofSetColor(ofColor(255, 0, 0).lerp(ofColor::black, model.score / 500.0));
-  const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
-  ofLine(position, position - beam);
-  ofLine(position, position + beam);
+  //const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
+  //ofLine(position, position - beam);
+  //ofLine(position, position + beam);
   ofPopStyle();
 }
 
