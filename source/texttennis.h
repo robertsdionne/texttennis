@@ -3,6 +3,7 @@
 
 #include <Box2D/Box2D.h>
 #include <tr1/functional>
+#include <string>
 #include <vector>
 
 #include "constants.h"
@@ -11,6 +12,7 @@
 #include "scene2model.h"
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "music.h"
 #include "scene.h"
 #include "scene2view.h"
 #include "transition.h"
@@ -31,6 +33,8 @@ public:
   void RestartScene();
 
   void ToggleSettings();
+
+  void Trigger(const std::string &transition);
   
   void setup();
   
@@ -53,7 +57,7 @@ private:
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
-  ofSoundPlayer transition_sound;
+  Music music;
 };
 
 #endif  // TEXTTENNIS_H_

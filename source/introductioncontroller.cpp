@@ -15,7 +15,8 @@ IntroductionController::~IntroductionController() {
 }
 
 void IntroductionController::Setup() {
-  introduction_music.play();
+  scene_manager.Trigger("introduction");
+  //introduction_music.play();
 }
 
 void IntroductionController::Update() {

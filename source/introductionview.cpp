@@ -38,7 +38,7 @@ void IntroductionView::DrawBox(ofVec2f position, float angle) const {
   ofRotateZ(ofRadToDeg(angle));
   ofNoFill();
   ofSetLineWidth(rect_line_width);
-  ofSetColor(ofColor::black);
+  ofSetColor(ofColor::white);
   ofRect(ofPoint(), 0.5, 0.5);
   ofPopMatrix();
   ofPopStyle();

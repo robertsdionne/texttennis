@@ -24,7 +24,6 @@ TextTennis::TextTennis()
   scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
-  transition_sound.loadSound("apr21_2.wav");
 }
 
 TextTennis::~TextTennis() {
@@ -39,6 +38,12 @@ TextTennis::~TextTennis() {
 }
 
 void TextTennis::setup() {
+  music.Song("intro_loop.wav").Transition("scene1")
+      .Song("main_theme.wav").Transition("scene2")
+      .Transition("scene4")
+      .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene3")
+      .Song("music/scene02_lows.wav").Song("music/scene02_highs.wav").Transition("scene5")
+      .Transition("introduction");
   ofSetFrameRate(60.0);
   CreateScene();
   float_panel.setup("float parameters");
@@ -53,6 +58,7 @@ void TextTennis::setup() {
 }
 
 void TextTennis::update() {
+  music.Update();
   if (transition && !transition->IsDone()) {
     transition->Update();
   } else if (current_scene) {
@@ -89,6 +95,10 @@ void TextTennis::RestartScene() {
 
 void TextTennis::ToggleSettings() {
   show_sliders = !show_sliders;
+}
+
+void TextTennis::Trigger(const std::string &transition) {
+  music.Trigger(transition);
 }
 
 void TextTennis::CreateScene() {

@@ -93,9 +93,10 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  loop1.play();
-  loop2.play();
-  loop3.play();
+  scene_manager.Trigger("scene4");
+  //loop1.play();
+  //loop2.play();
+  //loop3.play();
   // Box2D
   CreateBorder();
   CreateCourt();

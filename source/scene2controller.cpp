@@ -29,12 +29,13 @@ void Scene2Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene2Controller::Setup() {
+  scene_manager.Trigger("scene2");
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
-  low_music.play();
-  high_music.play();
+  //low_music.play();
+  //high_music.play();
   scene_begin_time = ofGetElapsedTimef();
   const ofPoint left(256-64, 200);
   const ofPoint right(768-64, 200);
