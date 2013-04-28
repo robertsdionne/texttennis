@@ -81,24 +81,14 @@ void Music::Update() {
     }
     event_index = (event_index + 1) % events.size();
   } else if (crossfading) {
+    crossfading = false;
     for (auto sound : playing) {
-      //sound->SetVolumeTarget(ofClamp(1.0 - crossfade, 0.0, 1.0));
+      sound->Stop();
+      garbage.push_back(sound);
     }
-    for (auto sound : queued) {
-      //sound->SetVolumeTarget(ofClamp(crossfade, 0.0, 1.0));
-    }
-//    const float step = duration == 0 ? 1.0 : 1.0 / 60.0 / duration;
-//    if (crossfade < 1.0 - step) {
-//      crossfade += step;
-//    } else {
-      crossfading = false;
-      for (auto sound : playing) {
-        sound->Stop();
-        garbage.push_back(sound);
-      }
-      playing = queued;
-      queued.clear();
-//    }
+    playing = queued;
+    queued.clear();
+
   }
   for (auto sound : playing) {
     if (sound) {
