@@ -96,8 +96,8 @@ void TextTennis::ToggleSettings() {
   show_sliders = !show_sliders;
 }
 
-void TextTennis::Trigger(const std::string &transition) {
-  music.Trigger(transition);
+void TextTennis::TriggerTransition(const std::string &transition) {
+  music.TriggerTransition(transition);
 }
 
 void TextTennis::CreateScene() {

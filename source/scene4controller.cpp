@@ -93,7 +93,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  scene_manager.Trigger("scene4");
+  scene_manager.TriggerTransition("scene4");
   //loop1.play();
   //loop2.play();
   //loop3.play();

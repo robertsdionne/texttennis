@@ -59,7 +59,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene3Controller::Setup() {
-  scene_manager.Trigger("scene3");
+  scene_manager.TriggerTransition("scene3");
   // Box2D
   CreateBorder();
   CreateCourt();

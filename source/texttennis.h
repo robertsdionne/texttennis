@@ -34,7 +34,7 @@ public:
 
   void ToggleSettings();
 
-  void Trigger(const std::string &transition);
+  void TriggerTransition(const std::string &transition);
   
   void setup();
   

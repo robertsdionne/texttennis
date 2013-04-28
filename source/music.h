@@ -56,7 +56,7 @@ public:
 
   Music &Transition(const std::string &transition, float duration = 5.0);
 
-  void Trigger(const std::string &transition);
+  void TriggerTransition(const std::string &transition);
 
   void Update();
 

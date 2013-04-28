@@ -42,7 +42,7 @@ Music &Music::Transition(const std::string &transition, float duration) {
   return *this;
 }
 
-void Music::Trigger(const std::string &transition) {
+void Music::TriggerTransition(const std::string &transition) {
   transitions[transition] = false;
   if (crossfading) {
     crossfading = false;
