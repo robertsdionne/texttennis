@@ -7,9 +7,7 @@
 #include "utilities.h"
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
-: Controller(scene_manager), model_(model), low_music(), high_music(), hit1(), hit2() {
-  low_music.loadSound("music/scene02_lows.wav", true);
-  high_music.loadSound("music/scene02_highs.wav", true);
+: Controller(scene_manager), model_(model), hit1(), hit2() {
   hit1.loadSound("hit1.mp3");
   hit1.setMultiPlay(true);
   hit2.loadSound("hit2.mp3");
@@ -21,8 +19,6 @@ Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model
 }
 
 Scene2Controller::~Scene2Controller() {
-  low_music.stop();
-  high_music.stop();
 }
 
 void Scene2Controller::BeginContact(b2Contact* contact) {
@@ -34,8 +30,6 @@ void Scene2Controller::Setup() {
   CreateBorder();
   CreateCourt();
   CreateNet();
-  //low_music.play();
-  //high_music.play();
   scene_begin_time = ofGetElapsedTimef();
   const ofPoint left(256-64, 200);
   const ofPoint right(768-64, 200);

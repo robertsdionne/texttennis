@@ -61,7 +61,7 @@ void TextTennis::setup() {
       .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
       .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)
       .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")
-      .Song("music/scene02_lows.wav").Song("music/scene02_highs.wav").Transition("scene5").Transition("introduction");
+      .Song("scene02_lows.wav").Song("scene02_highs.wav").Transition("scene5").Transition("introduction");
   ofSetFrameRate(60.0);
   CreateScene();
   float_panel.setup("float parameters");

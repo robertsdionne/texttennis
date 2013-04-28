@@ -49,8 +49,6 @@ private:
 
 private:
   Scene2Model &model_;
-  ofSoundPlayer low_music;
-  ofSoundPlayer high_music;
   float scene_begin_time;
   ofSoundPlayer hit1, hit2;
   ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
