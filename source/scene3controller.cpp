@@ -78,7 +78,7 @@ void Scene3Controller::Setup() {
       }).Message("I don't believe in gravity, I will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -86,7 +86,7 @@ void Scene3Controller::Setup() {
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -95,7 +95,7 @@ void Scene3Controller::Setup() {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -105,7 +105,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -116,7 +116,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear()
@@ -127,7 +127,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       })
@@ -141,7 +141,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -149,12 +149,12 @@ void Scene3Controller::Setup() {
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.0);
         volume_targets.push_back(1.0);
         volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(0.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -162,12 +162,12 @@ void Scene3Controller::Setup() {
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(1.0);
         volume_targets.push_back(0.0);
         volume_targets.push_back(1.0);
+        volume_targets.push_back(0.0);
         volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.0);
         volume_targets.push_back(1.0);
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
