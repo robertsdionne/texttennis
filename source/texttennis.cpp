@@ -22,7 +22,8 @@ TextTennis::TextTennis()
   tree2("tree2.wav", false, true),
   tree3("tree3.wav", false, true),
   tree4("tree4.wav", false, true),
-  tree5("tree5.wav", false, true) {
+  tree5("tree5.wav", false, true),
+  opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene3::Create);
@@ -40,12 +41,23 @@ TextTennis::~TextTennis() {
     delete int_panel.getControl(i);
   }
   int_panel.clear();
+  delete opponents;
 }
 
 void TextTennis::setup() {
+  std::vector<std::string> loops;
+  loops.push_back("low_snd.wav");
+  loops.push_back("arpeg_1.wav");
+  loops.push_back("arpeg_2.wav");
+  loops.push_back("arpeg_3.wav");
+  loops.push_back("arpeg_4.wav");
+  loops.push_back("speak_1.wav");
+  loops.push_back("speak_2.wav");
+  loops.push_back("speak_3.wav");
+  opponents = new LoopSet(loops);
   music.Song("intro_loop.wav").Transition("scene1")
       .Song("main_theme.wav").Transition("scene3")
-      .Song("low_snd.wav").Transition("scene4")
+      .SoundEffect("opponents", *opponents).Transition("scene4")
       .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
       .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)
       .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")

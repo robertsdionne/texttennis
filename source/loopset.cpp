@@ -10,11 +10,9 @@ bool LoopSet::IsPlaying() {
 
 void LoopSet::Play(float volume_target) {
   SetVolumeTarget(volume_target);
-  if (!IsPlaying()) {
-    int index = 0;
-    for (auto sound : sounds) {
-      sound->Play(volume_target * volume_targets[index++]);
-    }
+  int index = 0;
+  for (auto sound : sounds) {
+    sound->Play(volume_target * volume_targets[index++]);
   }
 }
 
@@ -23,6 +21,8 @@ void LoopSet::SetVolumeTargets(const std::vector<float> &new_volume_targets) {
   for (auto volume : new_volume_targets) {
     if (index < volume_targets.size()) {
       volume_targets[index] = new_volume_targets[index];
+    } else {
+      volume_targets[index] = 0.0;
     }
     index++;
   }

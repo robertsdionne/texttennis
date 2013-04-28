@@ -13,6 +13,7 @@
 #include "ofMain.h"
 #include "ofsound.h"
 #include "ofxGui.h"
+#include "loopset.h"
 #include "music.h"
 #include "scene.h"
 #include "scene2view.h"
@@ -60,6 +61,7 @@ private:
   ofxPanel int_panel;
   Music music;
   OfSound tree1, tree2, tree3, tree4, tree5;
+  LoopSet *opponents;
 };
 
 #endif  // TEXTTENNIS_H_
