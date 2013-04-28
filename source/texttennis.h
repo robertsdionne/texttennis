@@ -11,6 +11,7 @@
 #include "introduction.h"
 #include "scene2model.h"
 #include "ofMain.h"
+#include "ofsound.h"
 #include "ofxGui.h"
 #include "music.h"
 #include "scene.h"
@@ -27,6 +28,8 @@ public:
   virtual ~TextTennis();
 
   void NextScene();
+
+  void PlaySoundEffect(const std::string &sound);
 
   void PreviousScene();
 
@@ -58,6 +61,7 @@ private:
   ofxPanel float_panel;
   ofxPanel int_panel;
   Music music;
+  OfSound tree1, tree2, tree3, tree4, tree5;
 };
 
 #endif  // TEXTTENNIS_H_

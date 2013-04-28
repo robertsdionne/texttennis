@@ -17,7 +17,12 @@
  */
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
-  show_sliders(false), float_panel(), int_panel(), transition(nullptr) {
+  show_sliders(false), float_panel(), int_panel(), transition(nullptr),
+  tree1("tree1.wav", false, true),
+  tree2("tree2.wav", false, true),
+  tree3("tree3.wav", false, true),
+  tree4("tree4.wav", false, true),
+  tree5("tree5.wav", false, true) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene3::Create);
@@ -41,6 +46,8 @@ void TextTennis::setup() {
   music.Song("intro_loop.wav").Transition("scene1")
       .Song("main_theme.wav").Transition("scene3")
       .Song("low_snd.wav").Transition("scene4")
+      .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
+      .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)
       .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")
       .Song("music/scene02_lows.wav").Song("music/scene02_highs.wav").Transition("scene5").Transition("introduction");
   ofSetFrameRate(60.0);
@@ -81,6 +88,10 @@ void TextTennis::draw() {
 void TextTennis::NextScene() {
   scene_index = (scene_index + 1) % scene_factory_functions.size();
   CreateScene();
+}
+
+void TextTennis::PlaySoundEffect(const std::string &sound) {
+  music.PlaySoundEffect(sound);
 }
 
 void TextTennis::PreviousScene() {

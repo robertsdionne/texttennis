@@ -18,6 +18,7 @@ public:
   public:
     enum class Type {
       SONG,
+      SOUND_EFFECT,
       TRANSITION
     };
     Event(Type type) : type(type) {}
@@ -31,6 +32,16 @@ public:
     : Event(Event::Type::SONG), song(song), loop(loop) {}
     virtual ~SongEvent() {}
     std::string song;
+    bool loop;
+  };
+
+  class SoundEffectEvent : public Event {
+  public:
+    SoundEffectEvent(const std::string &name, Sound *sound, bool loop)
+    : Event(Event::Type::SOUND_EFFECT), name(name), sound(sound), loop(loop) {}
+    virtual ~SoundEffectEvent() {}
+    std::string name;
+    Sound *sound;
     bool loop;
   };
 
@@ -48,7 +59,11 @@ public:
 
   bool IsDone() const;
 
+  void PlaySoundEffect(const std::string &sound);
+
   Music &Song(const std::string &song, bool loop = true);
+
+  Music &SoundEffect(const std::string &name, Sound &sound, bool loop = false);
 
   Music &Transition(const std::string &transition);
 
@@ -60,6 +75,7 @@ private:
   std::vector<Event *> events;
   int event_index;
   std::vector<Sound *> playing, queued, garbage;
+  std::map<std::string, Sound *> sounds;
   std::map<std::string, bool> transitions;
   bool crossfading;
 };

@@ -3,7 +3,8 @@
 #include "sound.h"
 
 Music::Music()
-: events(), event_index(0), playing(), transitions(), crossfading(true) {}
+: events(), event_index(0), playing(), queued(), garbage(),
+  sounds(), transitions(), crossfading(true) {}
 
 Music::~Music() {
   for (auto *event : events) {
@@ -33,8 +34,17 @@ bool Music::IsDone() const {
   return event_index == events.size();
 }
 
+void Music::PlaySoundEffect(const std::string &sound) {
+  sounds[sound]->Play();
+}
+
 Music &Music::Song(const std::string &song, bool loop) {
   events.push_back(new SongEvent(song, loop));
+  return *this;
+}
+
+Music &Music::SoundEffect(const std::string &name, Sound &sound, bool loop) {
+  events.push_back(new SoundEffectEvent(name, &sound, loop));
   return *this;
 }
 
@@ -64,8 +74,12 @@ void Music::Update() {
       case Event::Type::SONG: {
         SongEvent *song = dynamic_cast<SongEvent *>(event);
         Sound *sound = new OfSound(song->song, true, true);
-        sound->Play();
         queued.push_back(sound);
+        break;
+      }
+      case Event::Type::SOUND_EFFECT: {
+        SoundEffectEvent *sound_effect = dynamic_cast<SoundEffectEvent *>(event);
+        sounds[sound_effect->name] = sound_effect->sound;
         break;
       }
       case Event::Type::TRANSITION: {
@@ -86,6 +100,9 @@ void Music::Update() {
       sound->Stop();
       garbage.push_back(sound);
     }
+    for (auto sound : sounds) {
+      sound.second->Stop();
+    }
     playing = queued;
     queued.clear();
 
@@ -103,6 +120,11 @@ void Music::Update() {
   for (auto sound : garbage) {
     if (sound) {
       sound->Update();
+    }
+  }
+  for (auto sound : sounds) {
+    if (sound.second) {
+      sound.second->Update();
     }
   }
   bool playing = false;
