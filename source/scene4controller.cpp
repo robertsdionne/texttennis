@@ -7,21 +7,11 @@
 #include "utilities.h"
 
 Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model)
-: Controller(scene_manager), model_(model), loop1(), loop2(), loop3() {
-  loop1.loadSound("treeloop1.wav");
-  loop2.setVolume(2.0);
-  loop1.setLoop(true);
-  loop2.loadSound("treeloop2.wav");
-  loop2.setVolume(2.0);
-  loop2.setLoop(true);
-  loop3.loadSound("treeloop3.wav");
-  loop3.setVolume(2.0);
-  loop3.setLoop(true);
+: Controller(scene_manager), model_(model) {
   for (int i = 0; i < 5; ++i) {
     std::stringstream out;
-    out << "tree" << (i + 1) << ".wav";
-    tree[i].loadSound(out.str());
-    tree[i].setVolume(2.0);
+    out << "tree" << (i + 1);
+    tree[i] = out.str();
   }
   hit1.loadSound("hit1.mp3");
   hit2.loadSound("hit2.mp3");
@@ -32,12 +22,6 @@ Scene4Controller::Scene4Controller(TextTennis &scene_manager, Scene4Model &model
 }
 
 Scene4Controller::~Scene4Controller() {
-  loop1.stop();
-  loop2.stop();
-  loop3.stop();
-  for (int i = 0; i < 5; ++i) {
-    tree[i].stop();
-  }
 }
 
 void Scene4Controller::BeginContact(b2Contact* contact) {
@@ -61,7 +45,8 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
         model_.dialogue.Trigger("collide");
-        tree[model_.score].play();
+        //tree[model_.score].play();
+        scene_manager.GetMusic().PlaySoundEffect(tree[model_.score]);
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
@@ -93,9 +78,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  loop1.play();
-  loop2.play();
-  loop3.play();
+  scene_manager.GetMusic().TriggerTransition("scene4");
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -361,7 +344,6 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         const ofVec2f target = OpenFrameworksVector(model_.tree_people[4 - model_.score]->GetPosition());
         const float range = target.x - model_.ball_body->GetPosition().x;
         const float speed = sqrt(range * gravity / sin(2.0 * ofDegToRad(angle[4 - model_.score])));
-        std::cout << speed << std::endl;
         const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
         model_.ball_body->SetLinearVelocity(velocity);
         model_.bounces = 0;

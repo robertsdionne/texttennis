@@ -23,11 +23,12 @@ Scene1Controller::~Scene1Controller() {
 }
 
 void Scene1Controller::Setup() {
+  scene_manager.GetMusic().TriggerTransition("scene1");
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
-  music.play();
+  //music.play();
   model_.scene_start_time = ofGetElapsedTimef();
   model_.rotation = 0;
   model_.world.SetContactListener(this);

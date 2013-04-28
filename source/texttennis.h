@@ -3,6 +3,7 @@
 
 #include <Box2D/Box2D.h>
 #include <tr1/functional>
+#include <string>
 #include <vector>
 
 #include "constants.h"
@@ -10,7 +11,10 @@
 #include "introduction.h"
 #include "scene2model.h"
 #include "ofMain.h"
+#include "ofsound.h"
 #include "ofxGui.h"
+#include "loopset.h"
+#include "music.h"
 #include "scene.h"
 #include "scene2view.h"
 #include "transition.h"
@@ -25,6 +29,8 @@ public:
   virtual ~TextTennis();
 
   void NextScene();
+
+  Music &GetMusic();
 
   void PreviousScene();
 
@@ -53,7 +59,9 @@ private:
   bool show_sliders;
   ofxPanel float_panel;
   ofxPanel int_panel;
-  ofSoundPlayer transition_sound;
+  Music music;
+  OfSound tree1, tree2, tree3, tree4, tree5;
+  LoopSet *opponents;
 };
 
 #endif  // TEXTTENNIS_H_

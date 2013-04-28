@@ -17,14 +17,19 @@
  */
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
-  show_sliders(false), float_panel(), int_panel(), transition(nullptr) {
+  show_sliders(false), float_panel(), int_panel(), transition(nullptr),
+  tree1("tree1.wav", false, true),
+  tree2("tree2.wav", false, true),
+  tree3("tree3.wav", false, true),
+  tree4("tree4.wav", false, true),
+  tree5("tree5.wav", false, true),
+  opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back(Scene3::Create);
   scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
-  transition_sound.loadSound("apr21_2.wav");
 }
 
 TextTennis::~TextTennis() {
@@ -36,9 +41,27 @@ TextTennis::~TextTennis() {
     delete int_panel.getControl(i);
   }
   int_panel.clear();
+  delete opponents;
 }
 
 void TextTennis::setup() {
+  std::vector<std::string> loops;
+  loops.push_back("low_snd.wav");
+  loops.push_back("arpeg_1.wav");
+  loops.push_back("arpeg_2.wav");
+  loops.push_back("arpeg_3.wav");
+  loops.push_back("arpeg_4.wav");
+  loops.push_back("speak_1.wav");
+  loops.push_back("speak_2.wav");
+  loops.push_back("speak_3.wav");
+  opponents = new LoopSet(loops);
+  music.Song("intro_loop.wav").Transition("scene1")
+      .Song("main_theme.wav").Transition("scene3")
+      .SoundEffect("opponents", *opponents).Transition("scene4")
+      .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
+      .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)
+      .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")
+      .Song("music/scene02_lows.wav").Song("music/scene02_highs.wav").Transition("scene5").Transition("introduction");
   ofSetFrameRate(60.0);
   CreateScene();
   float_panel.setup("float parameters");
@@ -53,6 +76,7 @@ void TextTennis::setup() {
 }
 
 void TextTennis::update() {
+  music.Update();
   if (transition && !transition->IsDone()) {
     transition->Update();
   } else if (current_scene) {
@@ -76,12 +100,15 @@ void TextTennis::draw() {
 void TextTennis::NextScene() {
   scene_index = (scene_index + 1) % scene_factory_functions.size();
   CreateScene();
-  transition_sound.play();
+}
+
+Music &TextTennis::GetMusic() {
+  return music;
 }
 
 void TextTennis::PreviousScene() {
-  scene_index = (scene_index + scene_factory_functions.size() - 1) % scene_factory_functions.size();
-  CreateScene();
+//  scene_index = (scene_index + scene_factory_functions.size() - 1) % scene_factory_functions.size();
+//  CreateScene();
 }
 
 void TextTennis::RestartScene() {

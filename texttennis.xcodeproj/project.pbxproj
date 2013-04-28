@@ -27,6 +27,7 @@
 		469D7B0E16FBEEEC00CB1D33 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B0B16FBEEEC00CB1D33 /* tinyxmlparser.cpp */; };
 		469D7B1216FC12BC00CB1D33 /* slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469D7B1116FC12BC00CB1D33 /* slider.cpp */; };
 		46A7062716F95195008D1313 /* parameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A7062616F95195008D1313 /* parameter.cpp */; };
+		46B8073E1727263700F6E337 /* music.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46B8073C1727263700F6E337 /* music.cpp */; };
 		46CE39B916FF45B100D77873 /* scene2controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39B316FF45B100D77873 /* scene2controller.cpp */; };
 		46CE39BA16FF45B100D77873 /* scene2view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39B516FF45B100D77873 /* scene2view.cpp */; };
 		46CE39BB16FF45B100D77873 /* scene2model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46CE39B716FF45B100D77873 /* scene2model.cpp */; };
@@ -94,6 +95,8 @@
 		46D141D016F6A3F4009A2AD3 /* LinearTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140B616F6A3F4009A2AD3 /* LinearTexture.cpp */; };
 		46D141D116F6A3F4009A2AD3 /* ofxSpriteSheetRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140B816F6A3F4009A2AD3 /* ofxSpriteSheetRenderer.cpp */; };
 		46D141D216F6A3F4009A2AD3 /* PixelTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D140BA16F6A3F4009A2AD3 /* PixelTexture.cpp */; };
+		46D270A1172D928F00831F40 /* ofsound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D2709F172D928F00831F40 /* ofsound.cpp */; };
+		46D270A6172DABDF00831F40 /* loopset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D270A4172DABDF00831F40 /* loopset.cpp */; };
 		46E7762E16F76B5F0011A27F /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E7762C16F76B5F0011A27F /* utilities.cpp */; };
 		46E8C3BB16F95CCA0033523B /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3B916F95CCA0033523B /* scene.cpp */; };
 		46E8C3BE16F95D940033523B /* scene1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46E8C3BC16F95D940033523B /* scene1.cpp */; };
@@ -199,6 +202,8 @@
 		469E3BDF170E7B990046FCBE /* scene04_trees.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scene04_trees.wav; sourceTree = "<group>"; };
 		46A7062616F95195008D1313 /* parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameter.cpp; sourceTree = "<group>"; };
 		46B4AD09170B85630057F945 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuMono-R.ttf"; sourceTree = "<group>"; };
+		46B8073C1727263700F6E337 /* music.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = music.cpp; sourceTree = "<group>"; };
+		46B8073D1727263700F6E337 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = music.h; sourceTree = "<group>"; };
 		46CE39B316FF45B100D77873 /* scene2controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2controller.cpp; sourceTree = "<group>"; };
 		46CE39B416FF45B100D77873 /* scene2controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene2controller.h; sourceTree = "<group>"; };
 		46CE39B516FF45B100D77873 /* scene2view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene2view.cpp; sourceTree = "<group>"; };
@@ -559,6 +564,11 @@
 		46D1419E16F6A3F4009A2AD3 /* wrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wrap.hpp; sourceTree = "<group>"; };
 		46D1419F16F6A3F4009A2AD3 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		46D141A116F6A3F4009A2AD3 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
+		46D2709D172D919000831F40 /* sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sound.h; sourceTree = "<group>"; };
+		46D2709F172D928F00831F40 /* ofsound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofsound.cpp; sourceTree = "<group>"; };
+		46D270A0172D928F00831F40 /* ofsound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofsound.h; sourceTree = "<group>"; };
+		46D270A4172DABDF00831F40 /* loopset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loopset.cpp; sourceTree = "<group>"; };
+		46D270A5172DABDF00831F40 /* loopset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loopset.h; sourceTree = "<group>"; };
 		46D8F90E16F7D3BA001857BC /* parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameter.h; sourceTree = "<group>"; };
 		46E7762C16F76B5F0011A27F /* utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		46E7762D16F76B5F0011A27F /* utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utilities.h; sourceTree = "<group>"; };
@@ -727,9 +737,15 @@
 				46CE39C716FF5ACE00D77873 /* introductionmodel.h */,
 				46CE39C916FF5E0200D77873 /* introductionview.cpp */,
 				46CE39CA16FF5E0200D77873 /* introductionview.h */,
+				46D270A4172DABDF00831F40 /* loopset.cpp */,
+				46D270A5172DABDF00831F40 /* loopset.h */,
 				46D1404416F6A377009A2AD3 /* main.cpp */,
 				46CE39BC16FF465100D77873 /* model.cpp */,
 				46CE39BD16FF465100D77873 /* model.h */,
+				46B8073C1727263700F6E337 /* music.cpp */,
+				46B8073D1727263700F6E337 /* music.h */,
+				46D2709F172D928F00831F40 /* ofsound.cpp */,
+				46D270A0172D928F00831F40 /* ofsound.h */,
 				46A7062616F95195008D1313 /* parameter.cpp */,
 				46D8F90E16F7D3BA001857BC /* parameter.h */,
 				46E8C3B916F95CCA0033523B /* scene.cpp */,
@@ -776,6 +792,7 @@
 				463DA5CE170103910065BA6A /* scene5view.h */,
 				469D7B1116FC12BC00CB1D33 /* slider.cpp */,
 				469D7B1016FC12AC00CB1D33 /* slider.h */,
+				46D2709D172D919000831F40 /* sound.h */,
 				46D1404516F6A377009A2AD3 /* texttennis.cpp */,
 				46D1404616F6A377009A2AD3 /* texttennis.h */,
 				46003C4D1724676A00D4768F /* transition.cpp */,
@@ -1498,6 +1515,9 @@
 				463DA5CD1701038C0065BA6A /* scene5view.cpp in Sources */,
 				46D027AF171F2C01004136B2 /* dialogue.cpp in Sources */,
 				46003C4F1724676B00D4768F /* transition.cpp in Sources */,
+				46B8073E1727263700F6E337 /* music.cpp in Sources */,
+				46D270A1172D928F00831F40 /* ofsound.cpp in Sources */,
+				46D270A6172DABDF00831F40 /* loopset.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

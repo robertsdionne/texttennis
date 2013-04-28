@@ -29,18 +29,21 @@ void Scene2Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene2Controller::Setup() {
+  scene_manager.GetMusic().TriggerTransition("scene2");
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
-  low_music.play();
-  high_music.play();
+  //low_music.play();
+  //high_music.play();
   scene_begin_time = ofGetElapsedTimef();
-  const ofPoint left(256-64, 400);
-  const ofPoint right(768-64, 400);
+  const ofPoint left(256-64, 200);
+  const ofPoint right(768-64, 200);
   const float pause = 0.5;
   model_.dialogue
       .Speed(20.0)
+      .Foreground(ofColor::white)
+      .Background(ofColor(255, 255, 255, 32))
       .Position("left", left)
       .Position("right", right)
       .Message("You know why you're here, right?", "right").Pause(pause)
