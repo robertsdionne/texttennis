@@ -10,7 +10,7 @@ public:
 
   virtual bool IsPlaying() = 0;
 
-  virtual void Play() = 0;
+  virtual void Play(float volume_target = 1.0) = 0;
 
   virtual void SetVolumeTarget(float target) {
     volume_target = target;

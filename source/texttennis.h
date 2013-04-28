@@ -29,15 +29,13 @@ public:
 
   void NextScene();
 
-  void PlaySoundEffect(const std::string &sound);
+  Music &GetMusic();
 
   void PreviousScene();
 
   void RestartScene();
 
   void ToggleSettings();
-
-  void TriggerTransition(const std::string &transition);
   
   void setup();
   

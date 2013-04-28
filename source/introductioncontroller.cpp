@@ -15,7 +15,7 @@ IntroductionController::~IntroductionController() {
 }
 
 void IntroductionController::Setup() {
-  scene_manager.TriggerTransition("introduction");
+  scene_manager.GetMusic().TriggerTransition("introduction");
   //introduction_music.play();
 }
 

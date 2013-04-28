@@ -9,7 +9,7 @@ Scene5Controller::Scene5Controller(TextTennis &scene_manager, Scene5Model &model
 : Controller(scene_manager), model_(model) {}
 
 void Scene5Controller::Setup() {
-  scene_manager.TriggerTransition("scene5");
+  scene_manager.GetMusic().TriggerTransition("scene5");
   model_.dialogue
       .Position("spot", ofPoint(100, 100))
       .Foreground(ofColor::white)

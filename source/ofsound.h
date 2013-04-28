@@ -18,7 +18,7 @@ public:
 
   virtual bool IsPlaying();
 
-  virtual void Play();
+  virtual void Play(float volume_target = 1.0);
 
   virtual void Stop();
 

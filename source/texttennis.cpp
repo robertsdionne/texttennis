@@ -90,8 +90,8 @@ void TextTennis::NextScene() {
   CreateScene();
 }
 
-void TextTennis::PlaySoundEffect(const std::string &sound) {
-  music.PlaySoundEffect(sound);
+Music &TextTennis::GetMusic() {
+  return music;
 }
 
 void TextTennis::PreviousScene() {
@@ -105,10 +105,6 @@ void TextTennis::RestartScene() {
 
 void TextTennis::ToggleSettings() {
   show_sliders = !show_sliders;
-}
-
-void TextTennis::TriggerTransition(const std::string &transition) {
-  music.TriggerTransition(transition);
 }
 
 void TextTennis::CreateScene() {

@@ -46,7 +46,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
       if (other == model_.tree_people[i]) {
         model_.dialogue.Trigger("collide");
         //tree[model_.score].play();
-        scene_manager.PlaySoundEffect(tree[model_.score]);
+        scene_manager.GetMusic().PlaySoundEffect(tree[model_.score]);
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
@@ -78,7 +78,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  scene_manager.TriggerTransition("scene4");
+  scene_manager.GetMusic().TriggerTransition("scene4");
   // Box2D
   CreateBorder();
   CreateCourt();

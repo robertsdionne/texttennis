@@ -53,6 +53,11 @@ public:
     std::string transition;
   };
 
+  template <typename T>
+  T *GetSoundEffect(const std::string &sound) {
+    return dynamic_cast<T *>(sounds[sound]);
+  }
+
   bool IsBlocked() const;
 
   bool IsBlocked(const std::string &barrier);

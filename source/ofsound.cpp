@@ -4,8 +4,8 @@ bool OfSound::IsPlaying() {
   return sound.getIsPlaying();
 }
 
-void OfSound::Play() {
-  SetVolumeTarget(1.0);
+void OfSound::Play(float volume_target) {
+  SetVolumeTarget(volume_target);
   if (!IsPlaying()) {
     sound.play();
     std::cout << "Playing " << filename << std::endl;
