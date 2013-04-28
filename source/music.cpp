@@ -1,8 +1,9 @@
 #include "music.h"
+#include "ofsound.h"
+#include "sound.h"
 
 Music::Music()
-: events(), event_index(0), crossfade(0), duration(5.0),
-  playing(), transitions(), crossfading(true) {}
+: events(), event_index(0), playing(), transitions(), crossfading(true) {}
 
 Music::~Music() {
   for (auto *event : events) {
@@ -37,8 +38,8 @@ Music &Music::Song(const std::string &song, bool loop) {
   return *this;
 }
 
-Music &Music::Transition(const std::string &transition, float duration) {
-  events.push_back(new TransitionEvent(transition, duration));
+Music &Music::Transition(const std::string &transition) {
+  events.push_back(new TransitionEvent(transition));
   return *this;
 }
 
@@ -47,13 +48,12 @@ void Music::TriggerTransition(const std::string &transition) {
   if (crossfading) {
     crossfading = false;
     for (auto sound : playing) {
-      sound.player->stop();
-      delete sound.player;
+      sound->Stop();
+      delete sound;
     }
     playing = queued;
     queued.clear();
   }
-  crossfade = 0.0;
   crossfading = true;
 }
 
@@ -63,23 +63,16 @@ void Music::Update() {
     switch (event->type) {
       case Event::Type::SONG: {
         SongEvent *song = dynamic_cast<SongEvent *>(event);
-        ofSoundPlayer *player = new ofSoundPlayer();
-        player->loadSound(song->song, true);
-        player->setLoop(song->loop);
-        player->setVolume(0.0);
-        player->play();
-        Sound object;
-        object.player = player;
-        object.filename = song->song;
-        queued.push_back(object);
+        Sound *sound = new OfSound(song->song, true, true);
+        sound->Play();
+        queued.push_back(sound);
         break;
       }
       case Event::Type::TRANSITION: {
         TransitionEvent *transition = dynamic_cast<TransitionEvent *>(event);
         transitions[transition->transition] = true;
-        duration = transition->duration;
         for (auto sound : queued) {
-          sound.player->play();
+          sound->Play();
         }
         break;
       }
@@ -89,22 +82,52 @@ void Music::Update() {
     event_index = (event_index + 1) % events.size();
   } else if (crossfading) {
     for (auto sound : playing) {
-      sound.player->setVolume(ofClamp(1.0 - crossfade, 0.0, 1.0));
+      //sound->SetVolumeTarget(ofClamp(1.0 - crossfade, 0.0, 1.0));
     }
     for (auto sound : queued) {
-      sound.player->setVolume(ofClamp(crossfade, 0.0, 1.0));
+      //sound->SetVolumeTarget(ofClamp(crossfade, 0.0, 1.0));
     }
-    const float step = duration == 0 ? 1.0 : 1.0 / 60.0 / duration;
-    if (crossfade < 1.0 - step) {
-      crossfade += step;
-    } else {
+//    const float step = duration == 0 ? 1.0 : 1.0 / 60.0 / duration;
+//    if (crossfade < 1.0 - step) {
+//      crossfade += step;
+//    } else {
       crossfading = false;
       for (auto sound : playing) {
-        sound.player->stop();
-        delete sound.player;
+        sound->Stop();
+        garbage.push_back(sound);
       }
       playing = queued;
       queued.clear();
+//    }
+  }
+  for (auto sound : playing) {
+    if (sound) {
+      sound->Update();
     }
+  }
+  for (auto sound : queued) {
+    if (sound) {
+      sound->Update();
+    }
+  }
+  for (auto sound : garbage) {
+    if (sound) {
+      sound->Update();
+    }
+  }
+  bool playing = false;
+  for (auto sound : garbage) {
+    if (sound && sound->IsPlaying()) {
+      playing = true;
+    }
+  }
+  if (!playing && garbage.size()) {
+    for (auto sound : garbage) {
+      if (sound) {
+        delete sound;
+      }
+    }
+    std::cout << "dumping garbage audio" << std::endl;
+    garbage.clear();
   }
 }

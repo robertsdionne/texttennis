@@ -7,15 +7,12 @@
 
 #include "ofMain.h"
 
+class Sound;
+
 class Music {
 public:
   Music();
   virtual ~Music();
-
-  struct Sound {
-    std::string filename;
-    ofSoundPlayer *player;
-  };
 
   class Event {
   public:
@@ -39,11 +36,10 @@ public:
 
   class TransitionEvent : public Event {
   public:
-    TransitionEvent(const std::string &transition, float duration)
-    : Event(Event::Type::TRANSITION), transition(transition), duration(duration) {}
+    TransitionEvent(const std::string &transition)
+    : Event(Event::Type::TRANSITION), transition(transition) {}
     virtual ~TransitionEvent() {}
     std::string transition;
-    float duration;
   };
 
   bool IsBlocked() const;
@@ -52,9 +48,9 @@ public:
 
   bool IsDone() const;
 
-  Music &Song(const std::string &song, bool loop = false);
+  Music &Song(const std::string &song, bool loop = true);
 
-  Music &Transition(const std::string &transition, float duration = 5.0);
+  Music &Transition(const std::string &transition);
 
   void TriggerTransition(const std::string &transition);
 
@@ -63,8 +59,7 @@ public:
 private:
   std::vector<Event *> events;
   int event_index;
-  float crossfade, duration;
-  std::vector<Sound> playing, queued;
+  std::vector<Sound *> playing, queued, garbage;
   std::map<std::string, bool> transitions;
   bool crossfading;
 };

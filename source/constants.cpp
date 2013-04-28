@@ -62,6 +62,7 @@ DEFINE_PARAMETER(ofVec2f, racket2_start_position,
 DEFINE_PARAMETER_RANGE(float, rect_line_width, .1, 0, 10);
 DEFINE_PARAMETER_RANGE(float, restitution, 0.728, 0.0, 2.0);
 DEFINE_PARAMETER_RANGE(int, save_every_n_frames, 2, 1, 60);
+DEFINE_PARAMETER_RANGE(float, sound_volume_rate, 0.01, 0, 1);
 DEFINE_PARAMETER(ofMatrix4x4, view_matrix,
                  ofMatrix4x4::newScaleMatrix(DEPENDENCY(window_width) / DEPENDENCY(court_length),
                                              -DEPENDENCY(window_height) / DEPENDENCY(court_height), 1) *

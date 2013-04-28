@@ -40,7 +40,7 @@ TextTennis::~TextTennis() {
 void TextTennis::setup() {
   music.Song("intro_loop.wav").Transition("scene1")
       .Song("main_theme.wav").Transition("scene3")
-      .Transition("scene4")
+      .Song("low_snd.wav").Transition("scene4")
       .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")
       .Song("music/scene02_lows.wav").Song("music/scene02_highs.wav").Transition("scene5").Transition("introduction");
   ofSetFrameRate(60.0);
