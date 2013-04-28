@@ -737,6 +737,8 @@
 				46CE39C716FF5ACE00D77873 /* introductionmodel.h */,
 				46CE39C916FF5E0200D77873 /* introductionview.cpp */,
 				46CE39CA16FF5E0200D77873 /* introductionview.h */,
+				46D270A4172DABDF00831F40 /* loopset.cpp */,
+				46D270A5172DABDF00831F40 /* loopset.h */,
 				46D1404416F6A377009A2AD3 /* main.cpp */,
 				46CE39BC16FF465100D77873 /* model.cpp */,
 				46CE39BD16FF465100D77873 /* model.h */,
@@ -799,8 +801,6 @@
 				46E7762D16F76B5F0011A27F /* utilities.h */,
 				46CE39BF16FF465600D77873 /* view.cpp */,
 				46CE39C016FF465600D77873 /* view.h */,
-				46D270A4172DABDF00831F40 /* loopset.cpp */,
-				46D270A5172DABDF00831F40 /* loopset.h */,
 			);
 			path = source;
 			sourceTree = "<group>";
