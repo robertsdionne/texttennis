@@ -45,33 +45,16 @@ Music &Music::Transition(const std::string &transition, float duration) {
 void Music::Trigger(const std::string &transition) {
   transitions[transition] = false;
   if (crossfading) {
-    std::cout << crossfade << std::endl;
+    crossfading = false;
     for (auto sound : playing) {
-      sound->setVolume(ofClamp(1.0 - crossfade, 0.0, 1.0));
+      sound.player->stop();
+      delete sound.player;
     }
-    for (auto sound : queued) {
-      sound->setVolume(ofClamp(crossfade, 0.0, 1.0));
-    }
-    const float step = duration == 0 ? 1.0 : 1.0 / 60.0 / duration;
-    if (crossfade < 1.0 - step) {
-      crossfade += step;
-    } else {
-      std::cout << "stop" << std::endl;
-      crossfading = false;
-      for (auto sound : playing) {
-        sound->stop();
-        delete sound;
-      }
-      playing = queued;
-      queued.clear();
-    }
+    playing = queued;
+    queued.clear();
   }
   crossfade = 0.0;
   crossfading = true;
-  for (auto sound : queued) {
-    sound->setVolume(0.0);
-    sound->play();
-  }
 }
 
 void Music::Update() {
@@ -83,7 +66,12 @@ void Music::Update() {
         ofSoundPlayer *player = new ofSoundPlayer();
         player->loadSound(song->song, true);
         player->setLoop(song->loop);
-        queued.push_back(player);
+        player->setVolume(0.0);
+        player->play();
+        Sound object;
+        object.player = player;
+        object.filename = song->song;
+        queued.push_back(object);
         break;
       }
       case Event::Type::TRANSITION: {
@@ -91,7 +79,7 @@ void Music::Update() {
         transitions[transition->transition] = true;
         duration = transition->duration;
         for (auto sound : queued) {
-          sound->play();
+          sound.player->play();
         }
         break;
       }
@@ -100,22 +88,20 @@ void Music::Update() {
     }
     event_index = (event_index + 1) % events.size();
   } else if (crossfading) {
-    std::cout << crossfade << std::endl;
     for (auto sound : playing) {
-      sound->setVolume(ofClamp(1.0 - crossfade, 0.0, 1.0));
+      sound.player->setVolume(ofClamp(1.0 - crossfade, 0.0, 1.0));
     }
     for (auto sound : queued) {
-      sound->setVolume(ofClamp(crossfade, 0.0, 1.0));
+      sound.player->setVolume(ofClamp(crossfade, 0.0, 1.0));
     }
     const float step = duration == 0 ? 1.0 : 1.0 / 60.0 / duration;
     if (crossfade < 1.0 - step) {
       crossfade += step;
     } else {
-      std::cout << "stop" << std::endl;
       crossfading = false;
       for (auto sound : playing) {
-        sound->stop();
-        delete sound;
+        sound.player->stop();
+        delete sound.player;
       }
       playing = queued;
       queued.clear();

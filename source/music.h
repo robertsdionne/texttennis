@@ -12,6 +12,11 @@ public:
   Music();
   virtual ~Music();
 
+  struct Sound {
+    std::string filename;
+    ofSoundPlayer *player;
+  };
+
   class Event {
   public:
     enum class Type {
@@ -59,7 +64,7 @@ private:
   std::vector<Event *> events;
   int event_index;
   float crossfade, duration;
-  std::vector<ofSoundPlayer *> playing, queued;
+  std::vector<Sound> playing, queued;
   std::map<std::string, bool> transitions;
   bool crossfading;
 };
