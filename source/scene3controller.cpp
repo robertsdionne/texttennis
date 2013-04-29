@@ -72,106 +72,134 @@ void Scene3Controller::Setup() {
       .Foreground(ofColor::white)
       .Position("right", right).Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.1); //bass sound
+        volume_targets.push_back(0.5); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
         scene_manager.GetMusic().PlaySoundEffect("opponents");
-      }).Message("I don't believe in gravity, I will surely win this match!", "right")
+      }).Message("I don't believe in gravity, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.2); //bass sound
+        volume_targets.push_back(0.5); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(1.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
-      .Message("I have time, I will surely win this match!", "right")
+      .Message("I have time, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.2); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(1.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
-      .Message("I have many racquets, I will surely win this match!", "right")
+      .Message("I have many racquets, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.1); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(1.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
       .Message("We're playing a whole different game,\nwe will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.5); //high arpeg v2
+        volume_targets.push_back(0.0); //low arpeg v1
+        volume_targets.push_back(1.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.2); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
-      .Message("I'm made of glass, I will surely win this match!", "right")
+      .Message("I'm made of glass, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.5); //high arpeg v2
+        volume_targets.push_back(0.0); //low arpeg v1
+        volume_targets.push_back(1.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.2); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear()
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.5); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(1.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.5); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       })
-      .Message("I'm la...", "right").Pause(0.5).Clear().Pause(0.5)
+      .Message("I'm late, I wil...", "right").Pause(0.5).Clear().Pause(0.5)
+      .Message("I'm a blank slate,\nI will surely win this match!", "right")
+      .Barrier("point").Then([this] () {
+        std::vector<float> volume_targets;
+        volume_targets.push_back(0.7); //bass sound
+        volume_targets.push_back(0.5); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(1.0); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
+        volume_targets.push_back(0.2); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.2); //words 3
+        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+      }).Clear().Pause(pause)
       .Message("I've spent my life studying this game,\nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(1.0);
+        volume_targets.push_back(0.7); //bass sound
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.3); //high arpeg v2
+        volume_targets.push_back(0.0); //low arpeg v1
+        volume_targets.push_back(1.0); //low arpeg v2
+        volume_targets.push_back(0.1); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.1); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
-      .Message("I'm the score itself, I will surely win this match!", "right")
+      .Message("I'm the score itself, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
+        volume_targets.push_back(0.5); //bass sound
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.0); //low arpeg v1
+        volume_targets.push_back(1.0); //low arpeg v2
+        volume_targets.push_back(0.0); //words 1
+        volume_targets.push_back(0.0); //words 2
+        volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
-      .Message("I have no money, I will surely win this match!", "right")
-      .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        volume_targets.push_back(0.0);
-        volume_targets.push_back(1.0);
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
-      .Message("I'm you, I will surely win this match!", "right")
+      .Message("I'm you, \nI will surely win this match!", "right")
       .Barrier("point").Clear();
 }
 
