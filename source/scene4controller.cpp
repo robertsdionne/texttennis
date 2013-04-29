@@ -104,10 +104,16 @@ void Scene4Controller::Setup() {
       .Barrier("collide").Speed(20.0 / duration)
       .Message("But nothing changed.", "tree3") // 20
       .Barrier("collide").Speed(8.0 / duration)
-      .Message("The end.", "tree4"); // 8
+  .Message("The end.", "tree4").Then([this] () {
+    model_.done = true;
+  }); // 8
 }
 
 void Scene4Controller::Update() {
+  if (model_.done) {
+    scene_manager.NextScene();
+    return;
+  }
   model_.dialogue.Update();
   if (model_.reset_ball) {
     if (model_.ball_body) {

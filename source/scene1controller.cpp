@@ -39,6 +39,7 @@ void Scene1Controller::Setup() {
       .Speed(100.0)
       .Position("left", left)
       .Position("right", right)
+  .Foreground(ofColor::white).Background(ofColor::black)
       .Message("Hey let's play tennis.", "left").Pause(pause)
       .Message("Okay cool.", "right").Pause(pause)
       .Message("You remember how to play right?", "left").Pause(pause)
@@ -49,7 +50,7 @@ void Scene1Controller::Setup() {
       }).Barrier("hit").Clear().Barrier("rotation_started").Barrier("opponent_has_ball").Then([this] () {
         model_.frozen = true;
         model_.rotating = true;
-        model_.ball_body->GetFixtureList()->SetRestitution(0);
+        model_.ball_body->SetLinearVelocity(b2Vec2(0, model_.ball_body->GetLinearVelocity().y));
       }).Message("Hey, sorry. Let's stop, I got a cramp.", "left").Pause(2.0 * pause)
       .Message("Okay... what are you thinking about?", "right").Pause(2.0 * pause)
       .Message("I don't know, what are you thinking about?", "left").Pause(2.0 * pause)
@@ -58,6 +59,7 @@ void Scene1Controller::Setup() {
       .Message("Okay. I'm good. I'll serve.", "left").Then([this] () {
         model_.frozen = false;
         model_.fallen = true;
+        model_.ball_body->GetFixtureList()->SetRestitution(0);
       }).Barrier("opponent_hit").Then([this] () {
         model_.platform_appearing = true;
       }).Barrier("ball_below").Then([this] () {
