@@ -17,12 +17,12 @@ class TextTennis;
 class Interlude1 : public Scene, Controller {
 public:
   Interlude1(TextTennis &scene_manager, ofPoint player_position,
-             const std::string &text, const std::string &transition);
+             const std::string &text, const std::string &transition, float delay);
 
   virtual ~Interlude1();
 
   static Scene *Create(TextTennis &scene_manager, ofPoint player_position,
-                       const std::string &text, const std::string &transition);
+                       const std::string &text, const std::string &transition, float delay = 2.0);
 
   virtual void Draw();
 
@@ -41,6 +41,7 @@ private:
   ofPoint player_position;
   std::string text, transition;
   FontDialogue dialogue;
+  float delay;
 };
 
 #endif  // TEXTTENNIS_INTERLUDE1_H_

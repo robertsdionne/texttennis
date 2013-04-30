@@ -3,9 +3,9 @@
 #include "texttennis.h"
 
 Interlude1::Interlude1(TextTennis &scene_manager, ofPoint player_position,
-                       const std::string &text, const std::string &transition)
+                       const std::string &text, const std::string &transition, float delay)
 : Controller(scene_manager), player_position(player_position),
-  model_(), text(text), transition(transition) {
+  model_(), text(text), transition(transition), delay(delay) {
   ofRegisterKeyEvents(static_cast<Controller *>(this));
   ofRegisterMouseEvents(static_cast<Controller *>(this));
 }
@@ -16,8 +16,8 @@ Interlude1::~Interlude1() {
 }
 
 Scene *Interlude1::Create(TextTennis &scene_manager, ofPoint player_position,
-                          const std::string &text, const std::string &transition) {
-  return new Interlude1(scene_manager, player_position, text, transition);
+                          const std::string &text, const std::string &transition, float delay) {
+  return new Interlude1(scene_manager, player_position, text, transition, delay);
 }
 
 void Interlude1::Draw() {
@@ -31,7 +31,7 @@ void Interlude1::Setup() {
       .Position("spot", ofPoint(100, 100))
       .Speed(5.0)
       .Foreground(ofColor::white)
-      .Message(text, "spot").Pause(2.0).Then([this] () {
+      .Message(text, "spot").Pause(delay).Then([this] () {
         scene_manager.NextScene();
       });
   scene_manager.GetMusic().TriggerTransition(transition);

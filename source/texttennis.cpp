@@ -27,7 +27,7 @@ TextTennis::TextTennis()
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "", "scene1");
+    return Interlude1::Create(scene_manager, player_position, "", "scene1", 0.0);
   });
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
