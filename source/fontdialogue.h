@@ -10,6 +10,8 @@ public:
 
   virtual ~FontDialogue();
 
+  virtual void SetFontSize(float font_size);
+
 private:
   virtual void DrawString(const std::string &message, ofPoint position);
 

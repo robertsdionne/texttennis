@@ -20,6 +20,7 @@ public:
       BACKGROUND,
       BARRIER,
       CLEAR,
+      FONT_SIZE,
       FOREGROUND,
       MESSAGE,
       PAUSE,
@@ -50,6 +51,13 @@ public:
   public:
     ClearEvent() : Event(Event::Type::CLEAR) {}
     virtual ~ClearEvent() {}
+  };
+
+  class FontSizeEvent : public Event {
+  public:
+    FontSizeEvent(float font_size) : Event(Event::Type::FONT_SIZE), font_size(font_size) {}
+    virtual ~FontSizeEvent() {}
+    float font_size;
   };
 
   class ForegroundEvent : public Event {
@@ -104,6 +112,8 @@ public:
 
   Dialogue &Clear();
 
+  Dialogue &FontSize(float font_size);
+
   Dialogue &Foreground(ofColor color);
 
   Dialogue &Message(const std::string &message, const std::string &label);
@@ -111,6 +121,8 @@ public:
   Dialogue &Pause(float duration);
 
   Dialogue &Position(const std::string &label, ofPoint position);
+
+  virtual void SetFontSize(float font_size);
 
   void SetPosition(const std::string &label, ofPoint position);
 
@@ -144,6 +156,8 @@ protected:
   std::string last_message_label;
   std::map<std::string, bool> barriers;
   ofColor background, foreground;
+  ofSoundPlayer click;
+  float font_size;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

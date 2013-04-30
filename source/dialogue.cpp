@@ -5,7 +5,11 @@
 Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
-  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255) {}
+  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
+  click(), font_size(12.0) {
+  click.loadSound("type2.wav");
+  click.setMultiPlay(true);
+}
 
 Dialogue::~Dialogue() {
   for (auto *event : events) {
@@ -29,6 +33,11 @@ Dialogue &Dialogue::Clear() {
   return *this;
 }
 
+Dialogue &Dialogue::FontSize(float font_size) {
+  events.push_back(new FontSizeEvent(font_size));
+  return *this;
+}
+
 Dialogue &Dialogue::Foreground(ofColor color) {
   events.push_back(new ForegroundEvent(color));
   return *this;
@@ -47,6 +56,10 @@ Dialogue &Dialogue::Pause(float duration) {
 Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   events.push_back(new PositionEvent(label, position));
   return *this;
+}
+
+void Dialogue::SetFontSize(float font_size) {
+  this->font_size = font_size;
 }
 
 void Dialogue::SetPosition(const std::string &label, ofPoint position) {
@@ -100,6 +113,9 @@ void Dialogue::Update() {
   if (ofGetElapsedTimef() > last_event_time + current_delay) {
     if (!IsBlocked()) {
       if (messages.size() && message_index < messages[last_message_label]->message.size()) {
+        click.setSpeed(ofRandom(0.8, 1.2));
+        click.setVolume(ofRandom(0.8, 1.0));
+        click.play();
         message_index += 1;
         current_delay = 2.0 * ofRandomuf() / speed;
         last_event_time = ofGetElapsedTimef();
@@ -121,6 +137,11 @@ void Dialogue::Update() {
             case Event::Type::CLEAR:
               messages.clear();
               break;
+            case Event::Type::FONT_SIZE: {
+              FontSizeEvent *font_size_event = dynamic_cast<FontSizeEvent *>(event);
+              SetFontSize(font_size_event->font_size);
+              break;
+            }
             case Event::Type::FOREGROUND: {
               ForegroundEvent *foreground_event = dynamic_cast<ForegroundEvent *>(event);
               foreground = foreground_event->color;

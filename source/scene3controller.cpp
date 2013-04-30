@@ -65,11 +65,12 @@ void Scene3Controller::Setup() {
   CreateCourt();
   CreateNet();
   model_.world.SetContactListener(this);
-  const ofPoint right(768-256, 550);
-  const float pause = 1.0;
+  const ofPoint right(768-256, 50);
+  const float pause = 2.0;
   model_.dialogue
-      .Speed(100.0)
-      .Foreground(ofColor::white)
+      .Speed(25.0)
+      .FontSize(16.0)
+      .Foreground(ofColor::black)
       .Position("right", right).Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.1); //bass sound
@@ -184,7 +185,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //words 2
         volume_targets.push_back(0.1); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
+      }).Clear().Pause(pause).Foreground(ofColor::white)
       .Message("I'm the score itself, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
@@ -197,7 +198,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
+      }).Clear().Pause(pause).Foreground(ofColor::black)
       .Message("I'm you, \nI will surely win this match!", "right")
       .Barrier("point").Clear();
 }

@@ -4,7 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
-#include "dialogue.h"
+#include "fontdialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -27,7 +27,7 @@ public:
 
   float angle;
 
-  Dialogue dialogue;
+  FontDialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

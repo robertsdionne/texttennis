@@ -42,6 +42,7 @@ private:
   std::string text, transition;
   FontDialogue dialogue;
   float delay;
+  bool done;
 };
 
 #endif  // TEXTTENNIS_INTERLUDE1_H_
