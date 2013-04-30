@@ -26,7 +26,7 @@ DEFINE_PARAMETER_RANGE(float, court_length, 23.78, 0.0, 50.0);
 DEFINE_PARAMETER_RANGE(float, court_thickness, 0.5, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, default_angle, 0.0, 0.0, 2.0 * M_PI);
 DEFINE_PARAMETER_RANGE(float, default_angular_velocity, 0.0, -100.0, 100.0);
-DEFINE_PARAMETER_RANGE(float, delta_time, 1.0 / DEPENDENCY(frame_rate), 0.0, 1.0);
+DEFINE_PARAMETER_RANGE(float, delta_time, 0.9 / DEPENDENCY(frame_rate), 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, density,
                  DEPENDENCY(ball_mass) / M_PI /
                  DEPENDENCY(ball_radius) / DEPENDENCY(ball_radius), 0.0, 100.0);
@@ -44,12 +44,14 @@ DEFINE_PARAMETER_RANGE(float, high_hit_mean, 10.0, 0.0, 50.0);
 DEFINE_PARAMETER_RANGE(float, hit_variance, 0.05, 0.0, 5.0);
 DEFINE_PARAMETER_RANGE(float, linear_damping, 0.1, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, low_hit_mean, 13.0, 0.0, 50.0);
-DEFINE_PARAMETER_RANGE(int, max_balls, 500, 0.0, 1000.0);
+DEFINE_PARAMETER_RANGE(int, max_balls, 1500, 0.0, 5000.0);
+DEFINE_PARAMETER(float, max_balls_goal, DEPENDENCY(max_balls_goal_fraction) * DEPENDENCY(max_balls));
+DEFINE_PARAMETER_RANGE(float, max_balls_goal_fraction, 0.9, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, net_height, 0.914, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, net_thickness, DEPENDENCY(ball_radius), 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, player_move_smooth_factor, 0.2, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, racket_radius, DEPENDENCY(ball_cartoon_factor) * 0.1155, 0.0, 10.0);
-DEFINE_PARAMETER_RANGE(float, racket_speed, 0.15, 0.0, 10.0);
+DEFINE_PARAMETER_RANGE(float, racket_speed, 0.135, 0.0, 10.0);
 DEFINE_PARAMETER(ofVec2f, racket_diagonal_hit_direction, ofVec2f(1.0, 1.5).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_high_hit_direction, ofVec2f(1.0, 1.0).normalized());
 DEFINE_PARAMETER(ofVec2f, racket1_low_hit_direction, ofVec2f(1.0, 0.5).normalized());

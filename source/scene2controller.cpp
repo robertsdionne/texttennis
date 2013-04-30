@@ -50,7 +50,7 @@ void Scene2Controller::Update() {
   model_.dialogue.Update();
   UpdateRackets();
   model_.world.Step(delta_time * 0.5, box2d_velocity_iterations, box2d_position_iterations);
-  if (model_.score >= 450.0) {
+  if (model_.score >= max_balls_goal) {
     scene_manager.NextScene();
     return;
   }
@@ -60,7 +60,7 @@ void Scene2Controller::Update() {
       model_.score += 1.0;
     }
   }
-  if (ofGetElapsedTimef() > scene_begin_time + 8.0 && ofGetFrameNum() % 4 == 0 && model_.ball_body.size() < max_balls) {
+  if (ofGetElapsedTimef() > scene_begin_time + 8.0 && ofGetFrameNum() % 1 == 0 && model_.ball_body.size() < max_balls) {
     const ofVec2f position = ball_initial_position.GetValue() + ofVec2f(-ofNoise(-1.7 * ofGetElapsedTimef()),
                                                                         ofSignedNoise(1.3 * ofGetElapsedTimef()));
     const ofVec2f velocity = ball_initial_velocity.GetValue()
@@ -176,7 +176,7 @@ void Scene2Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       } else {
         variance = hit_variance * ofRandomf();
       }
-      const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
+      const ofVec2f velocity = 2.0 * hit_mean * (1.0 + variance) * hit_direction;
       ball->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
     }
   }

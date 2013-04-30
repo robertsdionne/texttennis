@@ -225,8 +225,8 @@ void Scene3Controller::Update() {
       model_.ball_body = nullptr;
     }
   }
-  if (model_.angle <= 180.0 - 180.0 / 60.0) {
-    model_.angle += 180.0 / 60.0;
+  if (model_.angle <= 180.0 - 180.0 / 60.0 / 2.0) {
+    model_.angle += 180.0 / 60.0 / 2.0;
   }
   Controller::Update();
 }

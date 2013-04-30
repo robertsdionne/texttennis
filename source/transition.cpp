@@ -62,8 +62,8 @@ void Transition::Setup() {
 }
 
 void Transition::Update() {
-  if (angle <= 180.0 - 180.0 / 60.0) {
-    angle += 180.0 / 60.0;
+  if (angle <= 180.0 - 180.0 / 60.0 / 2.0) {
+    angle += 180.0 / 60.0 / 2.0;
   }
 }
 

@@ -15,7 +15,7 @@ void Scene1View::Setup() {
 }
 
 void Scene1View::Draw(Model &model) {
-  ofBackground(ofColor(177));
+  ofBackground(ofColor::black);
   Scene1Model &scene1_model = dynamic_cast<Scene1Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);
