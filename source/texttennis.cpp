@@ -1,6 +1,7 @@
 #include <Box2D/Box2D.h>
 
 #include "constants.h"
+#include "interlude1.h"
 #include "introduction.h"
 #include "parameter.h"
 #include "scene.h"
@@ -25,9 +26,21 @@ TextTennis::TextTennis()
   tree5("tree5.wav", false, true),
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Interlude 1", "scene1");
+  });
   scene_factory_functions.push_back(Scene1::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Interlude 2", "scene3");
+  });
   scene_factory_functions.push_back(Scene3::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Interlude 3", "scene4");
+  });
   scene_factory_functions.push_back(Scene4::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Interlude 4", "scene2");
+  });
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
 }

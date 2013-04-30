@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		46003C4F1724676B00D4768F /* transition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46003C4D1724676A00D4768F /* transition.cpp */; };
 		4607F84716F7E1EF00DC0B1B /* constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4607F84616F7E1EF00DC0B1B /* constants.cpp */; };
+		463AE9CF17305AFD0040CB93 /* interlude1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463AE9CD17305AFD0040CB93 /* interlude1.cpp */; };
 		463DA5BE1701025A0065BA6A /* scene4controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463DA5BD1701025A0065BA6A /* scene4controller.cpp */; };
 		463DA5C1170102690065BA6A /* scene4model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463DA5C0170102690065BA6A /* scene4model.cpp */; };
 		463DA5C4170102760065BA6A /* scene4view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463DA5C3170102760065BA6A /* scene4view.cpp */; };
@@ -159,6 +160,8 @@
 		46003C4D1724676A00D4768F /* transition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transition.cpp; sourceTree = "<group>"; };
 		46003C4E1724676A00D4768F /* transition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transition.h; sourceTree = "<group>"; };
 		4607F84616F7E1EF00DC0B1B /* constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = constants.cpp; sourceTree = "<group>"; };
+		463AE9CD17305AFD0040CB93 /* interlude1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interlude1.cpp; sourceTree = "<group>"; };
+		463AE9CE17305AFD0040CB93 /* interlude1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interlude1.h; sourceTree = "<group>"; };
 		463DA5BD1701025A0065BA6A /* scene4controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene4controller.cpp; sourceTree = "<group>"; };
 		463DA5BF170102630065BA6A /* scene4controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene4controller.h; sourceTree = "<group>"; };
 		463DA5C0170102690065BA6A /* scene4model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene4model.cpp; sourceTree = "<group>"; };
@@ -729,6 +732,8 @@
 				46CE39C316FF465E00D77873 /* controller.h */,
 				46D027AD171F2C01004136B2 /* dialogue.cpp */,
 				46D027AE171F2C01004136B2 /* dialogue.h */,
+				463AE9CD17305AFD0040CB93 /* interlude1.cpp */,
+				463AE9CE17305AFD0040CB93 /* interlude1.h */,
 				46E8C3CB16F967C30033523B /* introduction.cpp */,
 				46E8C3CC16F967C30033523B /* introduction.h */,
 				46CE39CC16FF5E0B00D77873 /* introductioncontroller.cpp */,
@@ -1518,6 +1523,7 @@
 				46B8073E1727263700F6E337 /* music.cpp in Sources */,
 				46D270A1172D928F00831F40 /* ofsound.cpp in Sources */,
 				46D270A6172DABDF00831F40 /* loopset.cpp in Sources */,
+				463AE9CF17305AFD0040CB93 /* interlude1.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

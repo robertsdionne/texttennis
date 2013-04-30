@@ -78,7 +78,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  scene_manager.GetMusic().TriggerTransition("scene4");
+  //scene_manager.GetMusic().TriggerTransition("scene4");
   // Box2D
   CreateBorder();
   CreateCourt();

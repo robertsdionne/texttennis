@@ -23,7 +23,7 @@ Scene1Controller::~Scene1Controller() {
 }
 
 void Scene1Controller::Setup() {
-  scene_manager.GetMusic().TriggerTransition("scene1");
+  //scene_manager.GetMusic().TriggerTransition("scene1");
   // Box2D
   CreateBorder();
   CreateCourt();

@@ -59,7 +59,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene3Controller::Setup() {
-  scene_manager.GetMusic().TriggerTransition("scene3");
+  //scene_manager.GetMusic().TriggerTransition("scene3");
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -81,7 +81,6 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-        scene_manager.GetMusic().PlaySoundEffect("opponents");
       }).Message("I don't believe in gravity, \nI will surely win this match!", "right")
       .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
