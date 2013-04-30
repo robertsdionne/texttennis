@@ -88,6 +88,7 @@ void Scene4Controller::Setup() {
   const float duration = 15.0;
   model_.dialogue
       .Speed(10.0)
+      .Mute()
       .Foreground(ofColor::white)
       .Background(ofColor(255, 255, 255, 32))
       .Position("tree0", ofPoint(512, 100))

@@ -23,6 +23,7 @@ public:
       FONT_SIZE,
       FOREGROUND,
       MESSAGE,
+      MUTE,
       PAUSE,
       POSITION,
       SPEED,
@@ -76,6 +77,13 @@ public:
     std::string label;
   };
 
+  class MuteEvent : public Event {
+  public:
+    MuteEvent(bool muted) : Event(Event::Type::MUTE), muted(muted) {}
+    virtual ~MuteEvent() {}
+    bool muted;
+  };
+
   class PauseEvent : public Event {
   public:
     PauseEvent(float duration) : Event(Event::Type::PAUSE), duration(duration) {}
@@ -118,6 +126,8 @@ public:
 
   Dialogue &Message(const std::string &message, const std::string &label);
 
+  Dialogue &Mute();
+
   Dialogue &Pause(float duration);
 
   Dialogue &Position(const std::string &label, ofPoint position);
@@ -131,6 +141,8 @@ public:
   Dialogue &Then(std::tr1::function<void()> then);
 
   void Trigger(const std::string &barrier);
+
+  Dialogue &Unmute();
 
   void Draw();
 
@@ -158,6 +170,7 @@ protected:
   ofColor background, foreground;
   ofSoundPlayer click;
   float font_size;
+  bool muted;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

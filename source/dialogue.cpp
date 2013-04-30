@@ -6,7 +6,7 @@ Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
   last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
-  click(), font_size(12.0) {
+  click(), font_size(12.0), muted(false) {
   click.loadSound("type2.wav");
   click.setMultiPlay(true);
 }
@@ -48,6 +48,11 @@ Dialogue &Dialogue::Message(const std::string &message, const std::string &label
   return *this;
 }
 
+Dialogue &Dialogue::Mute() {
+  events.push_back(new MuteEvent(true));
+  return *this;
+}
+
 Dialogue &Dialogue::Pause(float duration) {
   events.push_back(new PauseEvent(duration));
   return *this;
@@ -80,6 +85,11 @@ void Dialogue::Trigger(const std::string &barrier) {
   barriers[barrier] = false;
 }
 
+Dialogue &Dialogue::Unmute() {
+  events.push_back(new MuteEvent(false));
+  return *this;
+}
+
 void Dialogue::Draw() {
   for (auto element : messages) {
     if (element.first != last_message_label) {
@@ -108,14 +118,15 @@ void Dialogue::Setup() {
   message_index = 0;
 }
 
-
 void Dialogue::Update() {
   if (ofGetElapsedTimef() > last_event_time + current_delay) {
     if (!IsBlocked()) {
       if (messages.size() && message_index < messages[last_message_label]->message.size()) {
-        click.setSpeed(ofRandom(0.8, 1.2));
-        click.setVolume(ofRandom(0.8, 1.0));
-        click.play();
+        if (!muted) {
+          click.setSpeed(ofRandom(0.8, 1.2));
+          click.setVolume(ofRandom(0.8, 1.0));
+          click.play();
+        }
         message_index += 1;
         current_delay = 2.0 * ofRandomuf() / speed;
         last_event_time = ofGetElapsedTimef();
@@ -152,6 +163,11 @@ void Dialogue::Update() {
               messages[message->label] = message;
               last_message_label = message->label;
               message_index = 0;
+              break;
+            }
+            case Event::Type::MUTE: {
+              MuteEvent *mute = dynamic_cast<MuteEvent *>(event);
+              muted = mute->muted;
               break;
             }
             case Event::Type::PAUSE: {
