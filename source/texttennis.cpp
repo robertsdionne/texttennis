@@ -98,7 +98,6 @@ void TextTennis::update() {
 }
 
 void TextTennis::draw() {
-  ofSetupScreenPerspective();
   if (transition && !transition->IsDone()) {
     transition->Draw();
   } else if (current_scene) {

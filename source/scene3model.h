@@ -28,6 +28,8 @@ public:
   float angle;
 
   FontDialogue dialogue;
+
+  bool ball_in_play;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_
