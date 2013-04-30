@@ -4,6 +4,7 @@
 #include <string>
 
 #include "controller.h"
+#include "fontdialogue.h"
 #include "ofMain.h"
 #include "model.h"
 #include "scene.h"
@@ -39,7 +40,7 @@ private:
   Scene1Model model_;
   ofPoint player_position;
   std::string text, transition;
-  float interlude_start_time;
+  FontDialogue dialogue;
 };
 
 #endif  // TEXTTENNIS_INTERLUDE1_H_

@@ -5,7 +5,7 @@
 Interlude1::Interlude1(TextTennis &scene_manager, ofPoint player_position,
                        const std::string &text, const std::string &transition)
 : Controller(scene_manager), player_position(player_position),
-  model_(), text(text), transition(transition), interlude_start_time(0.0) {
+  model_(), text(text), transition(transition) {
   ofRegisterKeyEvents(static_cast<Controller *>(this));
   ofRegisterMouseEvents(static_cast<Controller *>(this));
 }
@@ -23,12 +23,18 @@ Scene *Interlude1::Create(TextTennis &scene_manager, ofPoint player_position,
 void Interlude1::Draw() {
   ofBackground(ofColor::black);
   ofSetColor(ofColor::white);
-  ofDrawBitmapString(text, 10, 10);
+  dialogue.Draw();
 }
 
 void Interlude1::Setup() {
+  dialogue
+      .Position("spot", ofPoint(100, 100))
+      .Speed(5.0)
+      .Foreground(ofColor::white)
+      .Message(text, "spot").Pause(2.0).Then([this] () {
+        scene_manager.NextScene();
+      });
   scene_manager.GetMusic().TriggerTransition(transition);
-  interlude_start_time = ofGetElapsedTimef();
 }
 
 void Interlude1::Update() {
@@ -47,10 +53,7 @@ void Interlude1::Update() {
     scene_manager.GetMusic().PlaySoundEffect("opponents");
   }
   Controller::Update();
-  if (ofGetElapsedTimef() > interlude_start_time + 5.0) {
-    scene_manager.NextScene();
-    return;
-  }
+  dialogue.Update();
 }
 
 Model &Interlude1::model() {

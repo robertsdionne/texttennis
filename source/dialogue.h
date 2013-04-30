@@ -133,6 +133,9 @@ public:
   bool IsBlocked(const std::string &barrier);
 
 private:
+  virtual void DrawString(const std::string &message, ofPoint position);
+
+protected:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
   int event_index, message_index;

@@ -27,19 +27,19 @@ TextTennis::TextTennis()
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "Interlude 1", "scene1");
+    return Interlude1::Create(scene_manager, player_position, "", "scene1");
   });
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "Interlude 2", "scene3");
+    return Interlude1::Create(scene_manager, player_position, "Ten Opponents", "scene3");
   });
   scene_factory_functions.push_back(Scene3::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "Interlude 3", "scene4");
+    return Interlude1::Create(scene_manager, player_position, "Tree People", "scene4");
   });
   scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "Interlude 4", "scene2");
+    return Interlude1::Create(scene_manager, player_position, "Practice", "scene2");
   });
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);

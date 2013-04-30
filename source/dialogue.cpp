@@ -71,18 +71,18 @@ void Dialogue::Draw() {
   for (auto element : messages) {
     if (element.first != last_message_label) {
       if (positions.find(element.first) != positions.end()) {
-        ofSetColor(ofColor::black);
-        ofDrawBitmapStringHighlight(element.second->message,
-                                    positions[element.first], background, foreground);
+        DrawString(element.second->message, positions[element.first]);
       }
     } else {
       if (positions.find(last_message_label) != positions.end()) {
-        ofSetColor(ofColor::black);
-        ofDrawBitmapStringHighlight(element.second->message.substr(0, message_index),
-                                    positions[element.first], background, foreground);
+        DrawString(element.second->message.substr(0, message_index), positions[element.first]);
       }
     }
   }
+}
+
+void Dialogue::DrawString(const std::string &message, ofPoint position) {
+  ofDrawBitmapStringHighlight(message, position, background, foreground);
 }
 
 bool Dialogue::IsDone() const {
