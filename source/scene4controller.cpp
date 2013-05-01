@@ -62,6 +62,10 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
   }
 
+  bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
   if (ofRandomuf() < 0.5) {
     if (ofRandomuf() < 0.5) {
       bounce1.play();
@@ -354,6 +358,8 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
         model_.ball_body->SetLinearVelocity(velocity);
         model_.bounces = 0;
+        hit1.setPan(racket_position.x / half_court_length);
+        hit2.setPan(racket_position.x / half_court_length);
         ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
       }
     }
