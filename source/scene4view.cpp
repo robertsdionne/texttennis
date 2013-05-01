@@ -7,10 +7,10 @@
 #include "utilities.h"
 
 Scene4View::Scene4View() : background() {
-  background.loadImage("tree_bg_final.png");
+  background.loadImage("tree bg.png");
   for (int i = 0; i < 5; ++i) {
     std::stringstream filename;
-    filename << "tree" << (i + 1) << "_final.png";
+    filename << "tree" << (i + 1) << ".png";
     trees[i].loadImage(filename.str());
   }
 }
@@ -85,7 +85,7 @@ void Scene4View::DrawBall(Scene4Model &model, ofVec2f position, float angle) {
       ofVec2f offset1 = ofVec2f(0.0, 0.0 * delta_time * model.time_scales[index - 1] * (model.ball_trail.size() - (index + 1)));
       ofVec2f noise0 = model.noise[index] * static_cast<float>(model.ball_trail.size() - index) / ball_trail_length;
       ofVec2f noise1 = model.noise[index + 1] * static_cast<float>(model.ball_trail.size() - (index + 1)) / ball_trail_length;
-      ofSetColor(ofColor::white, static_cast<float>(index) / ball_trail_length * 255.0);
+      ofSetColor(ofColor::black, static_cast<float>(index) / ball_trail_length * 255.0);
       if ((point - *previous).lengthSquared() < 5.0) {
         ofLine(*previous + offset0 + noise0, point + offset1 + noise1);
       }

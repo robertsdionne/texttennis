@@ -94,7 +94,7 @@ void Scene4Controller::Setup() {
       .Speed(10.0)
       .Mute()
       .Foreground(ofColor::white)
-      .Background(ofColor(255, 255, 255, 32))
+      .Background(ofColor::black)
       .Position("tree0", ofPoint(512, 100))
       .Position("tree1", ofPoint(512, 180))
       .Position("tree2", ofPoint(512, 245))
