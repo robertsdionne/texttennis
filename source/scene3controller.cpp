@@ -264,7 +264,7 @@ void Scene3Controller::Update() {
     model_.bounces = 0;
   }
   UpdateRackets();
-  model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  model_.world.Step(model_.time_slowed ? 0.1 * delta_time : delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.ball_in_play && !model_.ball_body) {
     CreateBall(ofVec2f(0.25 * half_court_length, court_height), ofVec2f(0, 0), 0.0, -ofRandomuf() * angular_velocity);
     model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
@@ -358,7 +358,7 @@ bool Scene3Controller::MouseButtonIsPressed(int button) {
 }
 
 void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
-                                     float hit_mean, int key_left, int key_right) {
+                                     float hit_mean, int key_left, int key_right, bool opponent) {
   if (model_.ball_body) {
     const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x,
                                      model_.ball_body->GetPosition().y);
@@ -378,6 +378,12 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
       model_.bounces = 0;
       model_.served = true;
+      if (opponent && model_.opponent_index == 1) {
+        model_.time_slowed = true;
+      }
+      if (!opponent && model_.opponent_index == 1) {
+        model_.time_slowed = false;
+      }
       hit1.setPan(racket_position.x / half_court_length);
       hit2.setPan(racket_position.x / half_court_length);
       ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
@@ -395,6 +401,10 @@ void Scene3Controller::UpdateRackets() {
     model_.racket1_target.x += racket_speed;
   }
   if (model_.score != 5 && model_.opponent_index != 8) {
+    if (model_.opponent_index == 0) {
+      const float dy = ofNoise(-ofGetElapsedTimef()) * racket_speed / 10.0;
+      model_.opponent_target.y += dy;
+    }
     // opponent
     if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
       const float dx = model_.ball_body->GetPosition().x - model_.opponent_target.x;
@@ -415,6 +425,6 @@ void Scene3Controller::UpdateRackets() {
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   if (model_.score != 5 && model_.opponent_index != 8) {
-    RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+    RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);
   }
 }
