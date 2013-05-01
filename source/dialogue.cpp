@@ -125,6 +125,7 @@ void Dialogue::Update() {
         if (!muted) {
           click.setSpeed(ofRandom(0.8, 1.2));
           click.setVolume(ofRandom(0.8, 1.0));
+          click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
           click.play();
         }
         message_index += 1;

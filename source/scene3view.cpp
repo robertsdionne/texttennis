@@ -41,7 +41,7 @@ void Scene3View::Draw(Model &model) {
   DrawNet();
   DrawRacket(scene3_model.racket1);
   if (scene3_model.ball_in_play || (scene3_model.angle > 0.0 && scene3_model.angle < 180.0)) {
-    DrawRacket(scene3_model.opponent);
+    DrawOpponent(scene3_model.opponent, scene3_model.opponent_index);
   }
   ofPopMatrix();
 
@@ -119,6 +119,31 @@ void Scene3View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
   ofSetColor(ofColor::white);
   ofCircle(position, racket_radius);
+  ofPopStyle();
+}
+
+void Scene3View::DrawOpponent(ofVec2f position, int opponent_index) const {
+  ofPushStyle();
+  switch (opponent_index) {
+    case 3: {
+      ofSetColor(ofColor::black);
+      ofTriangle(position + ofVec2f(-1, -racket_radius),
+                 position + ofVec2f(0, 1-racket_radius),
+                 position + ofVec2f(1, -racket_radius));
+      DrawRacket(position + ofVec2f(-2.0 * racket_radius, 0));
+      DrawRacket(position);
+      DrawRacket(position + ofVec2f(2.0 * racket_radius, 0));
+      ofRect(position + ofVec2f(-2.0 * racket_radius, 0), 4.0 * racket_radius, -0.25 * racket_radius);
+      break;
+    }
+    case 5: {
+      break;
+    }
+    default: {
+      DrawRacket(position);
+      break;
+    }
+  }
   ofPopStyle();
 }
 

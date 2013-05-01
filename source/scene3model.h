@@ -30,6 +30,9 @@ public:
   FontDialogue dialogue;
 
   bool ball_in_play, opponent_visible;
+
+  int opponent_index;
+  bool served;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

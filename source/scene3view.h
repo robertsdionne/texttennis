@@ -24,6 +24,8 @@ private:
   void DrawFrameRate() const;
   
   void DrawNet() const;
+
+  void DrawOpponent(ofVec2f position, int opponent_index) const;
   
   void DrawRacket(ofVec2f position) const;
 
