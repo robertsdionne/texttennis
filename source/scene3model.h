@@ -29,7 +29,7 @@ public:
 
   FontDialogue dialogue;
 
-  bool ball_in_play;
+  bool ball_in_play, opponent_visible;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

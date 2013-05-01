@@ -40,7 +40,9 @@ void Scene3View::Draw(Model &model) {
   DrawCourt();
   DrawNet();
   DrawRacket(scene3_model.racket1);
-  DrawRacket(scene3_model.opponent);
+  if (scene3_model.ball_in_play || (scene3_model.angle > 0.0 && scene3_model.angle < 180.0)) {
+    DrawRacket(scene3_model.opponent);
+  }
   ofPopMatrix();
 
   scene3_model.dialogue.Draw();

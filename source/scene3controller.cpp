@@ -238,7 +238,8 @@ void Scene3Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.ball_in_play && !model_.ball_body) {
-    CreateBall(ball_initial_position, ball_initial_velocity, 0.0, angular_velocity * ofRandomf());
+    CreateBall(ofVec2f(0.5 * half_court_length, court_height), ofVec2f(0, 0), 0.0, angular_velocity * ofRandomf());
+    model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
     if (model_.ball_body) {
