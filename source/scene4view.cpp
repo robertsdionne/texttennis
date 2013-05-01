@@ -94,11 +94,8 @@ void Scene4View::DrawBall(Scene4Model &model, ofVec2f position, float angle) {
     previous = &point;
   }
   ofFill();
-  ofSetColor(ofColor::white);
-  ofCircle(position, ball_radius);
   ofSetColor(ofColor::black);
-  ofLine(position, position - ball_radius * ofVec2f(cos(angle), sin(angle)));
-  ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
+  ofCircle(position, ball_radius);
   ofPopStyle();
 }
 
