@@ -37,8 +37,9 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
     if (model_.bounces == 2) {
       model_.angle = 0.0;
       model_.score += 1;
-      if (model_.score != 5) {
-        model_.ball_in_play = false;
+      model_.ball_in_play = false;
+      if (model_.opponent_index == 5) {
+        model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
       }
       model_.dialogue.Trigger("point");
     }
@@ -173,9 +174,13 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.2); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear()
+  }).Clear().Pause(pause).Then([this] () {
+    std::cout << "NOW!" << std::endl;
+    model_.served = true;
+    model_.ball_in_play = true;
+    model_.opponent_index = 5;
+  })
   .Barrier("point").Then([this] () {
-        model_.opponent_index = 5;
         std::vector<float> volume_targets;
         volume_targets.push_back(0.5); //bass sound
         volume_targets.push_back(0.5); //high arpeg v1
@@ -223,7 +228,7 @@ void Scene3Controller::Setup() {
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause).Foreground(ofColor::white)
   .Message("I'm the score itself, \nI will surely win this match!", "right").Then([this] () {
-    model_.served = false;
+    model_.served = true;
     model_.ball_in_play = true;
     model_.opponent_index = 8;
   })
@@ -261,7 +266,7 @@ void Scene3Controller::Update() {
   UpdateRackets();
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.ball_in_play && !model_.ball_body) {
-    CreateBall(ofVec2f(0.5 * half_court_length, court_height), ofVec2f(0, 0), 0.0, 0.0);
+    CreateBall(ofVec2f(0.25 * half_court_length, court_height), ofVec2f(0, 0), 0.0, -ofRandomuf() * angular_velocity);
     model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
@@ -389,23 +394,27 @@ void Scene3Controller::UpdateRackets() {
   if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed - racket_radius) {
     model_.racket1_target.x += racket_speed;
   }
-  // opponent
-  if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
-    const float dx = model_.ball_body->GetPosition().x - model_.opponent_target.x;
-    if (dx > racket_radius + ball_radius) {
-      model_.opponent_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
-    } else if (dx < -racket_radius - ball_radius) {
-      model_.opponent_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
-    }
-  } else {
-    const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
-    if (dx > 0 && model_.opponent_target.x < half_court_length) {
-      model_.opponent_target.x += dx;
-    }
-    if (dx < 0 && model_.opponent_target.x > dx + racket_radius) {
-      model_.opponent_target.x += dx;
+  if (model_.score != 5 && model_.opponent_index != 8) {
+    // opponent
+    if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
+      const float dx = model_.ball_body->GetPosition().x - model_.opponent_target.x;
+      if (dx > racket_radius + ball_radius) {
+        model_.opponent_target.x += racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      } else if (dx < -racket_radius - ball_radius) {
+        model_.opponent_target.x -= racket_speed - ofNoise(ofGetElapsedTimef()) * racket_speed;
+      }
+    } else {
+      const float dx = ofSignedNoise(ofGetElapsedTimef()) * racket_speed;
+      if (dx > 0 && model_.opponent_target.x < half_court_length) {
+        model_.opponent_target.x += dx;
+      }
+      if (dx < 0 && model_.opponent_target.x > dx + racket_radius) {
+        model_.opponent_target.x += dx;
+      }
     }
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  if (model_.score != 5 && model_.opponent_index != 8) {
+    RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
+  }
 }

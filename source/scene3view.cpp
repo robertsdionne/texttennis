@@ -136,7 +136,7 @@ void Scene3View::DrawOpponent(ofVec2f position, int opponent_index) const {
       ofRect(position + ofVec2f(-2.0 * racket_radius, 0), 4.0 * racket_radius, -0.25 * racket_radius);
       break;
     }
-    case 5: {
+    case 8: {
       break;
     }
     default: {
