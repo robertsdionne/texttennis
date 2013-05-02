@@ -34,6 +34,8 @@ public:
 
   std::vector<ofPoint> points;
   Dialogue dialogue;
+
+  bool done = false;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

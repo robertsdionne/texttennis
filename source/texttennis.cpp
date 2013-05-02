@@ -1,6 +1,7 @@
 #include <Box2D/Box2D.h>
 
 #include "constants.h"
+#include "interlude1.h"
 #include "introduction.h"
 #include "parameter.h"
 #include "scene.h"
@@ -18,6 +19,7 @@
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
   show_sliders(false), float_panel(), int_panel(), transition(nullptr),
+  title_sound("title_sound2.wav", false, true),
   tree1("tree1.wav", false, true),
   tree2("tree2.wav", false, true),
   tree3("tree3.wav", false, true),
@@ -25,9 +27,21 @@ TextTennis::TextTennis()
   tree5("tree5.wav", false, true),
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "", "scene1", 0.0);
+  });
   scene_factory_functions.push_back(Scene1::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Ten Opponents", "scene3");
+  });
   scene_factory_functions.push_back(Scene3::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Tree People", "scene4");
+  });
   scene_factory_functions.push_back(Scene4::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Practice", "scene2");
+  });
   scene_factory_functions.push_back(Scene2::Create);
   scene_factory_functions.push_back(Scene5::Create);
 }
@@ -56,7 +70,8 @@ void TextTennis::setup() {
   loops.push_back("speak_3.wav");
   opponents = new LoopSet(loops);
   music.Song("intro_loop.wav").Transition("scene1")
-      .Song("main_theme.wav").Transition("scene3")
+      .Song("scene1 loop1.wav").Song("scene1 loop2.wav").Song("scene1 loop3.wav")
+      .SoundEffect("title_sound", title_sound).Transition("scene3")
       .SoundEffect("opponents", *opponents).Transition("scene4")
       .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
       .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)

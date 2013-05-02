@@ -41,7 +41,7 @@ private:
   bool MouseButtonIsPressed(int button);
   
   void RacketCollide(ofVec2f racket_position, ofVec2f hit_direction,
-                     float hit_mean, int key_left, int key_right);
+                     float hit_mean, int key_left, int key_right, bool opponent = false);
   
   void UpdateRackets();
 

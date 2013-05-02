@@ -62,6 +62,12 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
   }
 
+  if (model_.ball_body) {
+    bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  }
   if (ofRandomuf() < 0.5) {
     if (ofRandomuf() < 0.5) {
       bounce1.play();
@@ -78,7 +84,7 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  scene_manager.GetMusic().TriggerTransition("scene4");
+  //scene_manager.GetMusic().TriggerTransition("scene4");
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -88,8 +94,9 @@ void Scene4Controller::Setup() {
   const float duration = 15.0;
   model_.dialogue
       .Speed(10.0)
+      .Mute()
       .Foreground(ofColor::white)
-      .Background(ofColor(255, 255, 255, 32))
+      .Background(ofColor::black)
       .Position("tree0", ofPoint(512, 100))
       .Position("tree1", ofPoint(512, 180))
       .Position("tree2", ofPoint(512, 245))
@@ -104,10 +111,16 @@ void Scene4Controller::Setup() {
       .Barrier("collide").Speed(20.0 / duration)
       .Message("But nothing changed.", "tree3") // 20
       .Barrier("collide").Speed(8.0 / duration)
-      .Message("The end.", "tree4"); // 8
+  .Message("The end.", "tree4").Then([this] () {
+    model_.done = true;
+  }); // 8
 }
 
 void Scene4Controller::Update() {
+  if (model_.done) {
+    scene_manager.NextScene();
+    return;
+  }
   model_.dialogue.Update();
   if (model_.reset_ball) {
     if (model_.ball_body) {
@@ -347,6 +360,8 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
         model_.ball_body->SetLinearVelocity(velocity);
         model_.bounces = 0;
+        hit1.setPan(racket_position.x / half_court_length);
+        hit2.setPan(racket_position.x / half_court_length);
         ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
       }
     }

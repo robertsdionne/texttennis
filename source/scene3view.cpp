@@ -40,7 +40,20 @@ void Scene3View::Draw(Model &model) {
   DrawCourt();
   DrawNet();
   DrawRacket(scene3_model.racket1);
-  DrawRacket(scene3_model.opponent);
+  if (scene3_model.ball_in_play || (scene3_model.angle > 0.0 && scene3_model.angle < 180.0)) {
+    DrawOpponent(scene3_model);
+  }
+  if (scene3_model.ball_body) {
+    DrawBall(ofVec2f(scene3_model.ball_body->GetPosition().x,
+                     scene3_model.ball_body->GetPosition().y),
+             scene3_model.ball_body->GetAngle());
+  }
+  if (scene3_model.opponent_index == 2 && (scene3_model.ball_in_play ||
+                                           (scene3_model.angle > 0.0 && scene3_model.angle < 180.0))) {
+    for (auto ball : scene3_model.extra_balls) {
+      DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
+    }
+  }
   ofPopMatrix();
 
   scene3_model.dialogue.Draw();
@@ -71,11 +84,6 @@ void Scene3View::Draw(Model &model) {
       image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
     }
     ofPopMatrix();
-  }
-  if (scene3_model.ball_body) {
-    DrawBall(ofVec2f(scene3_model.ball_body->GetPosition().x,
-                     scene3_model.ball_body->GetPosition().y),
-             scene3_model.ball_body->GetAngle());
   }
   DrawFrameRate();
   ofPopMatrix();
@@ -117,6 +125,46 @@ void Scene3View::DrawRacket(ofVec2f position) const {
   ofPushStyle();
   ofSetColor(ofColor::white);
   ofCircle(position, racket_radius);
+  ofPopStyle();
+}
+
+void Scene3View::DrawOpponent(const Scene3Model &model) const {
+  ofPushStyle();
+  switch (model.opponent_index) {
+    case 3: {
+      ofSetColor(ofColor::black);
+      ofTriangle(model.opponent + ofVec2f(-1, -racket_radius),
+                 model.opponent + ofVec2f(0, 1-racket_radius),
+                 model.opponent + ofVec2f(1, -racket_radius));
+      DrawRacket(model.opponent + ofVec2f(-2.0 * racket_radius, 0));
+      DrawRacket(model.opponent);
+      DrawRacket(model.opponent + ofVec2f(2.0 * racket_radius, 0));
+      ofRect(model.opponent + ofVec2f(-2.0 * racket_radius, 0), 4.0 * racket_radius, -0.25 * racket_radius);
+      break;
+    }
+    case 4: {
+      for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 2; ++j) {
+          const ofPoint position = model.opponent + ofVec2f(-racket_radius / 2.0, -racket_radius / 2.0) +
+              ofVec2f(i * racket_radius, 2.0 * j * racket_radius);
+          ofPushMatrix();
+          ofTranslate(position.x, position.y);
+          ofRotateZ(90.0 * model.glass);
+          ofScale(1.0 - model.glass, 1.0 - model.glass);
+          ofRect(ofPoint(-racket_radius / 2.0, -racket_radius / 2.0), racket_radius, 2.0 * racket_radius);
+          ofPopMatrix();
+        }
+      }
+      break;
+    }
+    case 8: {
+      break;
+    }
+    default: {
+      DrawRacket(model.opponent);
+      break;
+    }
+  }
   ofPopStyle();
 }
 

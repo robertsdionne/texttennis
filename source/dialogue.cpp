@@ -5,7 +5,11 @@
 Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
-  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255) {}
+  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
+  click(), font_size(12.0), muted(false) {
+  click.loadSound("type2.wav");
+  click.setMultiPlay(true);
+}
 
 Dialogue::~Dialogue() {
   for (auto *event : events) {
@@ -29,6 +33,11 @@ Dialogue &Dialogue::Clear() {
   return *this;
 }
 
+Dialogue &Dialogue::FontSize(float font_size) {
+  events.push_back(new FontSizeEvent(font_size));
+  return *this;
+}
+
 Dialogue &Dialogue::Foreground(ofColor color) {
   events.push_back(new ForegroundEvent(color));
   return *this;
@@ -36,6 +45,11 @@ Dialogue &Dialogue::Foreground(ofColor color) {
 
 Dialogue &Dialogue::Message(const std::string &message, const std::string &label) {
   events.push_back(new MessageEvent(message, label));
+  return *this;
+}
+
+Dialogue &Dialogue::Mute() {
+  events.push_back(new MuteEvent(true));
   return *this;
 }
 
@@ -47,6 +61,10 @@ Dialogue &Dialogue::Pause(float duration) {
 Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   events.push_back(new PositionEvent(label, position));
   return *this;
+}
+
+void Dialogue::SetFontSize(float font_size) {
+  this->font_size = font_size;
 }
 
 void Dialogue::SetPosition(const std::string &label, ofPoint position) {
@@ -67,22 +85,27 @@ void Dialogue::Trigger(const std::string &barrier) {
   barriers[barrier] = false;
 }
 
+Dialogue &Dialogue::Unmute() {
+  events.push_back(new MuteEvent(false));
+  return *this;
+}
+
 void Dialogue::Draw() {
   for (auto element : messages) {
     if (element.first != last_message_label) {
       if (positions.find(element.first) != positions.end()) {
-        ofSetColor(ofColor::black);
-        ofDrawBitmapStringHighlight(element.second->message,
-                                    positions[element.first], background, foreground);
+        DrawString(element.second->message, positions[element.first]);
       }
     } else {
       if (positions.find(last_message_label) != positions.end()) {
-        ofSetColor(ofColor::black);
-        ofDrawBitmapStringHighlight(element.second->message.substr(0, message_index),
-                                    positions[element.first], background, foreground);
+        DrawString(element.second->message.substr(0, message_index), positions[element.first]);
       }
     }
   }
+}
+
+void Dialogue::DrawString(const std::string &message, ofPoint position) {
+  ofDrawBitmapStringHighlight(message, position, background, foreground);
 }
 
 bool Dialogue::IsDone() const {
@@ -95,11 +118,16 @@ void Dialogue::Setup() {
   message_index = 0;
 }
 
-
 void Dialogue::Update() {
   if (ofGetElapsedTimef() > last_event_time + current_delay) {
     if (!IsBlocked()) {
       if (messages.size() && message_index < messages[last_message_label]->message.size()) {
+        if (!muted) {
+          click.setSpeed(ofRandom(0.8, 1.2));
+          click.setVolume(ofRandom(0.8, 1.0));
+          click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
+          click.play();
+        }
         message_index += 1;
         current_delay = 2.0 * ofRandomuf() / speed;
         last_event_time = ofGetElapsedTimef();
@@ -121,6 +149,11 @@ void Dialogue::Update() {
             case Event::Type::CLEAR:
               messages.clear();
               break;
+            case Event::Type::FONT_SIZE: {
+              FontSizeEvent *font_size_event = dynamic_cast<FontSizeEvent *>(event);
+              SetFontSize(font_size_event->font_size);
+              break;
+            }
             case Event::Type::FOREGROUND: {
               ForegroundEvent *foreground_event = dynamic_cast<ForegroundEvent *>(event);
               foreground = foreground_event->color;
@@ -131,6 +164,11 @@ void Dialogue::Update() {
               messages[message->label] = message;
               last_message_label = message->label;
               message_index = 0;
+              break;
+            }
+            case Event::Type::MUTE: {
+              MuteEvent *mute = dynamic_cast<MuteEvent *>(event);
+              muted = mute->muted;
               break;
             }
             case Event::Type::PAUSE: {

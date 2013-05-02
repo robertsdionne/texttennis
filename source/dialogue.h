@@ -20,8 +20,10 @@ public:
       BACKGROUND,
       BARRIER,
       CLEAR,
+      FONT_SIZE,
       FOREGROUND,
       MESSAGE,
+      MUTE,
       PAUSE,
       POSITION,
       SPEED,
@@ -52,6 +54,13 @@ public:
     virtual ~ClearEvent() {}
   };
 
+  class FontSizeEvent : public Event {
+  public:
+    FontSizeEvent(float font_size) : Event(Event::Type::FONT_SIZE), font_size(font_size) {}
+    virtual ~FontSizeEvent() {}
+    float font_size;
+  };
+
   class ForegroundEvent : public Event {
   public:
     ForegroundEvent(ofColor color) : Event(Event::Type::FOREGROUND), color(color) {}
@@ -66,6 +75,13 @@ public:
     virtual ~MessageEvent() {}
     std::string message;
     std::string label;
+  };
+
+  class MuteEvent : public Event {
+  public:
+    MuteEvent(bool muted) : Event(Event::Type::MUTE), muted(muted) {}
+    virtual ~MuteEvent() {}
+    bool muted;
   };
 
   class PauseEvent : public Event {
@@ -104,13 +120,19 @@ public:
 
   Dialogue &Clear();
 
+  Dialogue &FontSize(float font_size);
+
   Dialogue &Foreground(ofColor color);
 
   Dialogue &Message(const std::string &message, const std::string &label);
 
+  Dialogue &Mute();
+
   Dialogue &Pause(float duration);
 
   Dialogue &Position(const std::string &label, ofPoint position);
+
+  virtual void SetFontSize(float font_size);
 
   void SetPosition(const std::string &label, ofPoint position);
 
@@ -119,6 +141,8 @@ public:
   Dialogue &Then(std::tr1::function<void()> then);
 
   void Trigger(const std::string &barrier);
+
+  Dialogue &Unmute();
 
   void Draw();
 
@@ -133,6 +157,9 @@ public:
   bool IsBlocked(const std::string &barrier);
 
 private:
+  virtual void DrawString(const std::string &message, ofPoint position);
+
+protected:
   std::vector<Event *> events;
   float last_event_time, current_delay, speed;
   int event_index, message_index;
@@ -141,6 +168,9 @@ private:
   std::string last_message_label;
   std::map<std::string, bool> barriers;
   ofColor background, foreground;
+  ofSoundPlayer click;
+  float font_size;
+  bool muted;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

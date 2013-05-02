@@ -24,6 +24,8 @@ private:
   void DrawFrameRate() const;
   
   void DrawNet() const;
+
+  void DrawOpponent(const Scene3Model &model) const;
   
   void DrawRacket(ofVec2f position) const;
 

@@ -41,6 +41,8 @@ extern Parameter<float> hit_variance;
 extern Parameter<float> linear_damping;
 extern Parameter<float> low_hit_mean;
 extern Parameter<int> max_balls;
+extern Parameter<float> max_balls_goal;
+extern Parameter<float> max_balls_goal_fraction;
 extern Parameter<float> net_height;
 extern Parameter<float> net_thickness;
 extern Parameter<float> player_move_smooth_factor;

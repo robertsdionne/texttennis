@@ -4,7 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <list>
 
-#include "dialogue.h"
+#include "fontdialogue.h"
 #include "model.h"
 #include "ofMain.h"
 
@@ -17,6 +17,7 @@ public:
 public:
   b2World world;
   b2Body *ball_body, *court_body, *border_body, *net_body;
+  std::vector<b2Body *> extra_balls;
   
   ofVec2f racket1, opponent;
   ofVec2f racket1_target, opponent_target;
@@ -27,7 +28,15 @@ public:
 
   float angle;
 
-  Dialogue dialogue;
+  FontDialogue dialogue;
+
+  bool ball_in_play, opponent_visible;
+
+  int opponent_index;
+  bool served, time_slowed;
+
+  bool glass_hit = false;
+  float glass = 0.0;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_
