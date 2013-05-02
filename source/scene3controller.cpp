@@ -80,7 +80,8 @@ void Scene3Controller::Setup() {
       .Speed(25.0)
       .FontSize(16.0)
       .Foreground(ofColor::black)
-      .Position("right", right).Then([this] () {
+      .Position("right", right)
+      .Position("below", right + ofVec2f(0, 100)).Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.1); //bass sound
         volume_targets.push_back(0.5); //high arpeg v1
@@ -214,7 +215,17 @@ void Scene3Controller::Setup() {
     model_.served = false;
     model_.ball_in_play = true;
     model_.opponent_index = 7;
-  })
+  }).Speed(1000.0).Message(R"(void Scene3Controller::Update() {
+             model_.dialogue.Update();
+             if (model_.score >= 10) {
+               scene_manager.NextScene();
+               return;
+             }
+             if (model_.bounces >= ((model_.opponent_index == 8) ? 8 : 2)) {
+               DestroyBall(model_.ball_body);
+               model_.ball_body = nullptr;
+               model_.bounces = 0;
+             })", "point")
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.7); //bass sound
