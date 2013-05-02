@@ -7,9 +7,7 @@
 #include "utilities.h"
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
-: Controller(scene_manager), model_(model), music(), hit1(), hit2() {
-  music.loadSound("main_theme.wav", true);
-  music.setLoop(true);
+: Controller(scene_manager), model_(model), hit1(), hit2() {
   hit1.loadSound("hit1.mp3");
   hit2.loadSound("hit2.mp3");
   bounce1.loadSound("bounce1.wav");
@@ -19,7 +17,6 @@ Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model
 }
 
 Scene1Controller::~Scene1Controller() {
-  music.stop();
 }
 
 void Scene1Controller::Setup() {
@@ -50,7 +47,8 @@ void Scene1Controller::Setup() {
       }).Barrier("hit").Clear().Barrier("rotation_started").Barrier("opponent_has_ball").Then([this] () {
         model_.frozen = true;
         model_.rotating = true;
-        model_.ball_body->SetLinearVelocity(b2Vec2(0, model_.ball_body->GetLinearVelocity().y));
+        model_.ball_body->SetLinearVelocity(b2Vec2(0, 0));
+        model_.ball_body->SetAngularVelocity(0.0);
       }).Message("Hey, sorry. Let's stop, I got a cramp.", "left").Pause(2.0 * pause)
       .Message("Okay... what are you thinking about?", "right").Pause(2.0 * pause)
       .Message("I don't know, what are you thinking about?", "left").Pause(2.0 * pause)
@@ -66,21 +64,24 @@ void Scene1Controller::Setup() {
         model_.player_released = true;
       }).Message("I'll get it!", "right").Barrier("retrieved").Then([this] () {
         model_.title_started = true;
+        scene_manager.GetMusic().PlaySoundEffect("title_sound");
         model_.ball_body->GetFixtureList()->SetRestitution(restitution);
       }).Clear();
 }
 
 void Scene1Controller::BeginContact(b2Contact* contact) {
-  if (model_.flipped) {
-    bounce1.setPan(-model_.ball_body->GetPosition().x / half_court_length);
-    bounce2.setPan(-model_.ball_body->GetPosition().x / half_court_length);
-    bounce3.setPan(-model_.ball_body->GetPosition().x / half_court_length);
-    bounce4.setPan(-model_.ball_body->GetPosition().x / half_court_length);
-  } else {
-    bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  if (model_.ball_body) {
+    if (model_.flipped) {
+      bounce1.setPan(-model_.ball_body->GetPosition().x / half_court_length);
+      bounce2.setPan(-model_.ball_body->GetPosition().x / half_court_length);
+      bounce3.setPan(-model_.ball_body->GetPosition().x / half_court_length);
+      bounce4.setPan(-model_.ball_body->GetPosition().x / half_court_length);
+    } else {
+      bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
+      bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
+      bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
+      bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    }
   }
   if (ofRandomuf() < 0.5) {
     if (ofRandomuf() < 0.5) {
@@ -114,8 +115,8 @@ void Scene1Controller::Update() {
     UpdateRackets();
   }
   if (model_.ball_body) {
-    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < 0
-        && model_.ball_body->GetLinearVelocity().x < 0) {
+    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < -3
+        && model_.ball_body->GetPosition().x > -half_court_length + 3.0 && model_.ball_body->GetLinearVelocity().x < 0) {
       model_.dialogue.Trigger("opponent_has_ball");
     }
     if (model_.flipped && model_.dialogue.IsBlocked("ball_below") && model_.ball_body->GetPosition().y > 0.9 * court_height) {

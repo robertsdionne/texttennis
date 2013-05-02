@@ -62,10 +62,12 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
   }
 
-  bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
-  bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
-  bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
-  bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  if (model_.ball_body) {
+    bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
+    bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
+  }
   if (ofRandomuf() < 0.5) {
     if (ofRandomuf() < 0.5) {
       bounce1.play();

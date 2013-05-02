@@ -25,7 +25,7 @@ private:
   
   void DrawNet() const;
 
-  void DrawOpponent(ofVec2f position, int opponent_index) const;
+  void DrawOpponent(const Scene3Model &model) const;
   
   void DrawRacket(ofVec2f position) const;
 

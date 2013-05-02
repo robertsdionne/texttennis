@@ -29,7 +29,7 @@ private:
 
   float H01(float t) const;
 
-  ofImage bg, text, tennis;
+  ofImage bg, text_tennis;
 };
 
 #endif  // TEXTTENNIS_SCENE1VIEW_H_

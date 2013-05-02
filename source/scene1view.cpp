@@ -10,8 +10,7 @@ void Scene1View::Setup() {
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   bg.loadImage("scene1.png");
-  text.loadImage("scene1_titleImage_text.png");
-  tennis.loadImage("scene1_titleImage_Tennis.png");
+  text_tennis.loadImage("TITLE card.png");
 }
 
 void Scene1View::Draw(Model &model) {
@@ -39,8 +38,7 @@ void Scene1View::Draw(Model &model) {
   ofScale(scale, scale);
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(ofColor::white, scene1_model.title * 255.0);
-  text.draw(Lerp(ofVec2f(0, 0), ofVec2f(0, -window_height / 4.0), scene1_model.title));
-  tennis.draw(Lerp(ofVec2f(0, 0), ofVec2f(0.0, window_height / 4.0), scene1_model.title));
+  text_tennis.draw(ofPoint());
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPopMatrix();
   ofPopMatrix();
