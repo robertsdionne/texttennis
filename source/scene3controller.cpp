@@ -34,7 +34,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   }
   if (ball && court && ball->GetPosition().x > 0 && model_.served) {
     model_.bounces += 1;
-    if (model_.bounces == 2) {
+    if (model_.bounces == ((model_.opponent_index == 8) ? 8 : 2)) {
       model_.angle = 0.0;
       model_.score += 1;
       model_.ball_in_play = false;
@@ -176,7 +176,6 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
   }).Clear().Pause(pause).Then([this] () {
-    std::cout << "NOW!" << std::endl;
     model_.served = true;
     model_.ball_in_play = true;
     model_.opponent_index = 5;
@@ -259,10 +258,16 @@ void Scene3Controller::Update() {
     scene_manager.NextScene();
     return;
   }
-  if (model_.bounces >= 2) {
+  if (model_.bounces >= ((model_.opponent_index == 8) ? 8 : 2)) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
     model_.bounces = 0;
+  }
+  if (model_.opponent_index != 2 && model_.extra_balls.size()) {
+    for (auto ball : model_.extra_balls) {
+      model_.world.DestroyBody(ball);
+    }
+    model_.extra_balls.clear();
   }
   UpdateRackets();
   model_.world.Step(model_.time_slowed ? 0.1 * delta_time : delta_time, box2d_velocity_iterations, box2d_position_iterations);
@@ -387,31 +392,28 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       if (!opponent && model_.opponent_index == 1) {
         model_.time_slowed = false;
       }
-      if (opponent && model_.served == false && model_.opponent_index == 2) {
-        //if (model_.extra_balls.size() == 0) {
-          for (int i = 0; i < 4; ++i) {
-            std::cout << "creating ball" << std::endl;
-            b2BodyDef ball_body_definition;
-            ball_body_definition.type = b2_dynamicBody;
-            ball_body_definition.position.Set(model_.ball_body->GetPosition().x + 0.1 * ofRandomf(),
-                                              model_.ball_body->GetPosition().y + 0.1 * ofRandomf());
-            ball_body_definition.linearVelocity.Set(model_.ball_body->GetLinearVelocity().x + 3.0 * ofRandomf(),
-                                                    model_.ball_body->GetLinearVelocity().y + 0.25 * ofRandomf());
-            ball_body_definition.angle = model_.ball_body->GetAngle();
-            ball_body_definition.angularVelocity = model_.ball_body->GetAngularVelocity();
-            ball_body_definition.linearDamping = linear_damping;
-            ball_body_definition.angularDamping = angular_damping;
-            model_.extra_balls.push_back(model_.world.CreateBody(&ball_body_definition));
-            b2CircleShape ball_shape;
-            ball_shape.m_radius = ball_radius;
-            b2FixtureDef ball_fixture_definition;
-            ball_fixture_definition.shape = &ball_shape;
-            ball_fixture_definition.density = density;
-            ball_fixture_definition.restitution = restitution;
-            ball_fixture_definition.friction = friction;
-            model_.extra_balls.back()->CreateFixture(&ball_fixture_definition);
-          }
-        //}
+      if (opponent && model_.opponent_index == 2) {
+        for (int i = 0; i < 4; ++i) {
+          b2BodyDef ball_body_definition;
+          ball_body_definition.type = b2_dynamicBody;
+          ball_body_definition.position.Set(model_.ball_body->GetPosition().x + 0.1 * ofRandomf(),
+                                            model_.ball_body->GetPosition().y + 0.1 * ofRandomf());
+          ball_body_definition.linearVelocity.Set(model_.ball_body->GetLinearVelocity().x + 3.0 * ofRandomf(),
+                                                  model_.ball_body->GetLinearVelocity().y + 0.25 * ofRandomf());
+          ball_body_definition.angle = model_.ball_body->GetAngle();
+          ball_body_definition.angularVelocity = model_.ball_body->GetAngularVelocity();
+          ball_body_definition.linearDamping = linear_damping;
+          ball_body_definition.angularDamping = angular_damping;
+          model_.extra_balls.push_back(model_.world.CreateBody(&ball_body_definition));
+          b2CircleShape ball_shape;
+          ball_shape.m_radius = ball_radius;
+          b2FixtureDef ball_fixture_definition;
+          ball_fixture_definition.shape = &ball_shape;
+          ball_fixture_definition.density = density;
+          ball_fixture_definition.restitution = restitution;
+          ball_fixture_definition.friction = friction;
+          model_.extra_balls.back()->CreateFixture(&ball_fixture_definition);
+        }
       }
       model_.served = true;
       hit1.setPan(racket_position.x / half_court_length);
@@ -430,7 +432,8 @@ void Scene3Controller::UpdateRackets() {
   if (keys[OF_KEY_RIGHT] && model_.racket1_target.x < -racket_speed - racket_radius) {
     model_.racket1_target.x += racket_speed;
   }
-  if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3) {
+  if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3
+      && model_.opponent_index != 9) {
     if (model_.opponent_index == 0) {
       const float dy = ofNoise(-ofGetElapsedTimef()) * racket_speed / 10.0;
       model_.opponent_target.y += dy;
@@ -456,10 +459,15 @@ void Scene3Controller::UpdateRackets() {
   if (model_.opponent_index == 3) {
     model_.opponent_target.x = 7;
   }
+  if (model_.opponent_index == 9) {
+    model_.opponent_target.x = -model_.racket1_target.x;
+  }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
   if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3
       && model_.score != 4) {
-    RacketCollide(model_.opponent, racket2_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);
+    RacketCollide(model_.opponent, model_.opponent_index == 6 ?
+                  -racket2_low_hit_direction.GetValue() : racket2_low_hit_direction,
+                  low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);
   }
   if (model_.score == 4 && !model_.glass_hit && model_.ball_body) {
     const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x,
