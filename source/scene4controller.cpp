@@ -359,6 +359,7 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         const float speed = sqrt(range * gravity / sin(2.0 * ofDegToRad(angle[4 - model_.score])));
         const b2Vec2 velocity = Box2dVector(ofVec2f(1, 0).rotated(angle[4 - model_.score]) * speed);
         model_.ball_body->SetLinearVelocity(velocity);
+        model_.ball_body->SetAngularVelocity(0.0);
         model_.bounces = 0;
         hit1.setPan(racket_position.x / half_court_length);
         hit2.setPan(racket_position.x / half_court_length);
