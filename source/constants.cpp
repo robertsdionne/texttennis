@@ -46,7 +46,7 @@ DEFINE_PARAMETER_RANGE(float, linear_damping, 0.1, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, low_hit_mean, 13.0, 0.0, 50.0);
 DEFINE_PARAMETER_RANGE(int, max_balls, 1500, 0.0, 5000.0);
 DEFINE_PARAMETER(float, max_balls_goal, DEPENDENCY(max_balls_goal_fraction) * DEPENDENCY(max_balls));
-DEFINE_PARAMETER_RANGE(float, max_balls_goal_fraction, 0.9, 0.0, 1.0);
+DEFINE_PARAMETER_RANGE(float, max_balls_goal_fraction, 0.8, 0.0, 1.0);
 DEFINE_PARAMETER_RANGE(float, net_height, 0.914, 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, net_thickness, DEPENDENCY(ball_radius), 0.0, 10.0);
 DEFINE_PARAMETER_RANGE(float, player_move_smooth_factor, 0.2, 0.0, 1.0);
