@@ -225,7 +225,7 @@ void Scene3Controller::Setup() {
                DestroyBall(model_.ball_body);
                model_.ball_body = nullptr;
                model_.bounces = 0;
-             })", "point")
+             })", "below")
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.7); //bass sound

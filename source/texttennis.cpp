@@ -19,7 +19,7 @@
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
   show_sliders(false), float_panel(), int_panel(), transition(nullptr),
-  title_sound("title_sound2.wav", false, true),
+  title_sound("title_sound3.wav", false, true),
   tree1("tree1.wav", false, true),
   tree2("tree2.wav", false, true),
   tree3("tree3.wav", false, true),
@@ -70,7 +70,7 @@ void TextTennis::setup() {
   loops.push_back("speak_3.wav");
   opponents = new LoopSet(loops);
   music.Song("intro_loop.wav").Transition("scene1")
-      .Song("scene1 loop1.wav").Song("scene1 loop2.wav").Song("scene1 loop3.wav")
+      .Song("scene1loop1.wav").Song("scene1loop2.wav").Song("scene1loop3.wav")
       .SoundEffect("title_sound", title_sound).Transition("scene3")
       .SoundEffect("opponents", *opponents).Transition("scene4")
       .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
