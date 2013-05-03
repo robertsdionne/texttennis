@@ -35,6 +35,9 @@ void Interlude1::Setup() {
       .Message(text, "spot").Pause(delay).Then([this] () {
         done = true;
       });
+  if (transition == "scene3" && scene_manager.GetMusic().IsBlocked("title")) {
+    scene_manager.GetMusic().TriggerTransition("title");
+  }
   scene_manager.GetMusic().TriggerTransition(transition);
 }
 

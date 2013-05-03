@@ -38,8 +38,8 @@ void Music::PlaySoundEffect(const std::string &sound) {
   sounds[sound]->Play();
 }
 
-Music &Music::Song(const std::string &song, bool loop) {
-  events.push_back(new SongEvent(song, loop));
+Music &Music::Song(const std::string &song, bool loop, float volume) {
+  events.push_back(new SongEvent(song, loop, volume));
   return *this;
 }
 
@@ -74,6 +74,7 @@ void Music::Update() {
       case Event::Type::SONG: {
         SongEvent *song = dynamic_cast<SongEvent *>(event);
         Sound *sound = new OfSound(song->song, true, true);
+        sound->SetVolumeTarget(song->volume);
         queued.push_back(sound);
         break;
       }

@@ -28,11 +28,12 @@ public:
 
   class SongEvent : public Event {
   public:
-    SongEvent(const std::string &song, bool loop)
-    : Event(Event::Type::SONG), song(song), loop(loop) {}
+    SongEvent(const std::string &song, bool loop, float volume)
+    : Event(Event::Type::SONG), song(song), loop(loop), volume(volume) {}
     virtual ~SongEvent() {}
     std::string song;
     bool loop;
+    float volume;
   };
 
   class SoundEffectEvent : public Event {
@@ -66,7 +67,7 @@ public:
 
   void PlaySoundEffect(const std::string &sound);
 
-  Music &Song(const std::string &song, bool loop = true);
+  Music &Song(const std::string &song, bool loop = true, float volume = 1.0);
 
   Music &SoundEffect(const std::string &name, Sound &sound, bool loop = false);
 

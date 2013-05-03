@@ -60,7 +60,6 @@ private:
   ofxPanel float_panel;
   ofxPanel int_panel;
   Music music;
-  OfSound title_sound;
   OfSound tree1, tree2, tree3, tree4, tree5;
   LoopSet *opponents;
 };
