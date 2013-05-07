@@ -13,6 +13,10 @@ class Controller {
 public:
   virtual ~Controller() {}
 
+  virtual bool AnyButtonPressed();
+
+  virtual bool AnyKeyPressed();
+
   virtual void Setup() = 0;
 
   virtual void Update();

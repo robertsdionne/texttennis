@@ -20,22 +20,9 @@ void IntroductionController::Setup() {
 }
 
 void IntroductionController::Update() {
-  if (buttons[0] && !previous_buttons[0]) {
-    b2AABB aabb;
-    aabb.lowerBound = Box2dVector(model_.mouse_position);
-    aabb.upperBound = Box2dVector(model_.mouse_position);
-    struct : public b2QueryCallback {
-      bool hit = false;
-      virtual bool ReportFixture(b2Fixture* fixture) {
-        hit = true;
-        return false;
-      }
-    } intersect_callback;
-    model_.world.QueryAABB(&intersect_callback, aabb);
-    if (intersect_callback.hit) {
-      scene_manager.NextScene();
-      return;
-    }
+  if (AnyButtonPressed() || AnyKeyPressed()) {
+    scene_manager.NextScene();
+    return;
   }
   while (ofGetElapsedTimef() > model_.last_create_time + IntroductionModel::create_delay) {
     CreateBox(ofVec2f(1.0, court_height + 1 + ofRandomf()), ofVec2f(),
