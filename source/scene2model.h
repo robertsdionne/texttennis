@@ -24,7 +24,7 @@ public:
   ofVec2f racket1;
   ofVec2f racket1_target;
 
-  float score;
+  float score, inverse_score;
   
   Dialogue dialogue;
 };

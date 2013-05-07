@@ -55,9 +55,13 @@ void Scene2Controller::Update() {
     return;
   }
   model_.score = 0.0;
+  model_.inverse_score = 0.0;
   for (auto ball : model_.ball_body) {
     if (ball->GetPosition().x > 0 && ball->GetLinearVelocity().Length() < 5.0) {
       model_.score += 1.0;
+    }
+    if (ball->GetPosition().x < 0 && ball->GetLinearVelocity().Length() < 5.0) {
+      model_.inverse_score += 1.0;
     }
   }
   if (ofGetElapsedTimef() > scene_begin_time + 8.0 && ofGetFrameNum() % 1 == 0 && model_.ball_body.size() < max_balls) {
