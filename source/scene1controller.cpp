@@ -64,7 +64,7 @@ void Scene1Controller::Setup() {
         model_.player_released = true;
       }).Message("I'll get it!", "right").Barrier("retrieved").Then([this] () {
         model_.title_started = true;
-        scene_manager.GetMusic().TriggerTransition("title");
+        scene_manager.GetMusic().PlaySoundEffect("title_sound");
         model_.ball_body->GetFixtureList()->SetRestitution(restitution);
       }).Clear();
 }
