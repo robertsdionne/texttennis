@@ -39,26 +39,22 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
   if (ball && other) {
     if (other == model_.court_body && ball->GetPosition().x > 0) {
       model_.bounces += 1;
+      model_.rising[4 - model_.score] = true;
+      model_.dialogue.Trigger("collide");
+      scene_manager.GetMusic().PlaySoundEffect(tree[model_.score]);
+      model_.score += 1;
+      model_.reset_ball = true;
+      if (model_.time_scale == 1.0) {
+        model_.time_scale = 1.0 / 6.0;
+        hit1.setVolume(0.0);
+        hit2.setVolume(0.0);
+        bounce1.setVolume(0.0);
+        bounce2.setVolume(0.0);
+        bounce3.setVolume(0.0);
+        bounce4.setVolume(0.0);
+      }
     } else if (other == model_.court_body && ball->GetPosition().x < 0) {
       model_.bounces = 0;
-    }
-    for (int i = 0; i < 5; ++i) {
-      if (other == model_.tree_people[i]) {
-        model_.rising[i] = true;
-        model_.dialogue.Trigger("collide");
-        scene_manager.GetMusic().PlaySoundEffect(tree[model_.score]);
-        model_.score += 1;
-        model_.reset_ball = true;
-        if (model_.time_scale == 1.0) {
-          model_.time_scale = 1.0 / 6.0;
-          hit1.setVolume(0.0);
-          hit2.setVolume(0.0);
-          bounce1.setVolume(0.0);
-          bounce2.setVolume(0.0);
-          bounce3.setVolume(0.0);
-          bounce4.setVolume(0.0);
-        }
-      }
     }
   }
 
@@ -111,7 +107,7 @@ void Scene4Controller::Setup() {
       .Barrier("collide").Speed(4.0 / 3.0 * 20.0 / duration)
       .Message("But nothing changed.", "tree3") // 20
       .Barrier("collide").Speed(4.0 / 3.0 * 8.0 / duration)
-  .Message("The end.", "tree4").Pause(10.0).Then([this] () {
+  .Message("The end.", "tree4").Pause(12.0).Then([this] () {
     model_.done = true;
   }); // 8
 }
@@ -135,13 +131,13 @@ void Scene4Controller::Update() {
       model_.heights[i] += 1.0 / 60.0 / 24.0;
     }
   }
-  for (int i = 0; i < 5; ++i) {
-    if (4 - i == model_.score) {
-      model_.tree_people[i]->SetActive(true);
-    } else {
-      model_.tree_people[i]->SetActive(false);
-    }
-  }
+//  for (int i = 0; i < 5; ++i) {
+//    if (4 - i == model_.score) {
+//      model_.tree_people[i]->SetActive(true);
+//    } else {
+//      model_.tree_people[i]->SetActive(false);
+//    }
+//  }
   if (model_.score >= 6) {
     scene_manager.NextScene();
     return;
@@ -292,6 +288,8 @@ void Scene4Controller::CreateTreePeople() {
     model_.tree_people[i]->CreateFixture(&person_fixture_definition);
 
     offset += radius + next_radius + 2.0 * ball_radius;
+    
+    model_.tree_people[i]->SetActive(false);
   }
 }
 
