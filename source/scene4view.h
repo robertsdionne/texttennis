@@ -29,6 +29,8 @@ private:
 
   void DrawTreePeople(Scene4Model &model) const;
 
+  float H01(float t) const;
+
   ofImage background;
   ofImage trees[5];
 };

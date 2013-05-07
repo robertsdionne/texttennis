@@ -33,27 +33,27 @@ void Scene4View::Draw(Model &model) {
   if (scene4_model.score >= 1) {
     ofSetColor(ofColor::white);
   }
-  trees[0].draw(870, 157);
+  trees[0].draw(870, window_height - (window_height - 157) * H01(scene4_model.heights[4]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 2) {
     ofSetColor(ofColor::white);
   }
-  trees[1].draw(731+offset, 201);
+  trees[1].draw(731+offset, window_height - (window_height - 201) * H01(scene4_model.heights[3]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 3) {
     ofSetColor(ofColor::white);
   }
-  trees[2].draw(598+2*offset, 272);
+  trees[2].draw(598+2*offset, window_height - (window_height - 272) * H01(scene4_model.heights[2]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 4) {
     ofSetColor(ofColor::white);
   }
-  trees[3].draw(434+3*offset, 273);
+  trees[3].draw(434+3*offset, window_height - (window_height - 273) * H01(scene4_model.heights[1]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 5) {
     ofSetColor(ofColor::white);
   }
-  trees[4].draw(274+4*offset, 334);
+  trees[4].draw(274+4*offset, window_height - (window_height - 334) * H01(scene4_model.heights[0]));
   scene4_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
@@ -137,4 +137,8 @@ void Scene4View::DrawTreePeople(Scene4Model &model) const {
     ofCircle(OpenFrameworksVector(model.tree_people[i]->GetPosition()), radius);
   }
   ofPopStyle();
+}
+
+float Scene4View::H01(float t) const {
+  return -2 * t * t * t + 3 * t * t;
 }

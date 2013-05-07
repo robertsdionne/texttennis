@@ -36,6 +36,8 @@ public:
   Dialogue dialogue;
 
   bool done = false;
+  bool rising[5] = {false, false, false, false, false};
+  float heights[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

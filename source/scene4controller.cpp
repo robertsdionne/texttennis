@@ -44,19 +44,19 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
     for (int i = 0; i < 5; ++i) {
       if (other == model_.tree_people[i]) {
+        model_.rising[i] = true;
         model_.dialogue.Trigger("collide");
-        //tree[model_.score].play();
         scene_manager.GetMusic().PlaySoundEffect(tree[model_.score]);
         model_.score += 1;
         model_.reset_ball = true;
         if (model_.time_scale == 1.0) {
-          model_.time_scale = 0.125;
-          hit1.setSpeed(0.5);
-          hit2.setSpeed(0.5);
-          bounce1.setSpeed(0.5);
-          bounce2.setSpeed(0.5);
-          bounce3.setSpeed(0.5);
-          bounce4.setSpeed(0.5);
+          model_.time_scale = 1.0 / 6.0;
+          hit1.setVolume(0.0);
+          hit2.setVolume(0.0);
+          bounce1.setVolume(0.0);
+          bounce2.setVolume(0.0);
+          bounce3.setVolume(0.0);
+          bounce4.setVolume(0.0);
         }
       }
     }
@@ -102,16 +102,16 @@ void Scene4Controller::Setup() {
       .Position("tree2", ofPoint(512, 245))
       .Position("tree3", ofPoint(512, 295))
       .Position("tree4", ofPoint(512, 330))
-      .Barrier("collide").Speed(69.0 / duration)
+      .Barrier("collide").Speed(4.0 / 3.0 * 69.0 / duration)
       .Message("Ladies and gentlemen,\nwe are proud to present\na short story,\n\"Nothing is real.\"", "tree0") // 69
-      .Barrier("collide").Speed(51.0 / duration)
+      .Barrier("collide").Speed(4.0 / 3.0 * 51.0 / duration)
       .Message("The trees and\nthe tree people\nwere in disagreement.", "tree1") // 51
-      .Barrier("collide").Speed(37.0 / duration)
+      .Barrier("collide").Speed(4.0 / 3.0 * 37.0 / duration)
       .Message("\"Let's work it out,\"\none person said.", "tree2") // 37
-      .Barrier("collide").Speed(20.0 / duration)
+      .Barrier("collide").Speed(4.0 / 3.0 * 20.0 / duration)
       .Message("But nothing changed.", "tree3") // 20
-      .Barrier("collide").Speed(8.0 / duration)
-  .Message("The end.", "tree4").Then([this] () {
+      .Barrier("collide").Speed(4.0 / 3.0 * 8.0 / duration)
+  .Message("The end.", "tree4").Pause(10.0).Then([this] () {
     model_.done = true;
   }); // 8
 }
@@ -129,6 +129,11 @@ void Scene4Controller::Update() {
     }
     //model_.ball_trail.clear();
     model_.reset_ball = false;
+  }
+  for (int i = 0; i < 5; ++i) {
+    if (model_.rising[i] && model_.heights[i] <= 1.0 - 1.0 / 60.0 / 24.0) {
+      model_.heights[i] += 1.0 / 60.0 / 24.0;
+    }
   }
   for (int i = 0; i < 5; ++i) {
     if (4 - i == model_.score) {
