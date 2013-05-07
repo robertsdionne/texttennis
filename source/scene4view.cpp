@@ -33,33 +33,78 @@ void Scene4View::Draw(Model &model) {
   if (scene4_model.score >= 1) {
     ofSetColor(ofColor::white);
   }
-  trees[0].draw(870, window_height - (window_height - 157) * H01(scene4_model.heights[4]));
+  float x_shake = 0;
+  float y_shake = 0;
+  if (0.0 < scene4_model.heights[4] && scene4_model.heights[4] < 0.9) {
+    x_shake = ofRandomf();
+    y_shake = ofRandomf();
+  } else {
+    x_shake = y_shake = 0;
+  }
+  trees[0].draw(870 + x_shake, y_shake + window_height - (window_height - 157) * H01(scene4_model.heights[4]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 2) {
     ofSetColor(ofColor::white);
   }
-  trees[1].draw(731+offset, window_height - (window_height - 201) * H01(scene4_model.heights[3]));
+
+  if (0.0 < scene4_model.heights[3] && scene4_model.heights[3] < 0.9) {
+    x_shake = ofRandomf();
+    y_shake = ofRandomf();
+  } else {
+    x_shake = y_shake = 0;
+  }
+  trees[1].draw(731+offset + x_shake, y_shake + window_height - (window_height - 201) * H01(scene4_model.heights[3]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 3) {
     ofSetColor(ofColor::white);
   }
-  trees[2].draw(598+2*offset, window_height - (window_height - 272) * H01(scene4_model.heights[2]));
+
+  if (0.0 < scene4_model.heights[2] && scene4_model.heights[2] < 0.9) {
+    x_shake = ofRandomf();
+    y_shake = ofRandomf();
+  } else {
+    x_shake = y_shake = 0;
+  }
+  trees[2].draw(598+2*offset + x_shake, y_shake + window_height - (window_height - 272) * H01(scene4_model.heights[2]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 4) {
     ofSetColor(ofColor::white);
   }
-  trees[3].draw(434+3*offset, window_height - (window_height - 273) * H01(scene4_model.heights[1]));
+
+  if (0.0 < scene4_model.heights[1] && scene4_model.heights[1] < 0.9) {
+    x_shake = ofRandomf();
+    y_shake = ofRandomf();
+  } else {
+    x_shake = y_shake = 0;
+  }
+  trees[3].draw(434+3*offset + x_shake, y_shake + window_height - (window_height - 273) * H01(scene4_model.heights[1]));
   ofSetColor(ofColor::darkGray, 25);
   if (scene4_model.score >= 5) {
     ofSetColor(ofColor::white);
   }
-  trees[4].draw(274+4*offset, window_height - (window_height - 334) * H01(scene4_model.heights[0]));
+
+  if (0.0 < scene4_model.heights[0] && scene4_model.heights[0] < 0.9) {
+    x_shake = ofRandomf();
+    y_shake = ofRandomf();
+  } else {
+    x_shake = y_shake = 0;
+  }
+  trees[4].draw(274+4*offset + x_shake, y_shake + window_height - (window_height - 334) * H01(scene4_model.heights[0]));
   scene4_model.dialogue.Draw();
   ofPushMatrix();
   ofMultMatrix(view_matrix);
+  ofPushMatrix();
+  bool rising = false;
+  for (auto height : scene4_model.heights) {
+    rising |= 0.0 < height && height < 0.9;
+  }
+  if (rising) {
+    ofTranslate(court_length / window_width * ofRandomf(), court_height / window_height * ofRandomf());
+  }
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);
+  ofPopMatrix();
   //DrawTreePeople(scene4_model);
   ofSetColor(ofColor::yellow);
   ofBeginShape();
@@ -102,7 +147,7 @@ void Scene4View::DrawBall(Scene4Model &model, ofVec2f position, float angle) {
 void Scene4View::DrawCourt() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -court_thickness);
+  ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -2.0 * court_thickness);
   ofPopStyle();
 }
 
