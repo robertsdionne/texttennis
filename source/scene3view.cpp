@@ -85,7 +85,7 @@ void Scene3View::Draw(Model &model) {
     }
     ofPopMatrix();
   }
-  DrawFrameRate();
+  //DrawFrameRate();
   ofPopMatrix();
 }
 

@@ -50,7 +50,7 @@ void Scene2View::Draw(Model &model) {
     DrawBall(scene2_model, ofVec2f(ball->GetPosition().x, ball->GetPosition().y),
              ball->GetFixtureList()->GetShape()->m_radius, ball->GetAngle());
   }
-  DrawFrameRate();
+  //DrawFrameRate();
   ofPopMatrix();
 }
 

@@ -115,7 +115,7 @@ void Scene4View::Draw(Model &model) {
                      scene4_model.ball_body->GetPosition().y),
              scene4_model.ball_body->GetAngle());
   }
-  DrawFrameRate();
+  //DrawFrameRate();
   ofPopMatrix();
 }
 
