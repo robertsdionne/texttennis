@@ -5,6 +5,24 @@
 Controller::Controller(TextTennis &scene_manager)
 : scene_manager(scene_manager), buttons(), keys(), previous_buttons(), previous_keys() {}
 
+bool Controller::AnyButtonPressed() {
+  for (auto pair : buttons) {
+    if (pair.second && !previous_buttons[pair.first]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Controller::AnyKeyPressed() {
+  for (auto pair : keys) {
+    if (pair.second && !previous_keys[pair.first]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void Controller::Update() {
   if (keys['`'] && !previous_keys['`']) {
     scene_manager.ToggleSettings();
