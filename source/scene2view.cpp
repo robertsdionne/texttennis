@@ -27,6 +27,9 @@ void Scene2View::Draw(Model &model) {
   ofPushMatrix();
   ofScale(1, -1);
   ofPopMatrix();
+  float tilt_left = scene2_model.inverse_score / (scene2_model.ball_body.size() + 1);
+  float tilt_right = scene2_model.score / (scene2_model.ball_body.size() + 1);
+  ofRotateZ(5.0 * (tilt_left - tilt_right));
   DrawCourt();
   DrawNet();
   DrawRacket(scene2_model.racket1);
@@ -52,7 +55,7 @@ void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, fl
 void Scene2View::DrawCourt() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -court_thickness);
+  ofRect(ofVec2f(-half_court_length - 1.0, court_thickness), court_length + 2.0, -5.0 * court_thickness);
   ofPopStyle();
 }
 
