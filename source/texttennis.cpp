@@ -36,13 +36,13 @@ TextTennis::TextTennis()
   });
   scene_factory_functions.push_back(Scene3::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "Tree People", "scene4");
-  });
-  scene_factory_functions.push_back(Scene4::Create);
-  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
     return Interlude1::Create(scene_manager, player_position, "Practice", "scene2");
   });
   scene_factory_functions.push_back(Scene2::Create);
+  scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
+    return Interlude1::Create(scene_manager, player_position, "Tree People", "scene4");
+  });
+  scene_factory_functions.push_back(Scene4::Create);
   scene_factory_functions.push_back(Scene5::Create);
 }
 
@@ -72,11 +72,11 @@ void TextTennis::setup() {
   music.Song("intro_loop.wav", true, 0.8).Transition("scene1")
       .Song("scene1loop1.wav", true, 0.8).Song("scene1loop2.wav", true, 0.8).Song("scene1loop3.wav", true, 0.8)
       .SoundEffect("title_sound", title_sound).Transition("scene3")
-      .SoundEffect("opponents", *opponents).Transition("scene4")
+  .SoundEffect("opponents", *opponents).Transition("scene2")
+  .Song("scene02_lows.wav").Song("scene02_highs.wav").Transition("scene4")
       .SoundEffect("tree1", tree1).SoundEffect("tree2", tree2).SoundEffect("tree3", tree3)
       .SoundEffect("tree4", tree4).SoundEffect("tree5", tree5)
-      .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene2")
-      .Song("scene02_lows.wav").Song("scene02_highs.wav").Transition("scene5").Transition("introduction");
+      .Song("treeloop1.wav", true).Song("treeloop2.wav", true).Song("treeloop3.wav", true).Transition("scene5").Transition("introduction");
   ofSetFrameRate(60.0);
   CreateScene();
   float_panel.setup("float parameters");
