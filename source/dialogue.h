@@ -26,6 +26,7 @@ public:
       MUTE,
       PAUSE,
       POSITION,
+      PUNCTUATION_DELAY,
       SPEED,
       THEN
     };
@@ -100,6 +101,13 @@ public:
     ofPoint position;
   };
 
+  class PunctuationDelayEvent : public Event {
+  public:
+    PunctuationDelayEvent(float duration) : Event(Event::Type::PUNCTUATION_DELAY), duration(duration) {}
+    virtual ~PunctuationDelayEvent() {}
+    float duration;
+  };
+
   class SpeedEvent : public Event {
   public:
     SpeedEvent(float speed) : Event(Event::Type::SPEED), speed(speed) {}
@@ -131,6 +139,8 @@ public:
   Dialogue &Pause(float duration);
 
   Dialogue &Position(const std::string &label, ofPoint position);
+
+  Dialogue &PunctuationDelay(float duration);
 
   virtual void SetFontSize(float font_size);
 
@@ -171,6 +181,7 @@ protected:
   ofSoundPlayer click;
   float font_size;
   bool muted;
+  float punctuation_delay;
 };
 
 #endif  // TEXTTENNIS_DIALOGUE_H_

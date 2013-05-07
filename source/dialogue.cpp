@@ -6,7 +6,7 @@ Dialogue::Dialogue()
 : events(), last_event_time(), current_delay(), speed(1.0),
   event_index(), message_index(), positions(), messages(),
   last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
-  click(), font_size(12.0), muted(false) {
+  click(), font_size(12.0), muted(false), punctuation_delay(0.75) {
   click.loadSound("type2.wav");
   click.setMultiPlay(true);
 }
@@ -60,6 +60,11 @@ Dialogue &Dialogue::Pause(float duration) {
 
 Dialogue &Dialogue::Position(const std::string &label, ofPoint position) {
   events.push_back(new PositionEvent(label, position));
+  return *this;
+}
+
+Dialogue &Dialogue::PunctuationDelay(float duration) {
+  events.push_back(new PunctuationDelayEvent(duration));
   return *this;
 }
 
@@ -129,7 +134,16 @@ void Dialogue::Update() {
           click.play();
         }
         message_index += 1;
-        current_delay = 2.0 * ofRandomuf() / speed;
+        float delay = 0.0;
+        char character = messages[last_message_label]->message[message_index];
+        if (character == '.' || character == '!' || character == '?') {
+          delay = punctuation_delay;
+          message_index += 1;
+        } else if (character == ',' || character == ';' || character == ':') {
+          delay = punctuation_delay / 4.0;
+          message_index += 1;
+        }
+        current_delay = 2.0 * ofRandomuf() / speed + delay;
         last_event_time = ofGetElapsedTimef();
       } else {
         if (event_index < events.size()) {
@@ -179,6 +193,12 @@ void Dialogue::Update() {
             case Event::Type::POSITION: {
               PositionEvent *position_event = dynamic_cast<PositionEvent *>(event);
               positions[position_event->label] = position_event->position;
+              break;
+            }
+            case Event::Type::PUNCTUATION_DELAY: {
+              PunctuationDelayEvent *punctuation_delay_event =
+                  dynamic_cast<PunctuationDelayEvent *>(event);
+              punctuation_delay = punctuation_delay_event->duration;
               break;
             }
             case Event::Type::SPEED: {
