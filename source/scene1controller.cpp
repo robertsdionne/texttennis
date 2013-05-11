@@ -133,7 +133,7 @@ void Scene1Controller::Update() {
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (ofGetElapsedTimef() > model_.scene_start_time + 20.0 && model_.dialogue.IsBlocked("rotation_started")) {
+  if (ofGetElapsedTimef() > model_.scene_start_time + 2.0 && model_.dialogue.IsBlocked("rotation_started")) {
     model_.dialogue.Trigger("rotation_started");
   }
   if (model_.rotating && model_.rotation <= 0.999) {
@@ -146,10 +146,10 @@ void Scene1Controller::Update() {
     model_.dialogue.Trigger("flipped");
     model_.flipped = true;
   }
-  if (model_.title_started && model_.title < 1.0) {
+  if (model_.title_started && model_.title < 1.5) {
     model_.title += 0.0005;
   }
-  if (model_.title >= 1.0) {
+  if (model_.title >= 1.5) {
     scene_manager.NextScene();
     return;
   }
