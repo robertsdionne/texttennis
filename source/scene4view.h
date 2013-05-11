@@ -27,6 +27,8 @@ private:
   
   void DrawRacket(ofVec2f position) const;
 
+  void DrawParticles (Scene4Model &model);
+
   void DrawTreePeople(Scene4Model &model) const;
 
   float H01(float t) const;
