@@ -19,7 +19,7 @@
 TextTennis::TextTennis()
 : scene_factory_functions(), scene_index(0), current_scene(nullptr),
   show_sliders(false), float_panel(), int_panel(), transition(nullptr),
-  title_sound("title_sound3.wav", false, true),
+  title_sound("new title fade.wav", false, true),
   tree1("tree1.wav", false, true),
   tree2("tree2.wav", false, true),
   tree3("tree3.wav", false, true),

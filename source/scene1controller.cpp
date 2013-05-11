@@ -146,10 +146,10 @@ void Scene1Controller::Update() {
     model_.dialogue.Trigger("flipped");
     model_.flipped = true;
   }
-  if (model_.title_started && model_.title < 1.5) {
+  if (model_.title_started && model_.title < 1.65) {
     model_.title += 0.0005;
   }
-  if (model_.title >= 1.5) {
+  if (model_.title >= 1.65) {
     scene_manager.NextScene();
     return;
   }

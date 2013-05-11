@@ -78,6 +78,7 @@ void Scene3Controller::Setup() {
   const float pause = 2.0;
   model_.dialogue
       .Speed(25.0)
+      .PunctuationDelay(0.0)
       .FontSize(16.0)
       .Foreground(ofColor::black)
       .Position("right", right)
