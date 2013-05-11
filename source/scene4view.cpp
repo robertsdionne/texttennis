@@ -182,10 +182,13 @@ void Scene4View::DrawParticles(Scene4Model &model) {
     ofPushMatrix();
     ofTranslate(particle.position.x, particle.position.y);
     ofRotateZ(ofRadToDeg(particle.angle));
-    ofNoFill();
+    ofFill();
     ofSetLineWidth(rect_line_width);
-    ofSetColor(ofColor::white, particle.life * 255.0);
+    ofSetColor(ofColor::white, particle.life * 64.0);
     ofRect(ofPoint(), 0.5, 0.5);
+//    ofNoFill();
+//    ofSetColor(ofColor::black, particle.life * 255.0);
+//    ofRect(ofPoint(), 0.5, 0.5);
     ofPopMatrix();
     ofPopStyle();
   }

@@ -277,7 +277,10 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         hit1.setPan(racket_position.x / half_court_length);
         hit2.setPan(racket_position.x / half_court_length);
       }
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+      if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
+        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+        model_.last_hit = ofGetElapsedTimef();
+      }
       if (model_.dialogue.IsBlocked("hit")) {
         model_.dialogue.Trigger("hit");
       }

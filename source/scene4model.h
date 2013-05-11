@@ -45,6 +45,8 @@ public:
   float heights[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 
   std::vector<Particle> particles;
+
+  float last_hit = 0.0;
 };
 
 #endif  // TEXTTENNIS_SCENE4MODEL_H_

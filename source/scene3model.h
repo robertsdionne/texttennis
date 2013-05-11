@@ -37,6 +37,7 @@ public:
 
   bool glass_hit = false;
   float glass = 0.0;
+  float last_hit = 0.0;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_
