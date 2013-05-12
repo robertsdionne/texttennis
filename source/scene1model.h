@@ -29,6 +29,8 @@ public:
   bool platform_appearing;
 
   Dialogue dialogue;
+
+  float last_hit = 0;
 };
 
 #endif  // TEXTTENNIS_SCENE1MODEL_H_

@@ -6,11 +6,20 @@ Interlude1::Interlude1(TextTennis &scene_manager, ofPoint player_position,
                        const std::string &text, const std::string &transition, float delay)
 : Controller(scene_manager), player_position(player_position),
   model_(), text(text), transition(transition), delay(delay), done(false) {
+    if (transition == "scene1") {
+      dialogue = new Dialogue();
+    } else {
+      dialogue = new FontDialogue();
+    }
   ofRegisterKeyEvents(static_cast<Controller *>(this));
   ofRegisterMouseEvents(static_cast<Controller *>(this));
 }
 
 Interlude1::~Interlude1() {
+  if (dialogue) {
+    delete dialogue;
+    dialogue = nullptr;
+  }
   ofUnregisterKeyEvents(static_cast<Controller *>(this));
   ofUnregisterMouseEvents(static_cast<Controller *>(this));
 }
@@ -23,18 +32,28 @@ Scene *Interlude1::Create(TextTennis &scene_manager, ofPoint player_position,
 void Interlude1::Draw() {
   ofBackground(ofColor::black);
   ofSetColor(ofColor::white);
-  dialogue.Draw();
+  dialogue->Draw();
 }
 
 void Interlude1::Setup() {
-  dialogue
-      .Position("spot", ofPoint(100, 100))
-      .FontSize(32.0)
-      .Speed(5.0)
-      .Foreground(ofColor::white)
-      .Message(text, "spot").Pause(delay).Then([this] () {
-        done = true;
-      });
+  if (transition == "scene1") {
+    dialogue
+    ->Position("spot", ofPoint(100, 100))
+    .Foreground(ofColor::white)
+    .Background(ofColor(255, 255, 255, 25))
+    .Speed(20.0)    .Message(text, "spot").Pause(delay).Then([this] () {
+      done = true;
+    });
+  } else {
+    dialogue
+    ->Position("spot", ofPoint(100, 100))
+    .FontSize(32.0)
+    .Speed(5.0)
+    .Foreground(ofColor::white)
+    .Message(text, "spot").Pause(delay).Then([this] () {
+      done = true;
+    });
+  }
   scene_manager.GetMusic().TriggerTransition(transition);
 }
 
@@ -43,7 +62,7 @@ void Interlude1::Update() {
     scene_manager.NextScene();
     return;
   }
-  dialogue.Update();
+  dialogue->Update();
   if (transition == "scene3" && scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")
       && !scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->IsPlaying()) {
     std::vector<float> volume_targets;

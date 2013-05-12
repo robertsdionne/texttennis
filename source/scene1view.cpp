@@ -10,7 +10,7 @@ void Scene1View::Setup() {
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   bg.loadImage("scene1.png");
-  text_tennis.loadImage("TITLE card.png");
+  text_tennis.loadImage("TITLE card cutout large.png");
 }
 
 void Scene1View::Draw(Model &model) {
@@ -32,15 +32,17 @@ void Scene1View::Draw(Model &model) {
   ofPopMatrix();
   ofSetRectMode(OF_RECTMODE_CORNER);
 
-  ofPushMatrix();
-  scale = scene1_model.title;
-  ofTranslate(window_width / 2.0, window_height / 2.0);
-  ofScale(scale, scale);
-  ofSetRectMode(OF_RECTMODE_CENTER);
-  ofSetColor(ofColor::white, scene1_model.title * 255.0);
-  text_tennis.draw(ofPoint());
-  ofSetRectMode(OF_RECTMODE_CORNER);
-  ofPopMatrix();
+  if (scene1_model.title > 0.0) {
+    ofPushMatrix();
+    scale = 0.2 + scene1_model.title * 0.8;
+    ofTranslate(window_width / 2.0, window_height / 2.0);
+    ofSetColor(ofColor::white, scene1_model.title * 255.0);
+    ofScale(scale, scale);
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    text_tennis.draw(ofPoint());
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofPopMatrix();
+  }
   ofPopMatrix();
   
   ofSetColor(ofColor::white);
@@ -83,8 +85,10 @@ void Scene1View::DrawCourt(Scene1Model &model) const {
   ofRect(ofVec2f(-court_length + half_net_thickness, court_thickness), court_length, -10.0);
   ofSetColor(ofColor::black, H01(1.0 - model.platform) * 255.0);
   ofRect(ofVec2f(half_net_thickness, court_thickness), court_length, -10.0);
-  ofSetColor(ofColor::black, H01(model.platform) * 255.0);
-  ofRect(ofVec2f(-half_net_thickness, court_height - court_thickness), court_length, 10.0);
+  if (model.platform > 0.0) {
+    ofSetColor(ofColor::black, H01(model.platform) * 255.0);
+    ofRect(ofVec2f(-half_net_thickness, court_height - court_thickness), court_length, 10.0);
+  }
   ofPopStyle();
 }
 
@@ -101,8 +105,10 @@ void Scene1View::DrawNet(Scene1Model &model) const {
   ofPushStyle();
   ofSetColor(ofColor::black);
   ofRect(ofVec2f(-half_net_thickness, net_height + court_thickness), net_thickness, -net_height);
-  ofSetColor(ofColor::black, H01(model.platform) * 255.0);
-  ofRect(ofVec2f(-half_net_thickness, court_height - net_height - court_thickness), net_thickness, net_height);
+  if (model.platform > 0.0) {
+    ofSetColor(ofColor::black, H01(model.platform) * 255.0);
+    ofRect(ofVec2f(-half_net_thickness, court_height - net_height - court_thickness), net_thickness, net_height);
+  }
   ofPopStyle();
 }
 

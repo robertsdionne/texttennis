@@ -46,23 +46,24 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   } else if (ball && court && ball->GetPosition().x < 0) {
     model_.bounces = 0;
   }
-  if (model_.ball_body) {
-    bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce3.setPan(model_.ball_body->GetPosition().x / half_court_length);
-    bounce4.setPan(model_.ball_body->GetPosition().x / half_court_length);
-  }
-  if (ofRandomuf() < 0.5) {
+  if (ball) {
+    bounce1.setPan(ball->GetPosition().x / half_court_length);
+    bounce2.setPan(ball->GetPosition().x / half_court_length);
+    bounce3.setPan(ball->GetPosition().x / half_court_length);
+    bounce4.setPan(ball->GetPosition().x / half_court_length);
+
     if (ofRandomuf() < 0.5) {
-      bounce1.play();
+      if (ofRandomuf() < 0.5) {
+        bounce1.play();
+      } else {
+        bounce2.play();
+      }
     } else {
-      bounce2.play();
-    }
-  } else {
-    if (ofRandomuf() < 0.5) {
-      bounce3.play();
-    } else {
-      bounce4.play();
+      if (ofRandomuf() < 0.5) {
+        bounce3.play();
+      } else {
+        bounce4.play();
+      }
     }
   }
 }
@@ -78,6 +79,7 @@ void Scene3Controller::Setup() {
   const float pause = 2.0;
   model_.dialogue
       .Speed(25.0)
+      .PunctuationDelay(0.0)
       .FontSize(16.0)
       .Foreground(ofColor::black)
       .Position("right", right)
@@ -429,7 +431,11 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       model_.served = true;
       hit1.setPan(racket_position.x / half_court_length);
       hit2.setPan(racket_position.x / half_court_length);
-      ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+
+      if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
+        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+        model_.last_hit = ofGetElapsedTimef();
+      }
     }
   }
 }

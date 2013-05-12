@@ -101,6 +101,7 @@ void Scene4View::Draw(Model &model) {
   if (rising) {
     ofTranslate(court_length / window_width * ofRandomf(), court_height / window_height * ofRandomf());
   }
+  DrawParticles(scene4_model);
   DrawCourt();
   DrawNet();
   DrawRacket(scene4_model.racket1);
@@ -172,6 +173,26 @@ void Scene4View::DrawRacket(ofVec2f position) const {
   ofSetColor(ofColor::black);
   ofCircle(position, racket_radius);
   ofPopStyle();
+}
+
+void Scene4View::DrawParticles(Scene4Model &model) {
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  for (auto particle : model.particles) {
+    ofPushStyle();
+    ofPushMatrix();
+    ofTranslate(particle.position.x, particle.position.y);
+    ofRotateZ(ofRadToDeg(particle.angle));
+    ofFill();
+    ofSetLineWidth(rect_line_width);
+    ofSetColor(ofColor::white, particle.life * 64.0);
+    ofRect(ofPoint(), 0.5, 0.5);
+//    ofNoFill();
+//    ofSetColor(ofColor::black, particle.life * 255.0);
+//    ofRect(ofPoint(), 0.5, 0.5);
+    ofPopMatrix();
+    ofPopStyle();
+  }
+  ofSetRectMode(OF_RECTMODE_CORNER);
 }
 
 void Scene4View::DrawTreePeople(Scene4Model &model) const {

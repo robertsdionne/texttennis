@@ -129,15 +129,25 @@ void Scene4Controller::Update() {
   for (int i = 0; i < 5; ++i) {
     if (model_.rising[i] && model_.heights[i] <= 1.0 - 1.0 / 60.0 / 24.0) {
       model_.heights[i] += 1.0 / 60.0 / 24.0;
+      if (ofGetFrameNum() % 30 == 0) {
+        Scene4Model::Particle particle;
+        particle.position = ofVec2f(model_.tree_people[i]->GetPosition().x, 0.0);
+        particle.velocity = ofVec2f(3.0 * ofRandomf(), 2.0);
+        particle.angle = ofRandomf();
+        particle.angular_velocity = 10.0 * ofRandomf();
+        particle.life = 1.0;
+        model_.particles.push_back(particle);
+      }
     }
   }
-//  for (int i = 0; i < 5; ++i) {
-//    if (4 - i == model_.score) {
-//      model_.tree_people[i]->SetActive(true);
-//    } else {
-//      model_.tree_people[i]->SetActive(false);
-//    }
-//  }
+  for (auto particle = model_.particles.begin(); particle != model_.particles.end(); ++particle) {
+    particle->angle += particle->angular_velocity * delta_time * model_.time_scale;
+    particle->position += particle->velocity * delta_time * model_.time_scale;
+    particle->life -= 1.0 / 60.0 / 8.0;
+    if (particle->life <= 0.0) {
+      particle = model_.particles.erase(particle);
+    }
+  }
   if (model_.score >= 6) {
     scene_manager.NextScene();
     return;
@@ -366,7 +376,11 @@ void Scene4Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         model_.bounces = 0;
         hit1.setPan(racket_position.x / half_court_length);
         hit2.setPan(racket_position.x / half_court_length);
-        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+
+        if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
+          ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+          model_.last_hit = ofGetElapsedTimef();
+        }
       }
     }
   }

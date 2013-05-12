@@ -127,16 +127,16 @@ void Dialogue::Update() {
   if (ofGetElapsedTimef() > last_event_time + current_delay) {
     if (!IsBlocked()) {
       if (messages.size() && message_index < messages[last_message_label]->message.size()) {
-        if (!muted) {
+        message_index += 1;
+        float delay = 0.0;
+        char character = messages[last_message_label]->message[message_index];
+        if (!muted && character != ' ') {
           click.setSpeed(ofRandom(0.8, 1.2));
           click.setVolume(ofRandom(0.8, 1.0));
           click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
           click.play();
         }
-        message_index += 1;
-        float delay = 0.0;
-        char character = messages[last_message_label]->message[message_index];
-        if (character == '.' || character == '!' || character == '?') {
+        if (character == '.' || character == '!' || character == '?' || character == '-') {
           delay = punctuation_delay;
           message_index += 1;
         } else if (character == ',' || character == ';' || character == ':') {
