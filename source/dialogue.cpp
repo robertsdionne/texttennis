@@ -136,7 +136,7 @@ void Dialogue::Update() {
           click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
           click.play();
         }
-        if (character == '.' || character == '!' || character == '?') {
+        if (character == '.' || character == '!' || character == '?' || character == '-') {
           delay = punctuation_delay;
           message_index += 1;
         } else if (character == ',' || character == ';' || character == ':') {

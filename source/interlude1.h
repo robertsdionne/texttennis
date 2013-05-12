@@ -40,7 +40,7 @@ private:
   Scene1Model model_;
   ofPoint player_position;
   std::string text, transition;
-  FontDialogue dialogue;
+  Dialogue *dialogue;
   float delay;
   bool done;
 };

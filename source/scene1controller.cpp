@@ -44,25 +44,20 @@ void Scene1Controller::Setup() {
       .Message("Cool, you serve.", "left").Then([this] () {
         model_.scene_start_time = ofGetElapsedTimef();
         model_.frozen = false;
-      }).Barrier("hit").Clear().Barrier("rotation_started").Barrier("opponent_has_ball").Then([this] () {
-        model_.frozen = true;
+      }).Barrier("hit").Clear().Barrier("rotation_started").Then([this] () {
+        //model_.frozen = true;
         model_.rotating = true;
-        model_.ball_body->SetLinearVelocity(b2Vec2(0, 0));
-        model_.ball_body->SetAngularVelocity(0.0);
-      }).Message("Hey, sorry. Let's stop, I got a cramp.", "left").Pause(2.0 * pause)
-      .Message("Okay... what are you thinking about?", "right").Pause(2.0 * pause)
-      .Message("I don't know, what are you thinking about?", "left").Pause(2.0 * pause)
-      .Message("Nothing...", "right").Pause(2.0 * pause)
-      .Message("Oh, cool that's interesting...", "left").Barrier("flipped").Clear()
-      .Message("Okay. I'm good. I'll serve.", "left").Then([this] () {
-        model_.frozen = false;
+        //model_.ball_body->SetLinearVelocity(b2Vec2(0, 0));
+        //model_.ball_body->SetAngularVelocity(0.0);
+      }).Barrier("flipped").Barrier("opponent_has_ball").Then([this] () {
+        model_.net_body->SetActive(false);
         model_.fallen = true;
         model_.ball_body->GetFixtureList()->SetRestitution(0);
-      }).Barrier("opponent_hit").Then([this] () {
         model_.platform_appearing = true;
       }).Barrier("ball_below").Then([this] () {
         model_.player_released = true;
       }).Message("I'll get it!", "right").Barrier("retrieved").Then([this] () {
+        model_.net_body->SetActive(true);
         model_.title_started = true;
         scene_manager.GetMusic().PlaySoundEffect("title_sound");
         model_.ball_body->GetFixtureList()->SetRestitution(restitution);
@@ -115,8 +110,8 @@ void Scene1Controller::Update() {
     UpdateRackets();
   }
   if (model_.ball_body) {
-    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < -3
-        && model_.ball_body->GetPosition().x > -half_court_length + 3.0 && model_.ball_body->GetLinearVelocity().x < 0) {
+    if (model_.dialogue.IsBlocked("opponent_has_ball") && model_.ball_body->GetPosition().x < 0
+        && model_.ball_body->GetPosition().x > -half_court_length && model_.ball_body->GetLinearVelocity().x < 0) {
       model_.dialogue.Trigger("opponent_has_ball");
     }
     if (model_.flipped && model_.dialogue.IsBlocked("ball_below") && model_.ball_body->GetPosition().y > 0.9 * court_height) {

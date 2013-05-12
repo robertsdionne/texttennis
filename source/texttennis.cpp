@@ -28,7 +28,7 @@ TextTennis::TextTennis()
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
-    return Interlude1::Create(scene_manager, player_position, "", "scene1", 0.0);
+    return Interlude1::Create(scene_manager, player_position, "It is an autumn morning and you awake. You are crazy.\nYou look at the sky and the ground both. You're getting up.\nWalking.\n\nNothing is destroyed--things are gradually given shape--\nthey are evolved and turned into other energy.\n\nThere is no logic of destination--predestination is a dump truck.\n\nYou are recycling.", "scene1", 0.0);
   });
   scene_factory_functions.push_back(Scene1::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
