@@ -106,7 +106,6 @@ void Scene4View::Draw(Model &model) {
   DrawNet();
   DrawRacket(scene4_model.racket1);
   ofPopMatrix();
-  //DrawTreePeople(scene4_model);
   ofSetColor(ofColor::yellow);
   ofBeginShape();
   ofVertices(scene4_model.points);
@@ -116,7 +115,6 @@ void Scene4View::Draw(Model &model) {
                      scene4_model.ball_body->GetPosition().y),
              scene4_model.ball_body->GetAngle());
   }
-  //DrawFrameRate();
   ofPopMatrix();
 }
 
@@ -186,9 +184,6 @@ void Scene4View::DrawParticles(Scene4Model &model) {
     ofSetLineWidth(rect_line_width);
     ofSetColor(ofColor::white, particle.life * 64.0);
     ofRect(ofPoint(), 0.5, 0.5);
-//    ofNoFill();
-//    ofSetColor(ofColor::black, particle.life * 255.0);
-//    ofRect(ofPoint(), 0.5, 0.5);
     ofPopMatrix();
     ofPopStyle();
   }

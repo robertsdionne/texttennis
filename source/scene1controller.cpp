@@ -20,12 +20,10 @@ Scene1Controller::~Scene1Controller() {
 }
 
 void Scene1Controller::Setup() {
-  //scene_manager.GetMusic().TriggerTransition("scene1");
   // Box2D
   CreateBorder();
   CreateCourt();
   CreateNet();
-  //music.play();
   model_.scene_start_time = ofGetElapsedTimef();
   model_.rotation = 0;
   model_.world.SetContactListener(this);
@@ -45,10 +43,7 @@ void Scene1Controller::Setup() {
         model_.scene_start_time = ofGetElapsedTimef();
         model_.frozen = false;
       }).Barrier("hit").Clear().Barrier("rotation_started").Then([this] () {
-        //model_.frozen = true;
         model_.rotating = true;
-        //model_.ball_body->SetLinearVelocity(b2Vec2(0, 0));
-        //model_.ball_body->SetAngularVelocity(0.0);
       }).Barrier("flipped").Barrier("opponent_has_ball").Then([this] () {
         model_.net_body->SetActive(false);
         model_.fallen = true;

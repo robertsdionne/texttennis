@@ -20,7 +20,6 @@ Scene *Scene3::Create(TextTennis &scene_manager, ofPoint player_position) {
 void Scene3::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  //ofDrawBitmapString("Scene 3\nFace-off.\n\nLEFT - left\nRIGHT - right", 100, 100);
 }
 
 void Scene3::Setup() {

@@ -50,7 +50,6 @@ void Scene2View::Draw(Model &model) {
     DrawBall(scene2_model, ofVec2f(ball->GetPosition().x, ball->GetPosition().y),
              ball->GetFixtureList()->GetShape()->m_radius, ball->GetAngle());
   }
-  //DrawFrameRate();
   ofPopMatrix();
 }
 
@@ -59,9 +58,6 @@ void Scene2View::DrawBall(Scene2Model &model, ofVec2f position, float radius, fl
   ofSetColor(ofColor::black);
   ofCircle(position, radius);
   ofSetColor(ofColor(255, 0, 0).lerp(ofColor::black, model.score / max_balls));
-  //const ofVec2f beam = radius * ofVec2f(cos(angle), sin(angle));
-  //ofLine(position, position - beam);
-  //ofLine(position, position + beam);
   ofPopStyle();
 }
 

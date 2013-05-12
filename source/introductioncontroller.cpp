@@ -5,18 +5,12 @@
 #include "utilities.h"
 
 IntroductionController::IntroductionController(TextTennis &scene_manager, IntroductionModel &model)
-: Controller(scene_manager), model_(model), introduction_music() {
-  introduction_music.loadSound("intro_loop.wav", true);
-  introduction_music.setLoop(true);
-}
+: Controller(scene_manager), model_(model) {}
 
-IntroductionController::~IntroductionController() {
-  introduction_music.stop();
-}
+IntroductionController::~IntroductionController() {}
 
 void IntroductionController::Setup() {
   scene_manager.GetMusic().TriggerTransition("introduction");
-  //introduction_music.play();
 }
 
 void IntroductionController::Update() {
