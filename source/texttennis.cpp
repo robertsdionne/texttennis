@@ -122,8 +122,6 @@ Music &TextTennis::GetMusic() {
 }
 
 void TextTennis::PreviousScene() {
-//  scene_index = (scene_index + scene_factory_functions.size() - 1) % scene_factory_functions.size();
-//  CreateScene();
 }
 
 void TextTennis::RestartScene() {

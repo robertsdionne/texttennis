@@ -20,7 +20,6 @@ Scene *Introduction::Create(TextTennis &scene_manager, ofPoint player_position) 
 void Introduction::Draw() {
   view.Draw(model);
   ofSetColor(ofColor::black);
-  //ofDrawBitmapString("Introduction\nClick a box.\n\n", 100, 100);
 }
 
 void Introduction::Setup() {

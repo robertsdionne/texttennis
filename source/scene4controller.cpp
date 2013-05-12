@@ -80,7 +80,6 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
 }
 
 void Scene4Controller::Setup() {
-  //scene_manager.GetMusic().TriggerTransition("scene4");
   // Box2D
   CreateBorder();
   CreateCourt();
@@ -123,7 +122,6 @@ void Scene4Controller::Update() {
       DestroyBall(model_.ball_body);
       model_.ball_body = nullptr;
     }
-    //model_.ball_trail.clear();
     model_.reset_ball = false;
   }
   for (int i = 0; i < 5; ++i) {

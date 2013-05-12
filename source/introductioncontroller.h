@@ -23,7 +23,6 @@ private:
 
 private:
   IntroductionModel &model_;
-  ofSoundPlayer introduction_music;
 };
 
 #endif  // TEXTTENNIS_INTRODUCTIONCONTROLLER_H_
