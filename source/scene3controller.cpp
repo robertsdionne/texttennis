@@ -118,7 +118,7 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.2); //high arpeg v1
+        volume_targets.push_back(0.3); //high arpeg v1
         volume_targets.push_back(0.0); //high arpeg v2
         volume_targets.push_back(1.0); //low arpeg v1
         volume_targets.push_back(0.0); //low arpeg v2
@@ -135,7 +135,7 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.1); //high arpeg v1
+        volume_targets.push_back(0.2); //high arpeg v1
         volume_targets.push_back(0.0); //high arpeg v2
         volume_targets.push_back(1.0); //low arpeg v1
         volume_targets.push_back(0.0); //low arpeg v2
@@ -152,12 +152,12 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.0); //high arpeg v1
-        volume_targets.push_back(0.3); //high arpeg v2
-        volume_targets.push_back(0.0); //low arpeg v1
-        volume_targets.push_back(1.0); //low arpeg v2
+        volume_targets.push_back(0.2); //high arpeg v1
+        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.9); //low arpeg v1
+        volume_targets.push_back(0.0); //low arpeg v2
         volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.2); //words 2
+        volume_targets.push_back(0.3); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
@@ -174,7 +174,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //low arpeg v1
         volume_targets.push_back(1.0); //low arpeg v2
         volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.2); //words 2
+        volume_targets.push_back(0.3); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
   }).Clear().Pause(pause).Then([this] () {
@@ -185,11 +185,11 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.5); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.5); //high arpeg v2
         volume_targets.push_back(1.0); //low arpeg v1
         volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.5); //words 1
+        volume_targets.push_back(0.6); //words 1
         volume_targets.push_back(0.0); //words 2
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
@@ -203,13 +203,13 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.7); //bass sound
-        volume_targets.push_back(0.5); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.5); //high arpeg v2
         volume_targets.push_back(1.0); //low arpeg v1
         volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.2); //words 1
+        volume_targets.push_back(0.4); //words 1
         volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.2); //words 3
+        volume_targets.push_back(0.4); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause)
   .Message("I've spent my life studying this game,\nI will surely win this match!", "right").Then([this] () {
@@ -230,13 +230,13 @@ void Scene3Controller::Setup() {
   .Barrier("point").Then([this] () {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.7); //bass sound
-        volume_targets.push_back(0.2); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
+        volume_targets.push_back(0.0); //high arpeg v1
+        volume_targets.push_back(0.3); //high arpeg v2
         volume_targets.push_back(0.5); //low arpeg v1
         volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.1); //words 1
+        volume_targets.push_back(0.4); //words 1
         volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.1); //words 3
+        volume_targets.push_back(0.4); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause).Foreground(ofColor::white)
   .Message("I'm the score itself, \nI will surely win this match!", "right").Then([this] () {
@@ -248,12 +248,12 @@ void Scene3Controller::Setup() {
         std::vector<float> volume_targets;
         volume_targets.push_back(0.9); //bass sound
         volume_targets.push_back(0.0); //high arpeg v1
-        volume_targets.push_back(0.3); //high arpeg v2
+        volume_targets.push_back(0.2); //high arpeg v2
         volume_targets.push_back(0.0); //low arpeg v1
         volume_targets.push_back(1.0); //low arpeg v2
-        volume_targets.push_back(0.2); //words 1
+        volume_targets.push_back(0.5); //words 1
         volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.2); //words 3
+        volume_targets.push_back(0.5); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause).Foreground(ofColor::black)
   .Message("I'm you, \nI will surely win this match!", "right").Then([this] () {

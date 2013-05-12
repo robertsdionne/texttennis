@@ -106,7 +106,7 @@ void Scene4Controller::Setup() {
       .Barrier("collide").Speed(4.0 / 3.0 * 20.0 / duration)
       .Message("But nothing changed.", "tree3") // 20
       .Barrier("collide").Speed(4.0 / 3.0 * 8.0 / duration)
-  .Message("The end.", "tree4").Pause(12.0).Then([this] () {
+  .Message("The end.", "tree4").Pause(12.3).Then([this] () {
     model_.done = true;
   }); // 8
 }
