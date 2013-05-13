@@ -16,7 +16,7 @@ public:
   
 public:
   b2World world;
-  b2Body *ball_body, *court_body, *border_body, *net_body;
+  b2Body *ball_body, *court_body, *border_body, *net_body, *eight_body;
   std::vector<b2Body *> extra_balls;
   
   ofVec2f racket1, opponent;
@@ -38,6 +38,10 @@ public:
   bool glass_hit = false;
   float glass = 0.0;
   float last_hit = 0.0;
+
+  bool eight_on_left_side = false;
+
+  std::vector<ofPoint> points;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

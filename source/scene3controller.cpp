@@ -32,9 +32,21 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   if (model_.court_body == body_b) {
     court = body_b;
   }
+  if (contact->GetFixtureA() == model_.eight_body->GetFixtureList()->GetNext() ||
+      contact->GetFixtureB() == model_.eight_body->GetFixtureList()->GetNext()) {
+    model_.ball_body->GetFixtureList()->SetRestitution(restitution);
+  }
+  if (ball && court) {
+    if (model_.opponent_index == 8 && !model_.eight_on_left_side) {
+      model_.opponent_target.x = model_.opponent.x = ball->GetPosition().x;
+      if (model_.opponent.x < 0.0) {
+        model_.eight_on_left_side = true;
+      }
+    }
+  }
   if (ball && court && ball->GetPosition().x > 0 && model_.served) {
     model_.bounces += 1;
-    if (model_.bounces == ((model_.opponent_index == 8) ? 8 : 2)) {
+    if (model_.bounces == 2) {
       model_.angle = 0.0;
       model_.score += 1;
       model_.ball_in_play = false;
@@ -72,6 +84,7 @@ void Scene3Controller::Setup() {
   // Box2D
   CreateBorder();
   CreateCourt();
+  CreateEight();
   CreateNet();
   model_.world.SetContactListener(this);
   const ofPoint right(768-256, 50);
@@ -81,6 +94,7 @@ void Scene3Controller::Setup() {
       .PunctuationDelay(0.0)
       .FontSize(16.0)
       .Foreground(ofColor::black)
+      .Position("court", ofPoint(768, 600))
       .Position("right", right)
       .Position("below", right + ofVec2f(0, 100)).Then([this] () {
         std::vector<float> volume_targets;
@@ -194,7 +208,7 @@ void Scene3Controller::Setup() {
         volume_targets.push_back(0.0); //words 3
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       })
-      .Message("I'm late, I wil...", "right").Pause(0.5).Clear().Pause(0.5)
+      .Message("I'm late, I wil...", "court").Pause(0.5).Clear().Pause(0.5)
   .Message("I'm a blank slate,\nI will surely win this match!", "right").Then([this] () {
     model_.served = false;
     model_.ball_in_play = true;
@@ -222,7 +236,7 @@ void Scene3Controller::Setup() {
                scene_manager.NextScene();
                return;
              }
-             if (model_.bounces >= ((model_.opponent_index == 8) ? 8 : 2)) {
+             if (model_.bounces >= 2) {
                DestroyBall(model_.ball_body);
                model_.ball_body = nullptr;
                model_.bounces = 0;
@@ -240,7 +254,8 @@ void Scene3Controller::Setup() {
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause).Foreground(ofColor::white)
   .Message("I'm the score itself, \nI will surely win this match!", "right").Then([this] () {
-    model_.served = true;
+    model_.eight_body->SetActive(true);
+    model_.served = false;
     model_.ball_in_play = true;
     model_.opponent_index = 8;
   })
@@ -257,6 +272,7 @@ void Scene3Controller::Setup() {
         scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
       }).Clear().Pause(pause).Foreground(ofColor::black)
   .Message("I'm you, \nI will surely win this match!", "right").Then([this] () {
+    model_.eight_body->SetActive(false);
     model_.served = false;
     model_.ball_in_play = true;
     model_.opponent_index = 9;
@@ -270,7 +286,7 @@ void Scene3Controller::Update() {
     scene_manager.NextScene();
     return;
   }
-  if (model_.bounces >= ((model_.opponent_index == 8) ? 8 : 2)) {
+  if (model_.bounces >= 2) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
     model_.bounces = 0;
@@ -284,7 +300,10 @@ void Scene3Controller::Update() {
   UpdateRackets();
   model_.world.Step(model_.time_slowed ? 0.1 * delta_time : delta_time, box2d_velocity_iterations, box2d_position_iterations);
   if (model_.ball_in_play && !model_.ball_body) {
-    CreateBall(ofVec2f(0.25 * half_court_length, court_height), ofVec2f(0, 0), 0.0, -ofRandomuf() * angular_velocity);
+    CreateBall(ofVec2f(0.377 * half_court_length, court_height), ofVec2f(0, 0), 0.0, -ofRandomuf() * angular_velocity);
+    if (model_.opponent_index == 8) {
+      model_.ball_body->GetFixtureList()->SetRestitution(0.0);
+    }
     model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
@@ -292,6 +311,12 @@ void Scene3Controller::Update() {
       DestroyBall(model_.ball_body);
       model_.ball_body = nullptr;
     }
+  }
+  if (keys['-'] && !previous_keys['-']) {
+    model_.points.clear();
+  }
+  if (buttons[0] && !previous_buttons[0]) {
+    model_.points.push_back(model_.mouse_position);
   }
   if (model_.angle <= 180.0 - 180.0 / 60.0 / 2.0) {
     model_.angle += 180.0 / 60.0 / 2.0;
@@ -358,6 +383,34 @@ void Scene3Controller::CreateCourt() {
   model_.court_body->CreateFixture(&court_fixture_definition);
 }
 
+void Scene3Controller::CreateEight() {
+  //
+//  model_.points.push_back(ofPoint(4.52842, 10.845));
+//  model_.points.push_back(ofPoint(3.97107, 10.2412));
+//  model_.points.push_back(ofPoint(3.4834, 10.3341));
+//  model_.points.push_back(ofPoint(8.84783, 5.92178));
+//  model_.points.push_back(ofPoint(9.56773, 6.01467));
+//  model_.points.push_back(ofPoint(6.54879, 2.71705));
+  b2BodyDef eight_body_definition;
+  eight_body_definition.position.Set(0.0, 0.0);
+  model_.eight_body = model_.world.CreateBody(&eight_body_definition);
+  b2EdgeShape edge_0, edge_1, edge_2, edge_3;
+  edge_0.Set(b2Vec2(4.52842, 10.845), b2Vec2(3.97107, 10.2412));
+  edge_1.Set(b2Vec2(3.4834, 10.3341), b2Vec2(8.84783, 5.92178));
+  edge_2.Set(b2Vec2(9.26584, 5.66633), b2Vec2(9.26584, 6.66633));
+  edge_3.Set(b2Vec2(9.56773, 6.01467), b2Vec2(6.54879, 2.71705));
+  b2FixtureDef eight_fixture_definition;
+  eight_fixture_definition.shape = &edge_0;
+  model_.eight_body->CreateFixture(&eight_fixture_definition);
+  eight_fixture_definition.shape = &edge_1;
+  model_.eight_body->CreateFixture(&eight_fixture_definition);
+  eight_fixture_definition.shape = &edge_2;
+  model_.eight_body->CreateFixture(&eight_fixture_definition);
+  eight_fixture_definition.shape = &edge_3;
+  model_.eight_body->CreateFixture(&eight_fixture_definition);
+  model_.eight_body->SetActive(false);
+}
+
 void Scene3Controller::CreateNet() {
   b2BodyDef net_body_definition;
   net_body_definition.position.Set(0.0, court_thickness);
@@ -384,7 +437,8 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
     const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x,
                                      model_.ball_body->GetPosition().y);
     const float dx = model_.ball_body->GetLinearVelocity().x;
-    if (ofRandomuf() < 0.1 && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
+    const float probability = model_.opponent_index == 8 ? 1.0 : 0.1;
+    if (ofRandomuf() < probability && abs((position - racket_position).x) < ball_radius + 2.0 * racket_radius
         && abs((position - racket_position).y) < ball_radius + 2.0 * racket_radius) {
       float variance = 0.0;
       float angular_velocity = 0.0;
@@ -403,6 +457,9 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       if (!opponent && model_.opponent_index == 1) {
         model_.time_slowed = false;
+      }
+      if (opponent && model_.opponent_index == 8) {
+        model_.bounces += 1;
       }
       if (opponent && model_.opponent_index == 2) {
         for (int i = 0; i < 4; ++i) {
@@ -479,8 +536,7 @@ void Scene3Controller::UpdateRackets() {
     model_.opponent_target.x = -model_.racket1_target.x;
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3
-      && model_.score != 4) {
+  if (model_.score != 5 && model_.opponent_index != 3 && model_.score != 4) {
     RacketCollide(model_.opponent, model_.opponent_index == 6 ?
                   -racket2_low_hit_direction.GetValue() : racket2_low_hit_direction,
                   low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);

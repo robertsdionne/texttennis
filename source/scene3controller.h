@@ -33,6 +33,8 @@ private:
   void CreateBorder();
   
   void CreateCourt();
+
+  void CreateEight();
   
   void CreateNet();
   

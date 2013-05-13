@@ -37,6 +37,16 @@ void Scene3View::Draw(Model &model) {
   top_image.draw(-half_court_length, court_height, court_length, -half_court_height);
   bottom_image.draw(-half_court_length, half_court_height, court_length, -half_court_height);
 
+  ofSetColor(ofColor::yellow);
+  ofNoFill();
+  ofBeginShape();
+  ofVertices(scene3_model.points);
+  ofEndShape();
+  ofFill();
+  for (auto point : scene3_model.points) {
+    std::cout << "(" << point.x << ", " << point.y << ")" << std::endl;
+  }
+  std::cout << "//" << std::endl;
   DrawCourt();
   DrawNet();
   DrawRacket(scene3_model.racket1);
@@ -157,6 +167,9 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
       break;
     }
     case 8: {
+      if (model.served) {
+        DrawRacket(model.opponent);
+      }
       break;
     }
     default: {
