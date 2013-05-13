@@ -36,10 +36,10 @@ void Scene1Controller::Setup() {
       .Position("right", right)
   .Foreground(ofColor::white).Background(ofColor::black)
       .Message("Hey let's play tennis.", "left").Pause(pause)
-      .Message("Okay cool.", "right").Pause(pause)
+      .Message("Okay.", "right").Pause(pause)
       .Message("You remember how to play right?", "left").Pause(pause)
-      .Message("Just press left and right.", "right").Pause(pause)
-      .Message("Cool, you serve.", "left").Then([this] () {
+      .Message("Just press LEFT and RIGHT.", "right").Pause(pause)
+      .Message("You serve.", "left").Then([this] () {
         model_.scene_start_time = ofGetElapsedTimef();
         model_.frozen = false;
       }).Barrier("hit").Clear().Barrier("rotation_started").Then([this] () {
@@ -51,7 +51,7 @@ void Scene1Controller::Setup() {
         model_.platform_appearing = true;
       }).Barrier("ball_below").Then([this] () {
         model_.player_released = true;
-      }).Message("I'll get it!", "right").Barrier("retrieved").Then([this] () {
+      }).Barrier("retrieved").Then([this] () {
         model_.net_body->SetActive(true);
         model_.title_started = true;
         scene_manager.GetMusic().PlaySoundEffect("title_sound");
@@ -123,7 +123,7 @@ void Scene1Controller::Update() {
     }
   }
   model_.world.Step(delta_time, box2d_velocity_iterations, box2d_position_iterations);
-  if (ofGetElapsedTimef() > model_.scene_start_time + 2.0 && model_.dialogue.IsBlocked("rotation_started")) {
+  if (ofGetElapsedTimef() > model_.scene_start_time + 20.0 && model_.dialogue.IsBlocked("rotation_started")) {
     model_.dialogue.Trigger("rotation_started");
   }
   if (model_.rotating && model_.rotation <= 0.999) {
