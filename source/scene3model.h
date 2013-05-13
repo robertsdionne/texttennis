@@ -40,8 +40,6 @@ public:
   float last_hit = 0.0;
 
   bool eight_on_left_side = false;
-
-  std::vector<ofPoint> points;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

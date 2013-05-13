@@ -106,10 +106,6 @@ void Scene4View::Draw(Model &model) {
   DrawNet();
   DrawRacket(scene4_model.racket1);
   ofPopMatrix();
-  ofSetColor(ofColor::yellow);
-  ofBeginShape();
-  ofVertices(scene4_model.points);
-  ofEndShape();
   if (scene4_model.ball_body) {
     DrawBall(scene4_model, ofVec2f(scene4_model.ball_body->GetPosition().x,
                      scene4_model.ball_body->GetPosition().y),

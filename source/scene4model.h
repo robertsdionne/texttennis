@@ -37,7 +37,6 @@ public:
   std::deque<ofPoint> ball_trail, noise;
   std::deque<float> time_scales;
 
-  std::vector<ofPoint> points;
   Dialogue dialogue;
 
   bool done = false;

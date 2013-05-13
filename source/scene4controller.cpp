@@ -150,12 +150,6 @@ void Scene4Controller::Update() {
     scene_manager.NextScene();
     return;
   }
-  if (keys['-'] && !previous_keys['-']) {
-    model_.points.clear();
-  }
-  if (buttons[0] && !previous_buttons[0]) {
-    model_.points.push_back(model_.mouse_position);
-  }
   if (model_.bounces >= max(2, model_.score)) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
