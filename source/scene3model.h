@@ -35,7 +35,7 @@ public:
   int opponent_index;
   bool served, time_slowed;
 
-  bool glass_hit = false;
+  int glass_hits = 0;
   float glass = 0.0;
   float last_hit = 0.0;
 

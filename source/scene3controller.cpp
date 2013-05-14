@@ -320,7 +320,10 @@ void Scene3Controller::Update() {
   if (model_.angle <= 180.0 - 180.0 / 60.0 / 2.0) {
     model_.angle += 180.0 / 60.0 / 2.0;
   }
-  if (model_.glass_hit && model_.glass <= 1.0 - 1.0 / 60.0) {
+  if (model_.glass_hits == 2 && model_.glass <= 1.0 - 1.0 / 60.0) {
+    model_.glass += 1.0 / 60.0;
+  }
+  if (model_.glass_hits > 2 && model_.glass <= 1.0 - 1.0 / 60.0) {
     model_.glass += 1.0 / 60.0;
   }
   if (model_.opponent_index == 7 && model_.nerd_energy >= 1.0 / 60.0 / 30.0) {
@@ -486,6 +489,16 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
           model_.extra_balls.back()->CreateFixture(&ball_fixture_definition);
         }
       }
+      if (opponent && model_.opponent_index == 4 && ofGetElapsedTimef() > model_.last_hit + 0.3) {
+        if (model_.glass_hits == 0) {
+          model_.served = true;
+        }
+        std::cout << "HIT" << std::endl;
+        if (model_.glass_hits <= 2) {
+          model_.glass = 0.0;
+        }
+        model_.glass_hits += 1;
+      }
       if (model_.opponent_index == 7) {
         Scene3Model::Trail trail;
         trail.position = OpenFrameworksVector(model_.ball_body->GetPosition());
@@ -498,8 +511,8 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 
       if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
         ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
-        model_.last_hit = ofGetElapsedTimef();
       }
+      model_.last_hit = ofGetElapsedTimef();
     }
   }
 }
@@ -518,7 +531,7 @@ void Scene3Controller::UpdateRackets() {
     model_.racket1_target.x += racket_speed;
   }
   if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3
-      && model_.opponent_index != 9 && model_.opponent_index != 7) {
+      && model_.opponent_index != 9 && model_.opponent_index != 7 && model_.opponent_index != 4) {
     if (model_.opponent_index == 0) {
       const float dy = ofNoise(-ofGetElapsedTimef()) * racket_speed / 10.0;
       model_.opponent_target.y += dy;
@@ -547,7 +560,7 @@ void Scene3Controller::UpdateRackets() {
   if (model_.opponent_index == 5 && model_.score != 5) {
     model_.opponent_target.x = 7;
   }
-  if (model_.opponent_index == 7) {
+  if (model_.opponent_index == 7 || (model_.opponent_index == 4 && model_.glass_hits < 3)) {
     if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
       const float dx = model_.ball_body->GetLinearVelocity().x;
       model_.opponent_target.x = model_.ball_body->GetPosition().x + 3.0 * dx * delta_time;
@@ -560,18 +573,14 @@ void Scene3Controller::UpdateRackets() {
     model_.opponent_target.x = -model_.racket1_target.x;
   }
   RacketCollide(model_.racket1, racket1_low_hit_direction, low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT);
-  if (model_.score != 5 && model_.opponent_index != 3 && model_.score != 4) {
+  if (model_.score != 5 && model_.opponent_index != 3 && model_.opponent_index != 4) {
     RacketCollide(model_.opponent, model_.opponent_index == 6 ?
                   -racket2_low_hit_direction.GetValue() : racket2_low_hit_direction,
                   low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);
   }
-  if (model_.score == 4 && !model_.glass_hit && model_.ball_body) {
-    const ofVec2f position = ofVec2f(model_.ball_body->GetPosition().x,
-                                     model_.ball_body->GetPosition().y);
-    if(abs((position - model_.opponent).x) < ball_radius + 2.0 * racket_radius
-       && abs((position - model_.opponent).y) < ball_radius + 4.0 * racket_radius) {
-      model_.glass_hit = true;
-      model_.served = true;
-    }
+  if (model_.opponent_index == 4 && model_.glass_hits < 3) {
+    RacketCollide(model_.opponent, model_.opponent_index == 6 ?
+                  -racket2_low_hit_direction.GetValue() : racket2_low_hit_direction,
+                  low_hit_mean, OF_KEY_LEFT, OF_KEY_RIGHT, true);
   }
 }

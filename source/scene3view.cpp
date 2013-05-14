@@ -169,13 +169,25 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
     case 4: {
       for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
+          float glass = model.glass;
+          if (model.glass_hits == 2 && !(i == 1 && j == 1)) {
+            glass = 0.0;
+          }
           const ofPoint position = model.opponent + ofVec2f(-racket_radius / 2.0, -racket_radius / 2.0) +
               ofVec2f(i * racket_radius, 2.0 * j * racket_radius);
           ofPushMatrix();
-          ofTranslate(position.x, position.y);
-          ofRotateZ(90.0 * model.glass);
-          ofScale(1.0 - model.glass, 1.0 - model.glass);
+          ofTranslate(position.x, position.y - glass);
+          ofRotateZ(90.0 * glass);
+          ofScale(1.0 - glass, 1.0 - glass);
+          ofFill();
+          ofSetColor(ofColor::white);
           ofRect(ofPoint(-racket_radius / 2.0, -racket_radius / 2.0), racket_radius, 2.0 * racket_radius);
+          if (model.glass_hits >= 1) {
+            ofNoFill();
+            ofSetColor(ofColor::black);
+            ofRect(ofPoint(-racket_radius / 2.0, -racket_radius / 2.0), racket_radius, 2.0 * racket_radius);
+            ofFill();
+          }
           ofPopMatrix();
         }
       }
