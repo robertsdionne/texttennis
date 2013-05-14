@@ -40,6 +40,15 @@ public:
   float last_hit = 0.0;
 
   bool eight_on_left_side = false;
+
+  struct Trail {
+    ofPoint position;
+    const char *text;
+  };
+
+  std::deque<Trail> ball_trail;
+
+  float nerd_energy = 1.0;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

@@ -17,7 +17,7 @@ public:
   virtual void Draw(Model &model) override;
   
 private:
-  void DrawBall(ofVec2f position, float angle) const;
+  void DrawBall(Scene3Model &model, ofVec2f position, float angle, bool inverted = false) const;
   
   void DrawCourt() const;
   
@@ -27,7 +27,7 @@ private:
 
   void DrawOpponent(const Scene3Model &model) const;
   
-  void DrawRacket(ofVec2f position) const;
+  void DrawRacket(ofVec2f position, bool inverted = false) const;
 
 private:
   float HalfLambert(ofVec3f light, ofVec3f normal);

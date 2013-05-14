@@ -16,6 +16,7 @@ extern Parameter<ofVec2f> ball_initial_velocity;
 extern Parameter<float> ball_mass;
 extern Parameter<float> ball_radius;
 extern Parameter<int> ball_trail_length;
+extern Parameter<int> ball_trail_length_scholar;
 extern Parameter<int> box2d_velocity_iterations;
 extern Parameter<int> box2d_position_iterations;
 extern Parameter<float> ceiling_height;

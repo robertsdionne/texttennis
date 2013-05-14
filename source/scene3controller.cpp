@@ -37,6 +37,12 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
     model_.ball_body->GetFixtureList()->SetRestitution(restitution);
   }
   if (ball && court) {
+    if (model_.opponent_index == 7) {
+      Scene3Model::Trail trail;
+      trail.position = OpenFrameworksVector(model_.ball_body->GetPosition());
+      trail.text = "Bounce";
+      model_.ball_trail.push_back(trail);
+    }
     if (model_.opponent_index == 8 && !model_.eight_on_left_side) {
       model_.opponent_target.x = model_.opponent.x = ball->GetPosition().x;
       if (model_.opponent.x < 0.0) {
@@ -46,7 +52,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   }
   if (ball && court && ball->GetPosition().x > 0 && model_.served) {
     model_.bounces += 1;
-    if (model_.bounces == 2) {
+    if (model_.bounces == ((model_.opponent_index == 5) ? 8 : 2)) {
       model_.angle = 0.0;
       model_.score += 1;
       model_.ball_in_play = false;
@@ -96,136 +102,136 @@ void Scene3Controller::Setup() {
       .Foreground(ofColor::black)
       .Position("court", ofPoint(768, 600))
       .Position("right", right)
-      .Position("below", right + ofVec2f(0, 100)).Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.1); //bass sound
-        volume_targets.push_back(0.5); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
-        volume_targets.push_back(0.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Message("I don't believe in gravity, \nI will surely win this match!", "right").Then([this] () {
-        model_.served = false;
-        model_.ball_in_play = true;
-        model_.opponent_index = 0;
-      })
-      .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.2); //bass sound
-        volume_targets.push_back(0.5); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
-        volume_targets.push_back(1.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
-  .Message("I have time, \nI will surely win this match!", "right").Then([this] () {
-    model_.served = false;
-    model_.ball_in_play = true;
-    model_.opponent_index = 1;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.3); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
-        volume_targets.push_back(1.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
-  .Message("I have many racquets, \nI will surely win this match!", "right").Then([this] () {
-    model_.served = false;
-    model_.ball_in_play = true;
-    model_.opponent_index = 2;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.2); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
-        volume_targets.push_back(1.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
-  .Message("We're playing a whole different game,\nwe will surely win this match!", "right").Then([this] () {
-    model_.served = true;
-    model_.ball_in_play = true;
-    model_.opponent_index = 3;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.2); //high arpeg v1
-        volume_targets.push_back(0.0); //high arpeg v2
-        volume_targets.push_back(0.9); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.3); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
-  .Message("I'm made of glass, \nI will surely win this match!", "right").Then([this] () {
-    model_.served = false;
-    model_.ball_in_play = true;
-    model_.opponent_index = 4;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.0); //high arpeg v1
-        volume_targets.push_back(0.5); //high arpeg v2
-        volume_targets.push_back(0.0); //low arpeg v1
-        volume_targets.push_back(1.0); //low arpeg v2
-        volume_targets.push_back(0.0); //words 1
-        volume_targets.push_back(0.3); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-  }).Clear().Pause(pause).Then([this] () {
-    model_.served = true;
-    model_.ball_in_play = true;
-    model_.opponent_index = 5;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.5); //bass sound
-        volume_targets.push_back(0.0); //high arpeg v1
-        volume_targets.push_back(0.5); //high arpeg v2
-        volume_targets.push_back(1.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.6); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.0); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      })
-      .Message("I'm late, I wil...", "court").Pause(0.5).Clear().Pause(0.5)
-  .Message("I'm a blank slate,\nI will surely win this match!", "right").Then([this] () {
-    model_.served = false;
-    model_.ball_in_play = true;
-    model_.opponent_index = 6;
-  })
-  .Barrier("point").Then([this] () {
-        std::vector<float> volume_targets;
-        volume_targets.push_back(0.7); //bass sound
-        volume_targets.push_back(0.0); //high arpeg v1
-        volume_targets.push_back(0.5); //high arpeg v2
-        volume_targets.push_back(1.0); //low arpeg v1
-        volume_targets.push_back(0.0); //low arpeg v2
-        volume_targets.push_back(0.4); //words 1
-        volume_targets.push_back(0.0); //words 2
-        volume_targets.push_back(0.4); //words 3
-        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
-      }).Clear().Pause(pause)
+      .Position("below", right + ofVec2f(0, 100))//.Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.1); //bass sound
+//        volume_targets.push_back(0.5); //high arpeg v1
+//        volume_targets.push_back(0.0); //high arpeg v2
+//        volume_targets.push_back(0.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Message("I don't believe in gravity, \nI will surely win this match!", "right").Then([this] () {
+//        model_.served = false;
+//        model_.ball_in_play = true;
+//        model_.opponent_index = 0;
+//      })
+//      .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.2); //bass sound
+//        volume_targets.push_back(0.5); //high arpeg v1
+//        volume_targets.push_back(0.0); //high arpeg v2
+//        volume_targets.push_back(1.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Clear().Pause(pause)
+//  .Message("I have time, \nI will surely win this match!", "right").Then([this] () {
+//    model_.served = false;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 1;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.5); //bass sound
+//        volume_targets.push_back(0.3); //high arpeg v1
+//        volume_targets.push_back(0.0); //high arpeg v2
+//        volume_targets.push_back(1.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Clear().Pause(pause)
+//  .Message("I have many racquets, \nI will surely win this match!", "right").Then([this] () {
+//    model_.served = false;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 2;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.5); //bass sound
+//        volume_targets.push_back(0.2); //high arpeg v1
+//        volume_targets.push_back(0.0); //high arpeg v2
+//        volume_targets.push_back(1.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Clear().Pause(pause)
+//  .Message("We're playing a whole different game,\nwe will surely win this match!", "right").Then([this] () {
+//    model_.served = true;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 3;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.5); //bass sound
+//        volume_targets.push_back(0.2); //high arpeg v1
+//        volume_targets.push_back(0.0); //high arpeg v2
+//        volume_targets.push_back(0.9); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.3); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Clear().Pause(pause)
+//  .Message("I'm made of glass, \nI will surely win this match!", "right").Then([this] () {
+//    model_.served = false;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 4;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.5); //bass sound
+//        volume_targets.push_back(0.0); //high arpeg v1
+//        volume_targets.push_back(0.5); //high arpeg v2
+//        volume_targets.push_back(0.0); //low arpeg v1
+//        volume_targets.push_back(1.0); //low arpeg v2
+//        volume_targets.push_back(0.0); //words 1
+//        volume_targets.push_back(0.3); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//  }).Clear().Pause(pause).Then([this] () {
+//    model_.served = true;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 5;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.5); //bass sound
+//        volume_targets.push_back(0.0); //high arpeg v1
+//        volume_targets.push_back(0.5); //high arpeg v2
+//        volume_targets.push_back(1.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.6); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.0); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      })
+//      .Message("I'm late, I will...", "court").Pause(0.5).Clear().Pause(0.5)
+//  .Message("I'm a blank slate,\nI will surely win this match!", "right").Then([this] () {
+//    model_.served = false;
+//    model_.ball_in_play = true;
+//    model_.opponent_index = 6;
+//  })
+//  .Barrier("point").Then([this] () {
+//        std::vector<float> volume_targets;
+//        volume_targets.push_back(0.7); //bass sound
+//        volume_targets.push_back(0.0); //high arpeg v1
+//        volume_targets.push_back(0.5); //high arpeg v2
+//        volume_targets.push_back(1.0); //low arpeg v1
+//        volume_targets.push_back(0.0); //low arpeg v2
+//        volume_targets.push_back(0.4); //words 1
+//        volume_targets.push_back(0.0); //words 2
+//        volume_targets.push_back(0.4); //words 3
+//        scene_manager.GetMusic().GetSoundEffect<LoopSet>("opponents")->SetVolumeTargets(volume_targets);
+//      }).Clear().Pause(pause)
   .Message("I've spent my life studying this game,\nI will surely win this match!", "right").Then([this] () {
     model_.served = false;
     model_.ball_in_play = true;
@@ -236,7 +242,7 @@ void Scene3Controller::Setup() {
                scene_manager.NextScene();
                return;
              }
-             if (model_.bounces >= 2) {
+             if (model_.bounces >= ((model_.opponent_index == 5) ? 8 : 2)) {
                DestroyBall(model_.ball_body);
                model_.ball_body = nullptr;
                model_.bounces = 0;
@@ -286,7 +292,7 @@ void Scene3Controller::Update() {
     scene_manager.NextScene();
     return;
   }
-  if (model_.bounces >= 2) {
+  if (model_.bounces >= ((model_.opponent_index == 5) ? 8 : 2)) {
     DestroyBall(model_.ball_body);
     model_.ball_body = nullptr;
     model_.bounces = 0;
@@ -299,6 +305,15 @@ void Scene3Controller::Update() {
   }
   UpdateRackets();
   model_.world.Step(model_.time_slowed ? 0.1 * delta_time : delta_time, box2d_velocity_iterations, box2d_position_iterations);
+  if (model_.ball_trail.size() > ball_trail_length_scholar || (model_.opponent_index != 7 && model_.ball_trail.size() >  0)) {
+    model_.ball_trail.pop_front();
+  }
+  if (model_.ball_body && model_.opponent_index == 7) {
+    Scene3Model::Trail trail;
+    trail.position = OpenFrameworksVector(model_.ball_body->GetPosition());
+    trail.text = nullptr;
+    model_.ball_trail.push_back(trail);
+  }
   if (model_.ball_in_play && !model_.ball_body) {
     CreateBall(ofVec2f(0.377 * half_court_length, court_height), ofVec2f(0, 0), 0.0, -ofRandomuf() * angular_velocity);
     if (model_.opponent_index == 8) {
@@ -317,6 +332,9 @@ void Scene3Controller::Update() {
   }
   if (model_.glass_hit && model_.glass <= 1.0 - 1.0 / 60.0) {
     model_.glass += 1.0 / 60.0;
+  }
+  if (model_.opponent_index == 7 && model_.nerd_energy >= 1.0 / 60.0 / 30.0) {
+    model_.nerd_energy -= 1.0 / 60.0 / 30.0;
   }
   Controller::Update();
 }
@@ -392,7 +410,7 @@ void Scene3Controller::CreateEight() {
   edge_0.Set(b2Vec2(4.52842, 10.845), b2Vec2(3.97107, 10.2412));
   edge_1.Set(b2Vec2(3.4834, 10.3341), b2Vec2(8.84783, 5.92178));
   edge_2.Set(b2Vec2(9.26584, 5.66633), b2Vec2(9.26584, 6.66633));
-  edge_3.Set(b2Vec2(9.56773, 6.01467), b2Vec2(6.54879, 2.71705));
+  edge_3.Set(b2Vec2(9.46773, 6.01467), b2Vec2(6.54879, 2.71705));
   b2FixtureDef eight_fixture_definition;
   eight_fixture_definition.shape = &edge_0;
   model_.eight_body->CreateFixture(&eight_fixture_definition);
@@ -478,6 +496,12 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
           model_.extra_balls.back()->CreateFixture(&ball_fixture_definition);
         }
       }
+      if (model_.opponent_index == 7) {
+        Scene3Model::Trail trail;
+        trail.position = OpenFrameworksVector(model_.ball_body->GetPosition());
+        trail.text = "Volley";
+        model_.ball_trail.push_back(trail);
+      }
       model_.served = true;
       hit1.setPan(racket_position.x / half_court_length);
       hit2.setPan(racket_position.x / half_court_length);
@@ -492,7 +516,11 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
 
 void Scene3Controller::UpdateRackets() {
   model_.racket1 = Lerp(model_.racket1, model_.racket1_target, player_move_smooth_factor);
-  model_.opponent = Lerp(model_.opponent, model_.opponent_target, player_move_smooth_factor);
+  if (model_.opponent_index == 7) {
+    model_.opponent = Lerp(model_.opponent, model_.opponent_target, player_move_smooth_factor * model_.nerd_energy);
+  } else {
+    model_.opponent = Lerp(model_.opponent, model_.opponent_target, player_move_smooth_factor);
+  }
   if (keys[OF_KEY_LEFT] && model_.racket1_target.x > -half_court_length) {
     model_.racket1_target.x -= racket_speed;
   }
@@ -500,7 +528,7 @@ void Scene3Controller::UpdateRackets() {
     model_.racket1_target.x += racket_speed;
   }
   if (model_.score != 5 && model_.opponent_index != 8 && model_.opponent_index != 3
-      && model_.opponent_index != 9) {
+      && model_.opponent_index != 9 && model_.opponent_index != 7) {
     if (model_.opponent_index == 0) {
       const float dy = ofNoise(-ofGetElapsedTimef()) * racket_speed / 10.0;
       model_.opponent_target.y += dy;
@@ -525,6 +553,18 @@ void Scene3Controller::UpdateRackets() {
   }
   if (model_.opponent_index == 3) {
     model_.opponent_target.x = 7;
+  }
+  if (model_.opponent_index == 5 && model_.score != 5) {
+    model_.opponent_target.x = 7;
+  }
+  if (model_.opponent_index == 7) {
+    if (model_.ball_body && model_.ball_body->GetPosition().x > 0) {
+      const float dx = model_.ball_body->GetLinearVelocity().x;
+      model_.opponent_target.x = model_.ball_body->GetPosition().x + 3.0 * dx * delta_time;
+      model_.opponent_target.x = max(model_.opponent_target.x, racket_radius.GetValue());
+    } else {
+      model_.opponent_target.x = racket_radius + (half_court_length - 2.0 * racket_radius) * ofNoise(ofGetElapsedTimef());
+    }
   }
   if (model_.opponent_index == 9) {
     model_.opponent_target.x = -model_.racket1_target.x;

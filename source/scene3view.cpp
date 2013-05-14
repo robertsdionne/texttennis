@@ -44,14 +44,19 @@ void Scene3View::Draw(Model &model) {
     DrawOpponent(scene3_model);
   }
   if (scene3_model.ball_body) {
-    DrawBall(ofVec2f(scene3_model.ball_body->GetPosition().x,
+    DrawBall(scene3_model, ofVec2f(scene3_model.ball_body->GetPosition().x,
                      scene3_model.ball_body->GetPosition().y),
              scene3_model.ball_body->GetAngle());
+    if (scene3_model.opponent_index == 9) {
+      DrawBall(scene3_model, ofVec2f(-scene3_model.ball_body->GetPosition().x,
+                       scene3_model.ball_body->GetPosition().y),
+               -scene3_model.ball_body->GetAngle(), true);
+    }
   }
   if (scene3_model.opponent_index == 2 && (scene3_model.ball_in_play ||
                                            (scene3_model.angle > 0.0 && scene3_model.angle < 180.0))) {
     for (auto ball : scene3_model.extra_balls) {
-      DrawBall(ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
+      DrawBall(scene3_model, ofVec2f(ball->GetPosition().x, ball->GetPosition().y), ball->GetAngle());
     }
   }
   ofPopMatrix();
@@ -88,11 +93,31 @@ void Scene3View::Draw(Model &model) {
   ofPopMatrix();
 }
 
-void Scene3View::DrawBall(ofVec2f position, float angle) const {
+void Scene3View::DrawBall(Scene3Model &model, ofVec2f position, float angle, bool inverted) const {
   ofPushStyle();
-  ofSetColor(ofColor::white);
+  if (model.opponent_index == 7) {
+    int index = 0;
+    Scene3Model::Trail *previous = nullptr;
+    for (auto &point : model.ball_trail) {
+      if (previous) {
+        ofVec2f offset0 = ofVec2f(0.0, 2.0 * delta_time * (model.ball_trail.size() - index));
+        ofVec2f offset1 = ofVec2f(0.0, 2.0 * delta_time * (model.ball_trail.size() - (index + 1)));
+        const float alpha = (1.0 - static_cast<float>(index) / max((float)ball_trail_length_scholar.GetValue(),
+                                                                   (float)model.ball_trail.size())) * 255.0;
+        ofSetColor(ofColor::white, alpha);
+        ofLine(previous->position + offset0, point.position + offset1);
+        if (point.text) {
+          ofSetColor(ofColor(255, 255, 255, alpha));
+          ofDrawBitmapString(point.text, point.position + offset1);
+        }
+      }
+      index += 1;
+      previous = &point;
+    }
+  }
+  ofSetColor(inverted ? ofColor::black : ofColor::white);
   ofCircle(position, ball_radius);
-  ofSetColor(ofColor::black);
+  ofSetColor(inverted ? ofColor::white : ofColor::black);
   ofLine(position, position + ball_radius * ofVec2f(cos(angle), sin(angle)));
   ofPopStyle();
 }
@@ -120,9 +145,9 @@ void Scene3View::DrawNet() const {
   ofPopStyle();
 }
 
-void Scene3View::DrawRacket(ofVec2f position) const {
+void Scene3View::DrawRacket(ofVec2f position, bool inverted) const {
   ofPushStyle();
-  ofSetColor(ofColor::white);
+  ofSetColor(inverted ? ofColor::black : ofColor::white);
   ofCircle(position, racket_radius);
   ofPopStyle();
 }
@@ -160,6 +185,10 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
       if (model.served) {
         DrawRacket(model.opponent);
       }
+      break;
+    }
+    case 9: {
+      DrawRacket(model.opponent, true);
       break;
     }
     default: {
