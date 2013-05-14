@@ -107,7 +107,7 @@ void Scene3View::DrawBall(Scene3Model &model, ofVec2f position, float angle, boo
         ofSetColor(ofColor::white, alpha);
         ofLine(previous->position + offset0, point.position + offset1);
         if (point.text) {
-          ofSetColor(ofColor(255, 255, 255, alpha));
+          ofSetColor(ofColor::black, alpha);
           ofDrawBitmapString(point.text, point.position + offset1);
         }
       }
