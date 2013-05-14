@@ -58,6 +58,8 @@ void Scene4Controller::BeginContact(b2Contact* contact) {
     }
   }
 
+  std::cout << "bounces" << std::endl;
+
   if (model_.ball_body) {
     bounce1.setPan(model_.ball_body->GetPosition().x / half_court_length);
     bounce2.setPan(model_.ball_body->GetPosition().x / half_court_length);
@@ -142,10 +144,12 @@ void Scene4Controller::Update() {
     particle->angle += particle->angular_velocity * delta_time * model_.time_scale;
     particle->position += particle->velocity * delta_time * model_.time_scale;
     particle->life -= 1.0 / 60.0 / 8.0;
-    if (particle->life <= 0.0) {
-      particle = model_.particles.erase(particle);
-    }
   }
+
+  model_.particles.erase(std::remove_if(model_.particles.begin(), model_.particles.end(), [] (Scene4Model::Particle &particle) -> bool {
+    return particle.life <= 0.0;
+  }), model_.particles.end());
+  
   if (model_.score >= 6) {
     scene_manager.NextScene();
     return;

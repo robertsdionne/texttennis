@@ -15,6 +15,11 @@ public:
   virtual ~Scene3Model() {}
   
 public:
+  struct Particle {
+    ofVec2f position, velocity;
+    float angle, angular_velocity, life;
+  };
+
   b2World world;
   b2Body *ball_body, *court_body, *border_body, *net_body, *eight_body;
   std::vector<b2Body *> extra_balls;
@@ -49,6 +54,8 @@ public:
   std::deque<Trail> ball_trail;
 
   float nerd_energy = 1.0;
+
+  std::vector<Particle> particles;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

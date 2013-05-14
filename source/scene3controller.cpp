@@ -37,6 +37,17 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
     model_.ball_body->GetFixtureList()->SetRestitution(restitution);
   }
   if (ball && court) {
+    if (model_.opponent_index == 3 && model_.bounces == 0) {
+      for (int i = 0; i < 13; ++i) {
+        Scene3Model::Particle particle;
+        particle.position = ofVec2f(7, court_thickness + racket_radius);
+        particle.velocity = ofVec2f(3.0 / 4.0 * ofRandomf(), ofRandomf() / 4.0);
+        particle.angle = ofRandomf();
+        particle.angular_velocity = 10.0 * ofRandomf();
+        particle.life = 1.0;
+        model_.particles.push_back(particle);
+      }
+    }
     if (model_.opponent_index == 7) {
       Scene3Model::Trail trail;
       trail.position = OpenFrameworksVector(model_.ball_body->GetPosition());
@@ -47,6 +58,17 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
       model_.opponent_target.x = model_.opponent.x = ball->GetPosition().x;
       if (model_.opponent.x < 0.0) {
         model_.eight_on_left_side = true;
+      }
+    }
+    if (model_.opponent_index == 8 && !model_.eight_on_left_side) {
+      for (int i = 0; i < 13; ++i) {
+        Scene3Model::Particle particle;
+        particle.position = ofVec2f(model_.opponent.x, court_thickness + racket_radius);
+        particle.velocity = ofVec2f(ofRandomf(), ofRandomf());
+        particle.angle = ofRandomf();
+        particle.angular_velocity = 10.0 * ofRandomf();
+        particle.life = 1.0;
+        model_.particles.push_back(particle);
       }
     }
   }
@@ -295,6 +317,17 @@ void Scene3Controller::Update() {
   }
   UpdateRackets();
   model_.world.Step(model_.time_slowed ? 0.1 * delta_time : delta_time, box2d_velocity_iterations, box2d_position_iterations);
+
+  for (std::vector<Scene3Model::Particle>::iterator particle = model_.particles.begin(); particle != model_.particles.end(); ++particle) {
+    particle->angle += particle->angular_velocity * delta_time;
+    particle->position += particle->velocity * delta_time;
+    particle->velocity += -ofVec2f(0.0, 0.5) * delta_time;
+    particle->life -= 1.0 / 60.0 / 8.0;
+  }
+  model_.particles.erase(std::remove_if(model_.particles.begin(), model_.particles.end(), [] (Scene3Model::Particle &particle) -> bool {
+    return particle.life <= 0.0;
+  }), model_.particles.end());
+  
   if (model_.ball_trail.size() > ball_trail_length_scholar || (model_.opponent_index != 7 && model_.ball_trail.size() >  0)) {
     model_.ball_trail.pop_front();
   }
@@ -389,13 +422,6 @@ void Scene3Controller::CreateCourt() {
 }
 
 void Scene3Controller::CreateEight() {
-  //
-//  model_.points.push_back(ofPoint(4.52842, 10.845));
-//  model_.points.push_back(ofPoint(3.97107, 10.2412));
-//  model_.points.push_back(ofPoint(3.4834, 10.3341));
-//  model_.points.push_back(ofPoint(8.84783, 5.92178));
-//  model_.points.push_back(ofPoint(9.56773, 6.01467));
-//  model_.points.push_back(ofPoint(6.54879, 2.71705));
   b2BodyDef eight_body_definition;
   eight_body_definition.position.Set(0.0, 0.0);
   model_.eight_body = model_.world.CreateBody(&eight_body_definition);

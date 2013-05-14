@@ -26,6 +26,8 @@ private:
   void DrawNet() const;
 
   void DrawOpponent(const Scene3Model &model) const;
+
+  void DrawParticles(Scene3Model &model);
   
   void DrawRacket(ofVec2f position, bool inverted = false) const;
 

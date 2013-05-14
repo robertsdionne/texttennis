@@ -43,6 +43,7 @@ void Scene3View::Draw(Model &model) {
   if (scene3_model.ball_in_play || (scene3_model.angle > 0.0 && scene3_model.angle < 180.0)) {
     DrawOpponent(scene3_model);
   }
+  DrawParticles(scene3_model);
   if (scene3_model.ball_body) {
     DrawBall(scene3_model, ofVec2f(scene3_model.ball_body->GetPosition().x,
                      scene3_model.ball_body->GetPosition().y),
@@ -91,6 +92,32 @@ void Scene3View::Draw(Model &model) {
     ofPopMatrix();
   }
   ofPopMatrix();
+}
+
+
+
+void Scene3View::DrawParticles(Scene3Model &model) {
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  int index = 0;
+  for (auto particle : model.particles) {
+    ofPushStyle();
+    ofPushMatrix();
+    ofTranslate(particle.position.x, particle.position.y);
+    ofRotateZ(ofRadToDeg(particle.angle));
+    ofFill();
+    ofEnableAlphaBlending();
+    if (model.opponent_index == 3) {
+      ofSetColor(ofColor(255, 255, 255).lerp(ofColor::black, ofNoise(ofGetElapsedTimef() + 10.0 * index)), particle.life * 255.0);
+      ofRect(ofPoint(), 0.125, 0.25);
+    } else if (model.opponent_index == 8) {
+      ofSetColor(ofColor::white, particle.life * 128.0);
+      ofRect(ofPoint(), 0.25 * particle.life, 0.25 * particle.life);
+    }
+    ofPopMatrix();
+    ofPopStyle();
+    ++index;
+  }
+  ofSetRectMode(OF_RECTMODE_CORNER);
 }
 
 void Scene3View::DrawBall(Scene3Model &model, ofVec2f position, float angle, bool inverted) const {
@@ -173,6 +200,9 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
           if (model.glass_hits == 2 && !(i == 1 && j == 1)) {
             glass = 0.0;
           }
+          if (model.glass_hits == 3 && (i == 1 && j == 1)) {
+            glass = 1.0;
+          }
           const ofPoint position = model.opponent + ofVec2f(-racket_radius / 2.0, -racket_radius / 2.0) +
               ofVec2f(i * racket_radius, 2.0 * j * racket_radius);
           ofPushMatrix();
@@ -195,6 +225,7 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
     }
     case 8: {
       if (model.served) {
+        DrawRacket(model.opponent + ofVec2f(0.0, 1.8 * racket_radius));
         DrawRacket(model.opponent);
       }
       break;
