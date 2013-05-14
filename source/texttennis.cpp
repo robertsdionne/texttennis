@@ -23,8 +23,8 @@ TextTennis::TextTennis()
   tree1("tree1.wav", false, true),
   tree2("tree2.wav", false, true),
   tree3("tree3.wav", false, true),
-  tree4("tree4.wav", false, true),
-  tree5("tree5.wav", false, true),
+  tree4("tree5.wav", false, true),
+  tree5("tree4.wav", false, true),
   opponents(nullptr) {
   scene_factory_functions.push_back(Introduction::Create);
   scene_factory_functions.push_back([] (TextTennis &scene_manager, ofPoint player_position) -> Scene * {
