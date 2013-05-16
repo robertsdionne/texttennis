@@ -12,6 +12,8 @@ class Dialogue {
 public:
   Dialogue();
 
+  Dialogue(const std::string &type);
+
   virtual ~Dialogue();
 
   class Event {

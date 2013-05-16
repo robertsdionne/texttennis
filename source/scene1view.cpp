@@ -10,7 +10,7 @@ void Scene1View::Setup() {
   ofEnableAlphaBlending();
   ofEnableSmoothing();
   bg.loadImage("scene1.png");
-  text_tennis.loadImage("TITLE card cutout large.png");
+  text_tennis.loadImage("TITLE card CUTOUT v3.png");
 }
 
 void Scene1View::Draw(Model &model) {

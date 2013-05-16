@@ -8,9 +8,9 @@
 
 Scene2Controller::Scene2Controller(TextTennis &scene_manager, Scene2Model &model)
 : Controller(scene_manager), model_(model), hit1(), hit2() {
-  hit1.loadSound("hit1.mp3");
+  hit1.loadSound("hit.wav");
   hit1.setMultiPlay(true);
-  hit2.loadSound("hit2.mp3");
+  hit2.loadSound("hit2.wav");
   hit2.setMultiPlay(true);
   bounce1.loadSound("bounce1.wav");
   bounce2.loadSound("bounce2.wav");

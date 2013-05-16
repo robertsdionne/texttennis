@@ -7,13 +7,16 @@
 #include "utilities.h"
 
 Scene3Controller::Scene3Controller(TextTennis &scene_manager, Scene3Model &model)
-: Controller(scene_manager), model_(model) {
-  hit1.loadSound("hit1.mp3");
-  hit2.loadSound("hit2.mp3");
+: Controller(scene_manager), model_(model), cardtable(), glassbreak() {
+  hit1.loadSound("hit.wav");
+  hit2.loadSound("hit2.wav");
   bounce1.loadSound("bounce1.wav");
   bounce2.loadSound("bounce2.wav");
   bounce3.loadSound("bounce3.wav");
   bounce4.loadSound("bounce4.wav");
+  cardtable.loadSound("cardtable.wav");
+  cardtable.setPan(0.377);
+  glassbreak.loadSound("glassbreak.wav");
 }
 
 void Scene3Controller::BeginContact(b2Contact* contact) {
@@ -38,9 +41,10 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   }
   if (ball && court) {
     if (model_.opponent_index == 3 && model_.bounces == 0) {
+      cardtable.play();
       for (int i = 0; i < 13; ++i) {
         Scene3Model::Particle particle;
-        particle.position = ofVec2f(7, court_thickness + racket_radius);
+        particle.position = ofVec2f(0.377 * half_court_length, court_thickness + racket_radius);
         particle.velocity = ofVec2f(3.0 / 4.0 * ofRandomf(), ofRandomf() / 4.0);
         particle.angle = ofRandomf();
         particle.angular_velocity = 10.0 * ofRandomf();
@@ -94,14 +98,18 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
 
     if (ofRandomuf() < 0.5) {
       if (ofRandomuf() < 0.5) {
+        bounce1.setSpeed(ofRandom(0.8, 1.2));
         bounce1.play();
       } else {
+        bounce2.setSpeed(ofRandom(0.8, 1.2));
         bounce2.play();
       }
     } else {
       if (ofRandomuf() < 0.5) {
+        bounce3.setSpeed(ofRandom(0.8, 1.2));
         bounce3.play();
       } else {
+        bounce4.setSpeed(ofRandom(0.8, 1.2));
         bounce4.play();
       }
     }
@@ -519,7 +527,8 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         if (model_.glass_hits == 0) {
           model_.served = true;
         }
-        std::cout << "HIT" << std::endl;
+        glassbreak.setPan(model_.opponent.x / half_court_length);
+        glassbreak.play();
         if (model_.glass_hits <= 2) {
           model_.glass = 0.0;
         }
@@ -532,6 +541,8 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         model_.ball_trail.push_back(trail);
       }
       model_.served = true;
+      hit1.setSpeed(ofRandom(0.8, 1.2));
+      hit2.setSpeed(ofRandom(0.8, 1.2));
       hit1.setPan(racket_position.x / half_court_length);
       hit2.setPan(racket_position.x / half_court_length);
 
@@ -581,7 +592,7 @@ void Scene3Controller::UpdateRackets() {
     }
   }
   if (model_.opponent_index == 3) {
-    model_.opponent_target.x = 7;
+    model_.opponent_target.x = .377 * half_court_length;
   }
   if (model_.opponent_index == 5 && model_.score != 5) {
     model_.opponent_target.x = 7;

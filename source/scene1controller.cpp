@@ -8,8 +8,8 @@
 
 Scene1Controller::Scene1Controller(TextTennis &scene_manager, Scene1Model &model)
 : Controller(scene_manager), model_(model), hit1(), hit2() {
-  hit1.loadSound("hit1.mp3");
-  hit2.loadSound("hit2.mp3");
+  hit1.loadSound("hit.wav");
+  hit2.loadSound("hit2.wav");
   bounce1.loadSound("bounce1.wav");
   bounce2.loadSound("bounce2.wav");
   bounce3.loadSound("bounce3.wav");
@@ -75,14 +75,18 @@ void Scene1Controller::BeginContact(b2Contact* contact) {
   }
   if (ofRandomuf() < 0.5) {
     if (ofRandomuf() < 0.5) {
+      bounce1.setSpeed(ofRandom(0.8, 1.2));
       bounce1.play();
     } else {
+      bounce2.setSpeed(ofRandom(0.8, 1.2));
       bounce2.play();
     }
   } else {
     if (ofRandomuf() < 0.5) {
+      bounce3.setSpeed(ofRandom(0.8, 1.2));
       bounce3.play();
     } else {
+      bounce4.setSpeed(ofRandom(0.8, 1.2));
       bounce4.play();
     }
   }
@@ -260,6 +264,8 @@ void Scene1Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       }
       const ofVec2f velocity = hit_mean * (1.0 + variance) * hit_direction;
       model_.ball_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+      hit1.setSpeed(ofRandom(0.8, 1.2));
+      hit2.setSpeed(ofRandom(0.8, 1.2));
       if (model_.flipped) {
         hit1.setPan(-racket_position.x / half_court_length);
         hit2.setPan(-racket_position.x / half_court_length);

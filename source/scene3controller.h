@@ -51,6 +51,7 @@ private:
   Scene3Model &model_;
   ofSoundPlayer hit1, hit2;
   ofSoundPlayer bounce1, bounce2, bounce3, bounce4;
+  ofSoundPlayer cardtable, glassbreak;
 };
 
 #endif  // TEXTTENNIS_SCENE3CONTROLLER_H_

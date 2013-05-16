@@ -3,11 +3,14 @@
 #include "dialogue.h"
 
 Dialogue::Dialogue()
+: Dialogue("type2.wav") {}
+
+Dialogue::Dialogue(const std::string &title)
 : events(), last_event_time(), current_delay(), speed(1.0),
-  event_index(), message_index(), positions(), messages(),
-  last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
-  click(), font_size(12.0), muted(false), punctuation_delay(0.75) {
-  click.loadSound("type2.wav");
+event_index(), message_index(), positions(), messages(),
+last_message_label(), barriers(), background(0, 0, 0, 32), foreground(0, 0, 0, 255),
+click(), font_size(12.0), muted(false), punctuation_delay(0.75) {
+  click.loadSound(title);
   click.setMultiPlay(true);
 }
 
@@ -129,11 +132,11 @@ void Dialogue::Update() {
       if (messages.size() && message_index < messages[last_message_label]->message.size()) {
         message_index += 1;
         float delay = 0.0;
-        char character = messages[last_message_label]->message[message_index];
+        char character = messages[last_message_label]->message[message_index-1];
         if (!muted && character != ' ') {
           click.setSpeed(ofRandom(0.8, 1.2));
           click.setVolume(ofRandom(0.8, 1.0));
-          click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
+          //click.setPan(-1.0 + 2.0 * positions[last_message_label].x / ofGetWidth());
           click.play();
         }
         if (character == '.' || character == '!' || character == '?' || character == '-') {

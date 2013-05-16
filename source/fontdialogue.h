@@ -7,6 +7,8 @@
 class FontDialogue : public Dialogue {
 public:
   FontDialogue();
+  
+  FontDialogue(const std::string &type);
 
   virtual ~FontDialogue();
 

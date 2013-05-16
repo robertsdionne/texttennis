@@ -4,6 +4,10 @@ FontDialogue::FontDialogue() : Dialogue(), font() {
   font.loadFont("UbuntuMono-R.ttf", font_size);
 }
 
+FontDialogue::FontDialogue(const std::string &type) : Dialogue(type),font() {
+  font.loadFont("UbuntuMono-R.ttf", font_size);
+}
+
 FontDialogue::~FontDialogue() {}
 
 void FontDialogue::SetFontSize(float font_size) {
