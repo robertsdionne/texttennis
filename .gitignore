@@ -1,0 +1,5 @@
+*.swp
+.DS_Store
+bin/*.app/
+libraries/of_v0.7.4_osx_release/libs/openFrameworksCompiled/lib/osx/
+xcuserdata/
