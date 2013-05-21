@@ -17,7 +17,7 @@ void IntroductionView::Setup() const {
 }
 
 void IntroductionView::Draw(Model &model) {
-  ofBackground(ofColor::white);
+  ofBackground(ofColor::black);
   IntroductionModel &introduction_model = dynamic_cast<IntroductionModel &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);

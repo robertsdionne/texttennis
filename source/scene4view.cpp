@@ -23,7 +23,7 @@ void Scene4View::Setup() {
 }
 
 void Scene4View::Draw(Model &model) {
-  ofBackground(ofColor::white);
+  ofBackground(ofColor::black);
   Scene4Model &scene4_model = dynamic_cast<Scene4Model &>(model);
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofSetColor(ofColor::white);
@@ -142,7 +142,7 @@ void Scene4View::DrawBall(Scene4Model &model, ofVec2f position, float angle) {
 void Scene4View::DrawCourt() const {
   ofPushStyle();
   ofSetColor(ofColor::black);
-  ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -2.0 * court_thickness);
+  ofRect(ofVec2f(-half_court_length, court_thickness), court_length, -10.0);
   ofPopStyle();
 }
 
