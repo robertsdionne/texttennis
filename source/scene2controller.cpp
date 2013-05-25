@@ -36,7 +36,7 @@ void Scene2Controller::Setup() {
   model_.dialogue
       .Speed(20.0)
       .Foreground(ofColor::white)
-      .Background(ofColor(255, 255, 255, 32))
+      .Background(ofColor(0, 0, 0, 0))
       .Position("left", left)
       .Position("right", right)
       .Message("You know why you're here, right?", "right").Pause(pause)

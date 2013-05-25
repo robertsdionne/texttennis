@@ -40,7 +40,7 @@ void Interlude1::Setup() {
     dialogue
     ->Position("spot", ofPoint(100, 100))
     .Foreground(ofColor::white)
-    .Background(ofColor(255, 255, 255, 25))
+    .Background(ofColor(0, 0, 0, 0))
     .Speed(20.0)    .Message(text, "spot").Pause(delay).Then([this] () {
       done = true;
     });
