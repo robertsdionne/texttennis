@@ -105,6 +105,13 @@ void TextTennis::draw() {
   } else if (current_scene) {
     current_scene->Draw();
   }
+  ofPushMatrix();
+  ofMultMatrix(view_matrix);
+  ofSetColor(ofColor::black);
+  ofSetRectMode(OF_RECTMODE_CORNER);
+  ofRect(-half_court_length, 0, 2.0 * court_length, -2.0 * court_height);
+  ofRect(half_court_length, court_height, 2.0 * court_length, -court_height);
+  ofPopMatrix();
   if (show_sliders) {
     ofSetRectMode(OF_RECTMODE_CORNER);
     float_panel.draw();
