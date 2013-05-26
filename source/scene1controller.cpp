@@ -143,7 +143,7 @@ void Scene1Controller::Update() {
   if (model_.title_started && model_.title < 1.65) {
     model_.title += 0.0005;
   }
-  if (model_.title >= 1.65) {
+  if (model_.title >= 1.65 * 51.0 / 66.0) {
     scene_manager.NextScene();
     return;
   }
