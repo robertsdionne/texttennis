@@ -558,9 +558,7 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       hit2.setPan(racket_position.x / half_court_length);
 
       if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
-        if (!(model_.opponent_index == 4 && model_.glass_hits == 3)) {
-          ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
-        }
+        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
       }
       model_.last_hit = ofGetElapsedTimef();
     }
