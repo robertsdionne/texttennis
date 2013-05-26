@@ -112,6 +112,11 @@ void Scene3View::DrawParticles(Scene3Model &model) {
     } else if (model.opponent_index == 8) {
       ofSetColor(ofColor::white, particle.life * 128.0);
       ofRect(ofPoint(), 0.25 * particle.life, 0.25 * particle.life);
+    } else if (model.opponent_index == 4) {
+      ofSetColor(ofColor::white, particle.life * 128.0);
+      ofScale(0.25, 0.25);
+      ofTriangle(ofPoint(0.0, 0.1), ofPoint(0.0, -0.1), ofPoint(1.0, 0.0));
+      ofTriangle(ofPoint(0.1, 0.0), ofPoint(-0.1, 0.0), ofPoint(0.0, 0.5));
     }
     ofPopMatrix();
     ofPopStyle();
@@ -194,32 +199,9 @@ void Scene3View::DrawOpponent(const Scene3Model &model) const {
       break;
     }
     case 4: {
-      for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
-          float glass = model.glass;
-          if (model.glass_hits == 2 && !(i == 1 && j == 1)) {
-            glass = 0.0;
-          }
-          if (model.glass_hits == 3 && (i == 1 && j == 1)) {
-            glass = 1.0;
-          }
-          const ofPoint position = model.opponent + ofVec2f(-racket_radius / 2.0, -racket_radius / 2.0) +
-              ofVec2f(i * racket_radius, 2.0 * j * racket_radius);
-          ofPushMatrix();
-          ofTranslate(position.x, position.y - glass);
-          ofRotateZ(90.0 * glass);
-          ofScale(1.0 - glass, 1.0 - glass);
-          ofFill();
-          ofSetColor(ofColor::white);
-          ofRect(ofPoint(-racket_radius / 2.0, -racket_radius / 2.0), racket_radius, 2.0 * racket_radius);
-          if (model.glass_hits >= 1) {
-            ofNoFill();
-            ofSetColor(ofColor::black);
-            ofRect(ofPoint(-racket_radius / 2.0, -racket_radius / 2.0), racket_radius, 2.0 * racket_radius);
-            ofFill();
-          }
-          ofPopMatrix();
-        }
+      if (model.glass_hits != 3) {
+        ofSetColor(ofColor::white);
+        ofRect(model.opponent + ofVec2f(-racket_radius, -racket_radius), 2.0 * racket_radius, 4.0 * racket_radius);
       }
       break;
     }

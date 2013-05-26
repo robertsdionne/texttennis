@@ -527,12 +527,23 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
         if (model_.glass_hits == 0) {
           model_.served = true;
         }
-        glassbreak.setPan(model_.opponent.x / half_court_length);
-        glassbreak.play();
         if (model_.glass_hits <= 2) {
           model_.glass = 0.0;
         }
         model_.glass_hits += 1;
+        if (model_.glass_hits == 3) {
+          glassbreak.setPan(model_.opponent.x / half_court_length);
+          glassbreak.play();
+          for (int i = 0; i < 100; ++i) {
+            Scene3Model::Particle particle;
+            particle.position = model_.opponent + ofVec2f(racket_radius * ofRandomf(), 4.0 * racket_radius * ofRandomuf());
+            particle.velocity = ofVec2f(3.0 / 4.0 * ofRandomf(), ofRandomf() / 4.0);
+            particle.angle = ofRandomf();
+            particle.angular_velocity = 10.0 * ofRandomf();
+            particle.life = 1.0;
+            model_.particles.push_back(particle);
+          }
+        }
       }
       if (model_.opponent_index == 7) {
         Scene3Model::Trail trail;
@@ -547,7 +558,9 @@ void Scene3Controller::RacketCollide(ofVec2f racket_position, ofVec2f hit_direct
       hit2.setPan(racket_position.x / half_court_length);
 
       if (ofGetElapsedTimef() > model_.last_hit + 0.3) {
-        ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+        if (!(model_.opponent_index == 4 && model_.glass_hits == 3)) {
+          ofRandomuf() > 0.5 ? hit1.play() : hit2.play();
+        }
       }
       model_.last_hit = ofGetElapsedTimef();
     }
