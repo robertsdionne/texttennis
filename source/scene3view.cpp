@@ -21,6 +21,8 @@ void Scene3View::Setup() {
     top[i].cropFrom(image, 0, 0, 1024, 320);
     bottom[i].cropFrom(image, 0, 320, 1024, 320);
   }
+  top[10] = top[9];
+  bottom[10] = bottom[9];
 }
 
 void Scene3View::Draw(Model &model) {
@@ -30,9 +32,9 @@ void Scene3View::Draw(Model &model) {
   ofSetRectMode(OF_RECTMODE_CORNER);
   ofPushMatrix();
   ofMultMatrix(view_matrix);
-  ofImage &top_image = top[(scene3_model.score) % 10];
+  ofImage &top_image = top[scene3_model.score];
   int index = scene3_model.angle >= 180.0 ? 1 : 0;
-  ofImage &bottom_image = bottom[(scene3_model.score + index - 1) % 10];
+  ofImage &bottom_image = bottom[scene3_model.score + index - 1];
   ofSetColor(ofColor::white);
   top_image.draw(-half_court_length, court_height, court_length, -half_court_height);
   bottom_image.draw(-half_court_length, half_court_height, court_length, -half_court_height);
@@ -92,6 +94,12 @@ void Scene3View::Draw(Model &model) {
       image.draw(-half_court_length, half_court_height + offset, court_length, negate * half_court_height);
     }
     ofPopMatrix();
+  }
+  if (scene3_model.outro > 0) {
+    ofEnableAlphaBlending();
+    ofSetColor(ofColor::white, 255.0 * scene3_model.outro);
+    ofRect(-half_court_length, 0.0, court_length, court_height);
+    ofDisableAlphaBlending();
   }
   ofPopMatrix();
 }

@@ -58,6 +58,8 @@ public:
   std::vector<Particle> particles;
 
   int mirror_score = 0;
+
+  float outro = 0.0;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

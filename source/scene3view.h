@@ -34,9 +34,8 @@ private:
 private:
   float HalfLambert(ofVec3f light, ofVec3f normal);
 
-  ofImage top[10];
-  ofImage bottom[10];
-  ofImage left[10];
+  ofImage top[11];
+  ofImage bottom[11];
   
   ofTrueTypeFont font;
 };

@@ -92,7 +92,6 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
         model_.ball_in_play = false;
         model_.dialogue.Trigger("score");
       } else {
-        model_.angle = 0.0;
         model_.score += 1;
         model_.ball_in_play = false;
         model_.dialogue.Trigger("point");
@@ -326,6 +325,9 @@ void Scene3Controller::Setup() {
 void Scene3Controller::Update() {
   model_.dialogue.Update();
   if (model_.score >= 10) {
+    model_.outro += 1.0 / 60.0 / 2.6;
+  }
+  if (model_.outro >= 1.0) {
     scene_manager.NextScene();
     return;
   }
