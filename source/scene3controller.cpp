@@ -78,7 +78,7 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
   }
   if (ball && court && ball->GetPosition().x > 0 && model_.served) {
     model_.bounces += 1;
-    if (model_.bounces == ((model_.opponent_index == 5) ? 8 : 2)) {
+    if (model_.opponent_index != 9 && model_.bounces == ((model_.opponent_index == 5) ? 8 : 2)) {
       model_.angle = 0.0;
       model_.score += 1;
       model_.ball_in_play = false;
@@ -86,6 +86,17 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
         model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
       }
       model_.dialogue.Trigger("point");
+    } else if (model_.opponent_index == 9 && model_.bounces == 2) {
+      if (model_.mirror_score < 2) {
+        model_.mirror_score += 1;
+        model_.ball_in_play = false;
+        model_.dialogue.Trigger("score");
+      } else {
+        model_.angle = 0.0;
+        model_.score += 1;
+        model_.ball_in_play = false;
+        model_.dialogue.Trigger("point");
+      }
     }
   } else if (ball && court && ball->GetPosition().x < 0) {
     model_.bounces = 0;
@@ -303,7 +314,13 @@ void Scene3Controller::Setup() {
     model_.ball_in_play = true;
     model_.opponent_index = 9;
   })
-      .Barrier("point").Clear();
+  .Barrier("score").Then([this] () {
+    model_.served = false;
+    model_.ball_in_play = true;
+  }).Barrier("score").Then([this] () {
+    model_.served = false;
+    model_.ball_in_play = true;
+  }).Barrier("point").Clear();
 }
 
 void Scene3Controller::Update() {
@@ -350,7 +367,9 @@ void Scene3Controller::Update() {
     if (model_.opponent_index == 8) {
       model_.ball_body->GetFixtureList()->SetRestitution(0.0);
     }
-    model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
+    if (!(model_.opponent_index == 9 && model_.mirror_score > 0)) {
+      model_.opponent = model_.opponent_target = ofVec2f(half_court_length, racket_radius + court_thickness);
+    }
   }
   if (keys[OF_KEY_BACKSPACE] && !previous_keys[OF_KEY_BACKSPACE]) {
     if (model_.ball_body) {

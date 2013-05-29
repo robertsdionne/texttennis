@@ -56,6 +56,8 @@ public:
   float nerd_energy = 1.0;
 
   std::vector<Particle> particles;
+
+  int mirror_score = 0;
 };
 
 #endif  // TEXTTENNIS_SCENE3MODEL_H_

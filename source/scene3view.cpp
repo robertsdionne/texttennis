@@ -42,6 +42,8 @@ void Scene3View::Draw(Model &model) {
   DrawRacket(scene3_model.racket1);
   if (scene3_model.ball_in_play || (scene3_model.angle > 0.0 && scene3_model.angle < 180.0)) {
     DrawOpponent(scene3_model);
+  } else if (!scene3_model.ball_in_play && scene3_model.opponent_index == 9) {
+    DrawOpponent(scene3_model);
   }
   DrawParticles(scene3_model);
   if (scene3_model.ball_body) {
