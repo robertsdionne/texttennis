@@ -58,13 +58,15 @@ void Scene3Controller::BeginContact(b2Contact* contact) {
       trail.text = "Bounce";
       model_.ball_trail.push_back(trail);
     }
-    if (model_.opponent_index == 8 && !model_.eight_on_left_side) {
-      model_.opponent_target.x = model_.opponent.x = ball->GetPosition().x;
-      if (model_.opponent.x < 0.0) {
+    if (model_.opponent_index == 8) {
+      if (!model_.eight_on_left_side || ball->GetPosition().x < 0) {
+        model_.opponent_target.x = model_.opponent.x = ball->GetPosition().x;
+      }
+      if (!model_.eight_on_left_side && model_.opponent.x < 0.0) {
         model_.eight_on_left_side = true;
       }
     }
-    if (model_.opponent_index == 8 && !model_.eight_on_left_side) {
+    if (model_.opponent_index == 8 && (!model_.eight_on_left_side || ball->GetPosition().x < 0)) {
       for (int i = 0; i < 13; ++i) {
         Scene3Model::Particle particle;
         particle.position = ofVec2f(model_.opponent.x, court_thickness + racket_radius);
